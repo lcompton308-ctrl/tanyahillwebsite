@@ -1,0 +1,249 @@
+<title>Tanya Hill Website Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
+<style>
+/* Layout: phone-first single column; sticky progress header, groups of tickable cards, add-task sheet at the bottom. */
+:root{
+  --ink:#0b0a08; --panel:#15130f; --panel2:#1b1812; --line:#2b261b;
+  --gold:#d3a13e; --gold-hi:#ecc068; --gold-lo:#8b6914;
+  --chalk:#f3eee4; --muted:#a8a194; --dim:#6f6a60; --ok:#5fae7a; --wait:#7d8db0;
+  --f-display:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  --f-body:'DM Sans',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--chalk);font-family:var(--f-body);font-size:16px;line-height:1.5;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:14px 12px;display:grid;gap:10px}
+.title-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h1{font-family:var(--f-display);font-weight:800;font-size:1.25rem;margin:0;letter-spacing:-.01em}
+h1 span{color:var(--gold)}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));transition:width .4s}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{background:transparent;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:.82rem;color:var(--muted)}
+.filters button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+
+main .wrap{padding-block:18px 120px;display:grid;gap:26px}
+.group h2{font-family:var(--f-display);font-weight:700;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 4px;display:flex;justify-content:space-between;gap:8px}
+.group h2 small{font-family:var(--f-body);letter-spacing:0;text-transform:none;color:var(--dim);font-weight:500;font-size:.8rem}
+.group p.blurb{margin:0 0 10px;color:var(--dim);font-size:.85rem}
+.list{display:grid;gap:8px}
+.task{background:var(--panel);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;padding:12px 12px 12px 10px;align-items:start}
+.task.done{opacity:.55}
+.task.done .t-title{text-decoration:line-through;text-decoration-color:var(--dim)}
+.check{width:26px;height:26px;border-radius:8px;border:2px solid var(--gold-lo);background:transparent;display:grid;place-items:center;margin-top:1px;padding:0}
+.task.done .check{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.check svg{width:14px;height:14px;opacity:0}
+.task.done .check svg{opacity:1}
+.t-body{min-width:0}
+.t-title{font-weight:600;line-height:1.35}
+.t-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pill{font-size:.7rem;font-weight:600;letter-spacing:.04em;border-radius:99px;padding:2px 8px;border:1px solid var(--line);color:var(--muted)}
+.pill.p-high{border-color:var(--gold-lo);color:var(--gold-hi)}
+.pill.waiting{border-color:#3a4258;color:var(--wait)}
+.t-detail{grid-column:2/4;color:var(--muted);font-size:.9rem;margin-top:4px;white-space:pre-wrap}
+.t-detail[hidden]{display:none}
+.more{background:none;border:0;color:var(--dim);padding:2px 4px;font-size:1.1rem;line-height:1}
+.t-actions{grid-column:2/4;display:flex;gap:8px;margin-top:8px}
+.t-actions button{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:.8rem;color:var(--muted)}
+.t-actions .del{color:#d98572}
+
+.empty{border:1px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--dim);font-size:.9rem}
+.notice{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--muted);font-size:.85rem}
+
+.add{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.add form{display:grid;grid-template-columns:1fr auto;gap:8px;padding-block:10px}
+.add input,.add select{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.add .row2{grid-column:1/3;display:flex;gap:8px}
+.add .row2 select{flex:1}
+.add button[type=submit]{background:var(--gold);color:var(--ink);border:0;border-radius:10px;padding:10px 16px;font-family:var(--f-display);font-weight:800;font-size:.85rem}
+.add button[type=submit]:disabled{opacity:.5}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="title-row"><h1>Tanya Hill <span>Website Plan</span></h1><span class="count" id="count">Loading…</span></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="filters" role="group" aria-label="Show">
+      <button type="button" data-f="todo" aria-pressed="true">To do</button>
+      <button type="button" data-f="all" aria-pressed="false">All</button>
+      <button type="button" data-f="high" aria-pressed="false">Priority</button>
+      <button type="button" data-f="waiting" aria-pressed="false">Waiting on Tanya</button>
+      <button type="button" data-f="done" aria-pressed="false">Done</button>
+    </div>
+  </div>
+</header>
+
+<main><div class="wrap" id="groups">
+  <div class="empty">Loading the plan…</div>
+</div></main>
+
+<div class="add"><div class="wrap">
+  <form id="addForm" autocomplete="off">
+    <input id="newTitle" type="text" placeholder="Add a task or idea…" maxlength="160" aria-label="New task">
+    <button type="submit" id="addBtn">Add</button>
+    <div class="row2">
+      <select id="newGroup" aria-label="Section"></select>
+      <select id="newPri" aria-label="Priority"><option value="normal">Normal</option><option value="high">Priority</option></select>
+    </div>
+  </form>
+</div></div>
+
+<script>
+const GROUPS = [
+  ["setup", "Set-up & launch", "The basics so the site is live, safe and hers."],
+  ["design", "Mobile-first design", "Most clients will open this on a phone, so design for the phone first."],
+  ["booking", "Booking (replacing Calendly)", "Let clients book or request a session without leaving the site."],
+  ["quiz", "Colour Profile", "The quiz is how Tanya gets to know clients, so make it a proper tool."],
+  ["hub", "Client hub", "A place Tanya sends clients to, with their important tasks and resources."],
+  ["content", "Content & trust", "What convinces a tradesperson to book a call."],
+  ["growth", "Getting found", "Help new clients find her and make links look good when shared."]
+];
+const groupName = Object.fromEntries(GROUPS.map(g => [g[0], g[1]]));
+
+let tasks = [], filter = "todo", db = null, col = null, open = new Set(), busy = new Set();
+
+const $ = s => document.querySelector(s);
+const sel = $("#newGroup");
+GROUPS.forEach(([id, name]) => { const o = document.createElement("option"); o.value = id; o.textContent = name; sel.appendChild(o); });
+
+document.querySelectorAll(".filters button").forEach(b => b.onclick = () => {
+  filter = b.dataset.f;
+  document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+});
+
+function visible(t) {
+  if (filter === "all") return true;
+  if (filter === "done") return t.done;
+  if (filter === "high") return !t.done && t.priority === "high";
+  if (filter === "waiting") return !t.done && t.waiting;
+  return !t.done;
+}
+
+const tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+
+function render() {
+  const total = tasks.length, done = tasks.filter(t => t.done).length;
+  $("#count").textContent = total ? done + " of " + total + " done" : "No tasks yet";
+  $("#bar").style.width = total ? (done / total * 100) + "%" : "0";
+  const root = $("#groups");
+  root.innerHTML = "";
+  if (!db) {
+    root.innerHTML = '<div class="notice">Sign in to claude.ai to see and tick off the plan.</div>';
+    return;
+  }
+  let shown = 0;
+  GROUPS.forEach(([gid, gname, blurb]) => {
+    const all = tasks.filter(t => (t.group || "setup") === gid);
+    const list = all.filter(visible).sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || (a.createdAt || 0) - (b.createdAt || 0));
+    if (!list.length) return;
+    shown += list.length;
+    const sec = document.createElement("section");
+    sec.className = "group";
+    const h = document.createElement("h2");
+    h.textContent = gname;
+    const sm = document.createElement("small");
+    sm.textContent = all.filter(t => t.done).length + "/" + all.length;
+    h.appendChild(sm);
+    const p = document.createElement("p"); p.className = "blurb"; p.textContent = blurb;
+    const ul = document.createElement("div"); ul.className = "list";
+    list.forEach(t => ul.appendChild(card(t)));
+    sec.append(h, p, ul);
+    root.appendChild(sec);
+  });
+  if (!shown) {
+    const msg = { done: "Nothing ticked off yet.", waiting: "Nothing waiting on Tanya right now.", high: "No open priority tasks.", todo: total ? "Everything's done. Add the next idea below." : "No tasks yet. Add the first one below." }[filter] || "No tasks yet. Add the first one below.";
+    root.innerHTML = '<div class="empty"></div>';
+    root.firstChild.textContent = msg;
+  }
+}
+
+function card(t) {
+  const el = document.createElement("div");
+  el.className = "task" + (t.done ? " done" : "");
+  const c = document.createElement("button");
+  c.className = "check"; c.type = "button"; c.innerHTML = tick;
+  c.setAttribute("aria-label", (t.done ? "Mark not done: " : "Mark done: ") + t.title);
+  c.onclick = () => toggle(t);
+  const body = document.createElement("div"); body.className = "t-body";
+  const ti = document.createElement("div"); ti.className = "t-title"; ti.textContent = t.title;
+  const meta = document.createElement("div"); meta.className = "t-meta";
+  if (t.priority === "high") meta.insertAdjacentHTML("beforeend", '<span class="pill p-high">Priority</span>');
+  if (t.waiting) meta.insertAdjacentHTML("beforeend", '<span class="pill waiting">Waiting on Tanya</span>');
+  body.append(ti); if (meta.children.length) body.append(meta);
+  const more = document.createElement("button");
+  more.className = "more"; more.type = "button"; more.textContent = "⋯";
+  more.setAttribute("aria-label", "Details for " + t.title);
+  more.setAttribute("aria-expanded", open.has(t.id));
+  more.onclick = () => { open.has(t.id) ? open.delete(t.id) : open.add(t.id); render(); };
+  el.append(c, body, more);
+  if (open.has(t.id)) {
+    if (t.detail) { const d = document.createElement("div"); d.className = "t-detail"; d.textContent = t.detail; el.append(d); }
+    const a = document.createElement("div"); a.className = "t-actions";
+    const pr = document.createElement("button"); pr.type = "button";
+    pr.textContent = t.priority === "high" ? "Remove priority" : "Make priority";
+    pr.onclick = () => save(t, { priority: t.priority === "high" ? "normal" : "high" });
+    const wt = document.createElement("button"); wt.type = "button";
+    wt.textContent = t.waiting ? "Not waiting" : "Waiting on Tanya";
+    wt.onclick = () => save(t, { waiting: !t.waiting });
+    const del = document.createElement("button"); del.type = "button"; del.className = "del";
+    del.textContent = t._confirm ? "Tap again to delete" : "Delete";
+    del.onclick = () => { if (!t._confirm) { t._confirm = true; render(); return; } remove(t); };
+    a.append(pr, wt, del); el.append(a);
+  }
+  return el;
+}
+
+async function save(t, patch) {
+  if (busy.has(t.id)) return;
+  busy.add(t.id);
+  Object.assign(t, patch); render();
+  try { await col.doc(t.id).update(patch); }
+  catch (e) { showError("Couldn't save that change. " + (e && e.message ? e.message : "")); }
+  finally { busy.delete(t.id); }
+}
+function toggle(t) { save(t, { done: !t.done }); }
+async function remove(t) {
+  try { await col.doc(t.id).delete(); open.delete(t.id); }
+  catch (e) { showError("Couldn't delete that task."); }
+}
+function showError(msg) {
+  const n = document.createElement("div"); n.className = "notice"; n.textContent = msg;
+  $("#groups").prepend(n); setTimeout(() => n.remove(), 5000);
+}
+
+$("#addForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const title = $("#newTitle").value.trim();
+  if (!title || !col) return;
+  $("#addBtn").disabled = true;
+  try {
+    await col.add({ title, group: sel.value, priority: $("#newPri").value, done: false, waiting: false, detail: "", order: 900, createdAt: Date.now() });
+    $("#newTitle").value = "";
+    if (filter === "done") document.querySelector('[data-f="todo"]').click();
+  } catch (err) { showError("Couldn't add that task. You may only have view access."); }
+  finally { $("#addBtn").disabled = false; }
+});
+
+(async () => {
+  for (let i = 0; i < 30 && !window.claude?.use; i++) await new Promise(r => setTimeout(r, 100));
+  db = await (window.claude?.use ? window.claude.use("db") : null);
+  if (!db) { render(); return; }
+  col = db.collection("tasks");
+  col.onSnapshot(snap => {
+    const confirming = new Set(tasks.filter(t => t._confirm).map(t => t.id));
+    tasks = snap.docs.map(d => Object.assign({ id: d.id }, d.data(), confirming.has(d.id) ? { _confirm: true } : {}));
+    render();
+  }, err => showError("Lost connection to the plan. Reload to try again."));
+})();
+</script>
