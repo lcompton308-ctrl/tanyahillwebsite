@@ -1,0 +1,279 @@
+<title>Tanya Hill Coaching</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Tanya Hill, Coach to the Trades. Helping 7-figure trade and construction business owners get better margins, more time and their headspace back. Billericay, Essex.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: one long scrolling page in her black-and-gold; the hand-drawn whiteboard framework is the centrepiece. */
+:root{
+  --ink:#0b0a08; --panel:#15130f; --line:#2b261b;
+  --gold:#d3a13e; --gold-hi:#ecc068; --gold-lo:#8b6914;
+  --chalk:#f3eee4; --muted:#a8a194; --dim:#6f6a60;
+  --red:#C0392B; --yellow:#C9A800; --green:#1E8449; --blue:#2471A3;
+  --f-display:'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --f-body:'DM Sans', system-ui, sans-serif;
+  --f-hand:'Kalam', 'Comic Sans MS', cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--ink);color:var(--chalk);font-family:var(--f-body);font-size:17px;line-height:1.65;margin:0}
+a{color:var(--gold-hi)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.08}
+p{margin:0}
+.eyebrow{font-family:var(--f-display);font-weight:700;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+
+/* Header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--ink)}
+.top{position:sticky;top:env(safe-area-inset-top, 0px);z-index:9;background:color-mix(in srgb, var(--ink) 92%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.top img{height:44px;width:auto;display:block}
+.nav{display:flex;align-items:center;gap:22px;font-size:.92rem}
+.nav a{color:var(--muted);text-decoration:none}
+.nav a:hover{color:var(--chalk)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:.92rem;letter-spacing:.04em;text-decoration:none;border-radius:999px;padding:14px 26px;transition:transform .15s, background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-hi)}
+.btn-line{border:1.5px solid var(--gold-lo);color:var(--gold-hi)}
+.btn-line:hover{background:#1c1709}
+.nav .btn{padding:10px 18px;font-size:.82rem;color:var(--ink)}
+@media (max-width:760px){.nav a:not(.btn){display:none}.top img{height:36px}}
+
+/* Hero */
+.hero{padding-block:72px 64px}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin-top:22px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero .facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;font-size:.86rem;color:var(--dim)}
+.hero .facts b{color:var(--chalk);font-weight:600}
+.portrait{position:relative;justify-self:center;width:min(100%,320px)}
+.portrait img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;border:3px solid var(--gold);display:block}
+.portrait .note{position:absolute;right:-6px;bottom:6px;font-family:var(--f-hand);font-size:1.15rem;color:var(--gold-hi);transform:rotate(-6deg);background:var(--ink);padding:2px 10px;border-radius:8px;line-height:1.3}
+@media (max-width:760px){.hero{padding-block:40px 48px}.hero .wrap{grid-template-columns:1fr;gap:32px}.portrait{width:200px;order:-1;justify-self:start}}
+
+/* Problem */
+.band{padding-block:72px;border-top:1px solid var(--line)}
+.problem .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+.problem h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800}
+.problem .copy{display:grid;gap:18px;color:var(--muted);max-width:38em}
+.problem .copy strong{color:var(--chalk);font-weight:600}
+.quote{font-family:var(--f-hand);font-size:1.45rem;line-height:1.35;color:var(--gold-hi);margin-top:24px;max-width:15em}
+@media (max-width:760px){.problem .wrap{grid-template-columns:1fr;gap:24px}}
+
+/* Whiteboard framework */
+.board-sec{background:var(--panel)}
+.board-head{max-width:40em}
+.board-head h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-top:10px}
+.board-head p{color:var(--muted);margin-top:14px}
+.board{margin-top:40px;display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"cash . team" ". q ." "time . clients";gap:18px 26px;align-items:center;font-family:var(--f-hand);color:var(--chalk)}
+.box{border:2px solid var(--gold);border-radius:225px 18px 205px 16px / 16px 205px 18px 225px;padding:16px 20px 14px;max-width:300px;width:100%}
+.box h3{font-family:var(--f-hand);font-weight:700;font-size:1.5rem;color:var(--gold-hi);letter-spacing:.06em;display:flex;align-items:center;gap:10px}
+.box h3 span{font-size:1.1rem;opacity:.8}
+.box ul{margin:6px 0 0;padding:0;list-style:none;font-size:1.08rem;line-height:1.5;color:var(--chalk)}
+.box li::before{content:"· ";color:var(--gold)}
+.a-cash{grid-area:cash;justify-self:end}.a-team{grid-area:team}.a-time{grid-area:time;justify-self:end}.a-clients{grid-area:clients}
+.q{grid-area:q;text-align:center;width:190px;height:190px;border:2px solid var(--gold);border-radius:50% 46% 52% 48% / 48% 52% 46% 50%;display:grid;place-items:center;font-size:1.45rem;line-height:1.2;font-weight:700;color:var(--chalk);position:relative}
+.q small{display:block;font-size:2rem;color:var(--gold-hi)}
+.outcome{margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--f-hand)}
+.outcome .arrow{font-size:2rem;color:var(--gold);line-height:1}
+.outcome .tick{width:44px;height:44px;border:2px solid var(--gold);border-radius:6px 9px 7px 10px;display:grid;place-items:center;font-size:1.6rem;color:var(--gold-hi)}
+.outcome .words{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 18px;font-size:1.6rem;font-weight:700;color:var(--gold-hi);letter-spacing:.06em}
+.outcome .words span{border-bottom:2px solid var(--gold-lo)}
+@media (max-width:760px){
+  .board{grid-template-columns:1fr 1fr;grid-template-areas:"cash team" "q q" "time clients";gap:14px}
+  .box{padding:12px 12px 10px;justify-self:stretch!important}
+  .box h3{font-size:1.25rem}.box ul{font-size:.95rem}
+  .q{justify-self:center;width:160px;height:160px;font-size:1.2rem}
+}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px;counter-reset:s}
+.step{border-top:2px solid var(--gold);padding-top:18px}
+.step .n{font-family:var(--f-display);font-weight:800;font-size:.8rem;letter-spacing:.2em;color:var(--gold)}
+.step h3{font-size:1.25rem;font-weight:700;margin-top:8px}
+.step p{color:var(--muted);margin-top:10px;font-size:.98rem}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+/* Colour profile */
+.cp{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.cp h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-top:10px}
+.cp p{color:var(--muted);margin-top:14px;max-width:32em}
+.cp .btn{margin-top:26px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chip{border-radius:14px;padding:18px 18px 16px;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--c)}
+.chip b{font-family:var(--f-display);font-weight:800;font-size:.95rem;letter-spacing:.08em;color:var(--c);display:block}
+.chip span{font-size:.86rem;color:var(--muted)}
+@media (max-width:760px){.cp{grid-template-columns:1fr;gap:28px}}
+
+/* About */
+.about .wrap{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start}
+.about img{width:180px;height:180px;border-radius:50%;object-fit:cover;border:3px solid var(--gold)}
+.about h2{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;margin-top:10px}
+.about .copy{display:grid;gap:16px;color:var(--muted);margin-top:16px;max-width:40em}
+.about .copy strong{color:var(--chalk);font-weight:600}
+@media (max-width:760px){.about .wrap{grid-template-columns:1fr;gap:20px}.about img{width:120px;height:120px}}
+
+/* Call to action */
+.cta{text-align:center}
+.cta h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;max-width:16em;margin:0 auto}
+.cta p{color:var(--muted);margin:16px auto 0;max-width:34em}
+.cta .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px}
+.contact{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin-top:28px;font-size:.95rem;color:var(--muted)}
+.contact b{color:var(--chalk);font-weight:600;user-select:all}
+
+footer{border-top:1px solid var(--line);padding-block:32px 40px}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+footer img{height:54px;width:auto}
+.socials{display:flex;flex-wrap:wrap;gap:10px}
+.socials a{font-size:.85rem;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+.socials a:hover{color:var(--gold-hi);border-color:var(--gold-lo)}
+.fine{width:100%;font-size:.78rem;color:var(--dim)}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" aria-label="Tanya Hill Coaching, home"><img src="img/logo.png" alt="Tanya Hill Coaching · Built Like a Boss"></a>
+    <nav class="nav">
+      <a href="#how">How I help</a>
+      <a href="#colours">Colour Profile</a>
+      <a href="#about">About</a>
+      <a class="btn btn-gold" href="https://calendly.com/built-like-a-boss/30min" target="_blank" rel="noopener">Book a call</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Coach to the Trades · Billericay, Essex</p>
+        <h1 style="margin-top:14px">Plenty of work. Still feels <em>harder than it should.</em></h1>
+        <p class="lede">I help 7-figure trade and construction business owners escape the trap of their own success: better margins, more time, and your headspace back.</p>
+        <div class="ctas">
+          <a class="btn btn-gold" href="https://calendly.com/built-like-a-boss/30min" target="_blank" rel="noopener">Book a free 30-min call</a>
+          <a class="btn btn-line" href="colour-profile.html">What colour are you?</a>
+        </div>
+        <div class="facts">
+          <span><b>Built Like a Boss</b> est. 2015</span>
+          <span><b>11 years</b> with ActionCOACH UK</span>
+          <span><b>Ran a trade business</b> herself</span>
+        </div>
+      </div>
+      <div class="portrait">
+        <img src="img/tanya.jpg" alt="Tanya Hill">
+        <span class="note">coach to the trades</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band problem">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Sound familiar?</p>
+        <h2 style="margin-top:10px">You're carrying it on your own.</h2>
+        <p class="quote">"Busy all day, every day. Decisions non-stop."</p>
+      </div>
+      <div class="copy">
+        <p>From the outside, things look good. Jobs coming in, a solid team, money moving through the business. But underneath it, something's not sitting right, and you can't quite see what it is, let alone fix it.</p>
+        <p><strong>No one on site sees how hard you're actually carrying it.</strong> You're the one who loses sleep when a job goes sideways. You can't show it in front of the team, and you're too proud to admit it to anyone else.</p>
+        <p>So you try to fix it the way most people do: new systems, longer hours, another conversation with the team. It helps for a minute. Then you're back to square one.</p>
+        <p><strong>It's rarely just a time problem, a team problem, or even a money problem.</strong> Plenty of businesses turn good money and still have nothing left at the end of the month. It's that you can't see what's happening across the whole business at once. When you can't see it, you're guessing. That's where the stress comes from.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band board-sec" id="how">
+    <div class="wrap">
+      <div class="board-head">
+        <p class="eyebrow">How I help</p>
+        <h2>We get it out of your head and in front of you.</h2>
+        <p>Your cash, your team, your time, your clients, and how it all connects. Once you can see it, the decisions get easier.</p>
+      </div>
+
+      <div class="board" aria-label="Tanya's framework: cash, team, time and clients lead to the question of what's really going on, then to clarity, confidence and results">
+        <div class="box a-cash"><h3>CASH <span>£</span></h3><ul><li>incoming</li><li>outgoing</li><li>profit</li></ul></div>
+        <div class="box a-team"><h3>TEAM <span>☺☺☺</span></h3><ul><li>roles</li><li>capacity</li><li>accountability</li></ul></div>
+        <div class="q"><div><small>?</small>What's really<br>going on?</div></div>
+        <div class="box a-time"><h3>TIME <span>◷</span></h3><ul><li>where it goes</li><li>what matters</li><li>what drains</li></ul></div>
+        <div class="box a-clients"><h3>CLIENTS <span>☺</span></h3><ul><li>right work</li><li>right price</li><li>right fit</li></ul></div>
+      </div>
+      <div class="outcome">
+        <span class="arrow">↓</span>
+        <span class="tick">✓</span>
+        <div class="words"><span>CLARITY</span><span>CONFIDENCE</span><span>RESULTS</span></div>
+      </div>
+
+      <div class="steps">
+        <div class="step"><span class="n">STEP 1</span><h3>Get it all out of your head</h3><p>No big strategies or complicated plans to start. We put your cash, team and time in front of you so you can actually see it.</p></div>
+        <div class="step"><span class="n">STEP 2</span><h3>See what's really going on</h3><p>Once it's clear, decisions get easier and the business starts to feel like yours again, not the other way around.</p></div>
+        <div class="step"><span class="n">STEP 3</span><h3>Build the structure</h3><p>Better decisions, a team that runs without you standing over it, and your time back.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="colours">
+    <div class="wrap cp">
+      <div>
+        <p class="eyebrow">Free · 12 questions · 3 minutes</p>
+        <h2>What colour are you?</h2>
+        <p>Take the Behaviour Colour Profile and find out how you naturally lead, decide and communicate, what drains you, and how to get the best out of the people around you. Based on Thomas Erikson's <em>Surrounded by Idiots</em>.</p>
+        <a class="btn btn-gold" href="colour-profile.html">Take the Colour Profile</a>
+      </div>
+      <div class="chips">
+        <div class="chip" style="--c:var(--red)"><b>RED</b><span>Direct · Decisive · Driven</span></div>
+        <div class="chip" style="--c:var(--yellow)"><b>YELLOW</b><span>Enthusiastic · Sociable · Optimistic</span></div>
+        <div class="chip" style="--c:var(--green)"><b>GREEN</b><span>Calm · Patient · Loyal</span></div>
+        <div class="chip" style="--c:var(--blue)"><b>BLUE</b><span>Analytical · Precise · Careful</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band about" id="about">
+    <div class="wrap">
+      <img src="img/tanya.jpg" alt="Tanya Hill" loading="lazy">
+      <div>
+        <p class="eyebrow">About Tanya</p>
+        <h2>I've been exactly where you are.</h2>
+        <div class="copy">
+          <p><strong>I've run a tradie business, felt the pressure, and made the same mistakes before I became a coach.</strong> So I know what it's like when the work's there but the business still feels like it's running you.</p>
+          <p>I started Built Like a Boss in 2015 and I've coached with ActionCOACH UK for 11 years, helping trade and construction business owners get control of their cash, their teams and their time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band cta">
+    <div class="wrap">
+      <h2>If this sounds like where you're at, let's talk.</h2>
+      <p>Book a free 30-minute call for a straight conversation about what's going on in your business.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="https://calendly.com/built-like-a-boss/30min" target="_blank" rel="noopener">Book a free 30-min call</a>
+        <a class="btn btn-line" href="https://wa.me/447714541600" target="_blank" rel="noopener">Message on WhatsApp</a>
+      </div>
+      <div class="contact">
+        <span>Phone <b>07714 541600</b></span>
+        <span>Email <b>tanyahill@actioncoach.co.uk</b></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="img/logo.png" alt="Tanya Hill Coaching · Built Like a Boss" loading="lazy">
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/tanya-hill-coach-to-the-trades-built-like-a-boss-05218015" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/coach_to_the_trades" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@coach_to_the_trades" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.facebook.com/share/1FT5yGbwXF/" target="_blank" rel="noopener">Facebook</a>
+    </div>
+    <p class="fine">© Tanya Hill Coaching Ltd · Billericay, Essex · Clarity. Confidence. Action. Results.</p>
+  </div>
+</footer>
