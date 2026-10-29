@@ -1,20 +1,12 @@
-# Colour Profile — Tanya Hill Coaching
+# Tanya Hill Coaching website
 
-Android app version of the **Behaviour Colour Profile** quiz (Built Like a Boss).
-12 questions, then a full Red / Yellow / Green / Blue profile with strengths,
-watch-outs, motivators, drains and development tips. Works offline.
-
-## Getting the app
-Every change to `main` builds automatically. To install:
-1. Open the **Releases** section of this repo (right-hand side on desktop, or scroll down on mobile).
-2. Download `ColourProfile.apk` from the newest build.
-3. Open it on the phone and allow installing from your browser if asked.
-
-New builds install over the old one, no need to uninstall.
+The website for **Tanya Hill Coaching · Built Like a Boss** (Coach to the Trades), going live at **tanyahill.co.uk**.
 
 ## Where things live
-- `app/src/main/assets/data.js` — all the quiz wording (questions, profiles, tips). Edit this to change text.
-- `app/src/main/assets/index.html` — layout and styling.
-- `app/src/main/assets/app.js` — how the quiz works.
-- `app/src/main/java/.../MainActivity.kt` — the Android shell that shows the quiz.
-- `.github/workflows/build.yml` — the automatic build.
+- `site/index.html` — the homepage (all wording and styling).
+- `site/colour-profile.html`, `site/quiz.js`, `site/quiz-data.js` — the free Behaviour Colour Profile quiz. Quiz wording is in `quiz-data.js`.
+- `site/img/` — logo and photos.
+- `.github/workflows/website.yml` — publishes the site automatically whenever `site/` changes on `main`.
+
+## Old Android app
+`app/` holds the earlier Android app version of the quiz. It's no longer built; the website replaces it.
