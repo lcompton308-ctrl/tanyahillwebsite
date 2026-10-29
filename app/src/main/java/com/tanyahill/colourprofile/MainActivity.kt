@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
+import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -12,8 +14,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.FileProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.webkit.WebViewAssetLoader
+import java.io.File
 
 class MainActivity : ComponentActivity() {
     private lateinit var web: WebView
@@ -53,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        web.addJavascriptInterface(ShareBridge(), "AndroidShare")
         setContentView(web)
 
         if (savedInstanceState != null) web.restoreState(savedInstanceState)
@@ -65,6 +70,39 @@ class MainActivity : ComponentActivity() {
                 }
             }
         })
+    }
+
+    /** Lets the quiz page open the phone's share menu with the results card. */
+    inner class ShareBridge {
+        @JavascriptInterface
+        fun shareImage(base64Png: String, text: String) {
+            runOnUiThread {
+                runCatching {
+                    val dir = File(cacheDir, "shared").apply { mkdirs() }
+                    val file = File(dir, "colour-profile.png")
+                    file.writeBytes(Base64.decode(base64Png, Base64.DEFAULT))
+                    val uri = FileProvider.getUriForFile(this@MainActivity, "$packageName.files", file)
+                    val send = Intent(Intent.ACTION_SEND).apply {
+                        type = "image/png"
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        putExtra(Intent.EXTRA_TEXT, text)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    startActivity(Intent.createChooser(send, "Share your colour profile"))
+                }.onFailure { shareText(text) }
+            }
+        }
+
+        @JavascriptInterface
+        fun shareText(text: String) {
+            runOnUiThread {
+                val send = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, text)
+                }
+                startActivity(Intent.createChooser(send, "Share your colour profile"))
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
