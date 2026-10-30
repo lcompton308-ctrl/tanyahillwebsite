@@ -1,0 +1,263 @@
+#!/usr/bin/env python3
+"""Builds the website pages in site/ from the page bodies in tools/pages/.
+
+Each page file starts with one line of JSON (title, description, nav key, path),
+followed by the HTML for <main>. This script wraps it in the shared head, header,
+footer and phone booking bar, so every page stays consistent.
+
+Run:  python3 tools/build_site.py
+"""
+import json, pathlib, urllib.parse
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+PAGES = ROOT / "tools" / "pages"
+OUT = ROOT / "site"
+DOMAIN = "https://tanyahill.co.uk"
+
+PHONE_DISPLAY = "07714 541600"
+PHONE_TEL = "+447714541600"
+EMAIL = "tanyahill@actioncoach.co.uk"
+WA = "https://wa.me/447714541600?text=" + urllib.parse.quote("Hi Tanya, I'd like to book a free 30-minute call.")
+LINKEDIN = "https://www.linkedin.com/in/tanya-hill-coach-to-the-trades-built-like-a-boss-05218015"
+INSTAGRAM = "https://www.instagram.com/coach_to_the_trades"
+TIKTOK = "https://www.tiktok.com/@coach_to_the_trades"
+FACEBOOK = "https://www.facebook.com/share/1FT5yGbwXF/"
+
+ICONS = {
+    "whatsapp": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>',
+    "phone": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>',
+    "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    "linkedin": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.5-2.2 2.9V21h-4V9Z"/></svg>',
+    "instagram": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    "tiktok": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.4 2.2 1.8 3.7 4 4v3.1a7.5 7.5 0 0 1-4-1.2v6.4A6.2 6.2 0 1 1 10.3 9v3.2a3 3 0 1 0 3 3V3h3.2Z"/></svg>',
+    "facebook": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.7V11H7v4h2.5v7h4v-7H16l.5-4h-3V9c0-.6.4-1 1-1Z"/></svg>',
+    "menu": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    "arrow": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    "check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>',
+    "share": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4M12 2v14"/></svg>',
+    "cash": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5.5A4.5 4.5 0 0 0 8 8.5V12H6m2 0h6M8 12v3.5c0 1.5-.8 2.6-2 3.5h12"/></svg>',
+    "team": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.2c2.6.3 4.5 2.6 4.5 5.3"/></svg>',
+    "time": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    "clients": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 12 4-4 5 3 4-3 5 4"/><path d="m7 8 5 7c.6.8 1.8.8 2.4 0L21 12"/><path d="M3 12l5 6c.5.6 1.4.6 1.9.1l1.1-1.1"/></svg>',
+    "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+}
+
+DRAWINGS = {
+    "a-to-b-session": dict(
+        title="What's stopping you going from A to B?", topic="planning", topic_label="Planning",
+        lesson="Where you are now, where you want to be, what's in the way, and the actions for this week. This is what a first session looks like.",
+        alt="Hand-drawn session map. Point A, now: £1.36m turnover, in and out of overdraft, inconsistent work, 3.4% profit, working too much. Point B, the goal: £2m turnover, a £30k buffer in the bank, 20% profit, a 3-day week, holidays. Challenges include wearing Superman pants, profit but no cash flow, and being owed money. Solutions include a cash flow forecast, understanding the numbers, marketing, an organisation chart, credit control and working on the business. Actions for this week: list direct debits, bring the aged debtors list, keep a time log.",
+        w=1330, h=1246),
+    "profit-72k": dict(
+        title="Cut cost of sales by 6%, add £72k profit", topic="finance", topic_label="Finance",
+        lesson="Same amount of work, same fixed costs. Bringing cost of sales from 78% to 72% takes profit from 9% to 15%.",
+        alt="Hand-drawn figures. On £1.2m of work won for 2025, cost of sales at 78% leaves £108k profit, 9%. Reducing cost of sales by 6% to 72% gives £336k gross profit and £180k profit, 15%. A cloud reads Increase profit by £72k, beside a drawn stack of banknotes. Underneath: same amount of work and same fixed costs, just focusing on cost of sales, labour and materials.",
+        w=1332, h=956),
+    "cherry-on-top-finance": dict(
+        title="The cherry on top: finance", topic="finance", topic_label="Finance",
+        lesson="Big profit sits on solid layers: knowing your numbers, tight credit control, invoicing on time, tracking jobs, quoting correctly and attracting grade A clients.",
+        alt="Hand-drawn trifle with a cherry on top. Left side, leading to low profits and living in the overdraft: judging your business on your bank balance, a long debtors list, no invoicing process, no business structure, competing on price, taking on every job. Right side, leading to huge profit and money in the bank: knowing your numbers, watertight credit control, invoicing correctly and on time, tracking and managing jobs, quoting correctly and tracking quote versus actual, attracting grade A clients.",
+        w=1334, h=835),
+    "verbal-vs-written": dict(
+        title="A verbal agreement vs a written agreement", topic="sales", topic_label="Sales and contracts",
+        lesson="A handshake feels quicker, but only a written agreement gives you a paper trail, protects both sides and can be enforced.",
+        alt="Hand-drawn lips labelled A verbal agreement versus a signed document labelled A written agreement. Verbal: ego or emotional decision, short-term gain, possible long-term pain if the invoice isn't paid, no leg to stand on, hard to prove in a dispute, not legally binding. Written: logical decision, paper trail, protects both parties, easier to enforce, no misunderstandings.",
+        w=1323, h=1128),
+    "talk-vs-action": dict(
+        title="Talk vs action", topic="people", topic_label="People",
+        lesson="Don't just listen to what people say. Cover your ears and watch what they do.",
+        alt="Two hand-drawn faces. The first has closed eyes and big ears, with the words Talk is ego and Don't just listen to what people say. The second wears red headphones with eyes wide open, with the words Cover your ears and watch what they do.",
+        w=1331, h=736),
+    "business-ducks": dict(
+        title="Have you got your business ducks in a row?", topic="planning", topic_label="Planning",
+        lesson="Marketing, sales, operations and finance: the four areas every business needs lined up.",
+        alt="Hand-drawn yellow rubber duck with the words Have you got your business ducks in a row? Marketing, sales, operations, finance.",
+        w=1344, h=1110),
+}
+
+
+def drawing_card(key, heading="h3", lazy=True):
+    d = DRAWINGS[key]
+    loading = ' loading="lazy"' if lazy else ""
+    return f"""<figure class="drawing" id="{key}" data-topic="{d['topic']}">
+  <button class="zoom" type="button" data-full="img/art/{key}.webp" data-title="{d['title']}" aria-label="View full size: {d['title']}">
+    <img src="img/art/{key}-sm.webp" srcset="img/art/{key}-sm.webp 720w, img/art/{key}.webp {d['w']}w" sizes="(min-width: 960px) 560px, 100vw" width="{d['w']}" height="{d['h']}" alt="{d['alt']}"{loading} decoding="async">
+  </button>
+  <figcaption>
+    <{heading}>{d['title']}</{heading}>
+    <p>{d['lesson']}</p>
+    <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="resources.html#{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
+  </figcaption>
+</figure>"""
+
+
+NAV = [
+    ("home", "index.html", "Home"),
+    ("how", "how-i-work.html", "How I work"),
+    ("colour", "colour-profile.html", "Colour Profile"),
+    ("resources", "resources.html", "Drawings"),
+    ("about", "about.html", "About me"),
+]
+
+
+def nav_links(active, cls=""):
+    out = []
+    for key, href, label in NAV:
+        cur = ' aria-current="page"' if key == active else ""
+        out.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
+    return "\n".join(out)
+
+
+def page(meta, body):
+    title = meta["title"]
+    full_title = title if meta.get("full_title") else f"{title} · Tanya Hill Coaching"
+    desc = meta["description"]
+    path = meta["path"]
+    url = DOMAIN + "/" + ("" if path == "index.html" else path)
+    active = meta.get("nav", "")
+    noindex = '\n<meta name="robots" content="noindex">' if meta.get("noindex") else ""
+    i = ICONS
+    base = '\n<base href="/">' if meta.get("base") else ""
+    return f"""<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">{base}
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{full_title}</title>
+<meta name="description" content="{desc}">{noindex}
+<link rel="canonical" href="{url}">
+<meta name="theme-color" content="#faf7f0">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tanya Hill Coaching">
+<meta property="og:title" content="{full_title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{DOMAIN}/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="img/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dmsans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">{meta.get("head_extra", "")}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Tanya Hill Coaching, Built Like a Boss: home"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"></a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        {nav_links(active)}
+        <li><a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav">{i["menu"]}<span class="label">Menu</span></button>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+    <div class="wrap">
+      <ul>
+        {nav_links(active)}
+        <li><a href="book.html"{' aria-current="page"' if active == "book" else ""}>Book a free call</a></li>
+      </ul>
+      <div class="contact-quick">
+        <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Message me on WhatsApp</a>
+        <a class="btn btn-line" href="tel:{PHONE_TEL}">{i["phone"]}Call {PHONE_DISPLAY}</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+{body}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img class="logo" src="img/logo-gold.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269" loading="lazy">
+        <p style="margin-top:16px;max-width:30ch">Coach to the Trades. Helping trade and construction business owners get their margins, time and headspace back.</p>
+        <p style="margin-top:12px" class="small">Certified ActionCOACH business coach · <a href="https://business.actioncoach.co.uk/coaches/tanya-hill" style="min-height:0;display:inline">My ActionCOACH profile</a></p>
+      </div>
+      <div>
+        <h3>Pages</h3>
+        <ul>
+          {nav_links("")}
+          <li><a href="book.html">Book a free call</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="{WA}">{i["whatsapp"]}WhatsApp</a></li>
+          <li><a href="tel:{PHONE_TEL}">{i["phone"]}{PHONE_DISPLAY}</a></li>
+          <li><a href="mailto:{EMAIL}">{i["mail"]}Email me</a></li>
+          <li><span style="display:inline-flex;gap:8px;align-items:center;min-height:40px">{i["pin"]}Billericay, Essex</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <ul>
+          <li><a href="{LINKEDIN}" rel="noopener">{i["linkedin"]}LinkedIn</a></li>
+          <li><a href="{INSTAGRAM}" rel="noopener">{i["instagram"]}Instagram</a></li>
+          <li><a href="{TIKTOK}" rel="noopener">{i["tiktok"]}TikTok</a></li>
+          <li><a href="{FACEBOOK}" rel="noopener">{i["facebook"]}Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© <span data-year>2026</span> Tanya Hill Coaching Ltd · Company no. 09757695</span>
+      <span><a href="privacy.html">Privacy policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="book-bar" role="region" aria-label="Book a call">
+  <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a>
+  <a class="icon-btn" href="tel:{PHONE_TEL}" aria-label="Call Tanya on {PHONE_DISPLAY}">{i["phone"]}</a>
+</div>
+
+<dialog class="lightbox" aria-label="Drawing, full size">
+  <img src="" alt="">
+  <div class="lb-bar"><span class="lb-title"></span><button type="button" class="lb-close">Close</button></div>
+</dialog>
+<script src="assets/site.js" defer></script>{meta.get("body_extra", "")}
+</body>
+</html>
+"""
+
+
+def render(text):
+    # Simple placeholders available inside page bodies
+    reps = {"{{WA}}": WA, "{{TEL}}": "tel:" + PHONE_TEL, "{{PHONE}}": PHONE_DISPLAY, "{{EMAIL}}": EMAIL,
+            "{{LINKEDIN}}": LINKEDIN}
+    for k, v in ICONS.items():
+        reps["{{icon:" + k + "}}"] = v
+    for k in DRAWINGS:
+        reps["{{drawing:" + k + "}}"] = drawing_card(k)
+        reps["{{drawing-eager:" + k + "}}"] = drawing_card(k, lazy=False)
+    for k, v in reps.items():
+        text = text.replace(k, v)
+    return text
+
+
+def main():
+    built = []
+    for f in sorted(PAGES.glob("*.html")):
+        first, body = f.read_text(encoding="utf-8").split("\n", 1)
+        meta = json.loads(first)
+        html = page(meta, render(body).rstrip())
+        (OUT / meta["path"]).write_text(html, encoding="utf-8")
+        built.append(meta)
+    # sitemap
+    urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path']}</loc></url>" for m in built if not m.get("noindex"))
+    (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
+    print("built", ", ".join(m["path"] for m in built))
+
+
+if __name__ == "__main__":
+    main()

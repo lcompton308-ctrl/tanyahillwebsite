@@ -1,0 +1,60 @@
+{"path": "book.html", "nav": "book", "title": "Book a free call", "description": "Book a free 30-minute call with Tanya Hill. Message on WhatsApp in one tap, or call 07714 541600."}
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Free · 30 minutes · no obligation</p>
+    <h1>Book your free call</h1>
+    <p class="lede">The quickest way is WhatsApp. Tap the button and a message to me opens, ready to send. I'll reply to arrange a time that suits you.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap split" style="align-items:start">
+    <div class="book-panel stack">
+      <a class="btn btn-gold" href="{{WA}}">{{icon:whatsapp}}Message me on WhatsApp</a>
+      <p class="small muted" style="text-align:center">Opens WhatsApp with: "Hi Tanya, I'd like to book a free 30-minute call."</p>
+
+      <details style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px">
+        <summary style="cursor:pointer;font-family:var(--f-head);font-weight:600;min-height:44px;display:flex;align-items:center">Want to tell me a bit first? (optional)</summary>
+        <form id="book-form" class="stack" style="margin-top:12px" novalidate>
+          <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Dave"></div>
+          <div class="field"><label for="f-biz">Business or trade</label><input id="f-biz" name="business" type="text" autocomplete="organization" placeholder="e.g. Smith Electrical"></div>
+          <fieldset class="choice-group">
+            <legend>What's on your mind?</legend>
+            <div class="choices">
+              <label><input type="checkbox" name="topic" value="Cash"><span>Cash</span></label>
+              <label><input type="checkbox" name="topic" value="Team"><span>Team</span></label>
+              <label><input type="checkbox" name="topic" value="Time"><span>Time</span></label>
+              <label><input type="checkbox" name="topic" value="Clients"><span>Clients</span></label>
+              <label><input type="checkbox" name="topic" value="Not sure yet"><span>Not sure yet</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="choice-group">
+            <legend>Best time for a call</legend>
+            <div class="choices">
+              <label><input type="checkbox" name="time" value="Mornings"><span>Mornings</span></label>
+              <label><input type="checkbox" name="time" value="Afternoons"><span>Afternoons</span></label>
+              <label><input type="checkbox" name="time" value="Evenings"><span>Evenings</span></label>
+            </div>
+          </fieldset>
+          <div>
+            <p class="small muted" style="margin-bottom:6px">Your message</p>
+            <div class="preview" id="msg-preview" aria-live="polite">Hi Tanya, I'd like to book a free 30-minute call.</div>
+          </div>
+          <a class="btn btn-ink" id="send-wa" href="{{WA}}">{{icon:whatsapp}}Open WhatsApp with this message</a>
+          <p class="small muted">Nothing is sent or stored by this website. Your message only goes to me when you press send in WhatsApp.</p>
+        </form>
+      </details>
+    </div>
+
+    <div class="stack">
+      <h2 style="font-size:var(--step-2)">Other ways to reach me</h2>
+      <div class="other-ways">
+        <a href="{{TEL}}">{{icon:phone}}<div><b>Call me</b><span>{{PHONE}}</span></div></a>
+        <a href="mailto:{{EMAIL}}?subject=Free%2030-minute%20call">{{icon:mail}}<div><b>Email me</b><span>{{EMAIL}}</span></div></a>
+        <a href="{{LINKEDIN}}" rel="noopener">{{icon:linkedin}}<div><b>Message me on LinkedIn</b><span>Tanya Hill · Coach to the Trades</span></div></a>
+      </div>
+      <h2 style="font-size:var(--step-1);margin-top:28px">What happens on the call?</h2>
+      <p class="muted">We talk about where your business is now, where you want it to be, and what's getting in the way. You'll come away with a clearer picture, whether or not we work together.</p>
+    </div>
+  </div>
+</section>
