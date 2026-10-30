@@ -23,6 +23,11 @@
     mobileNav.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
   }
 
+  // Homepage panels start open on laptops, closed on phones
+  if (window.matchMedia && window.matchMedia("(min-width: 960px)").matches) {
+    document.querySelectorAll("details.fold").forEach(function (d) { d.open = true; });
+  }
+
   // Year in footer
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
