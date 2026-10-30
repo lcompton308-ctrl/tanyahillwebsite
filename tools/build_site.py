@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import datetime
 """Builds the website pages in site/ from the page bodies in tools/pages/.
 
 Each page file starts with one line of JSON (title, description, nav key, path),
@@ -325,7 +326,7 @@ def main():
         built.append(meta)
     built += build_colour_pages()
     # sitemap
-    urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc></url>" for m in built if not m.get("noindex"))
+    urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>" for m in built if not m.get("noindex"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
     print("built", ", ".join(m["path"] for m in built))
 
