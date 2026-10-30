@@ -269,7 +269,7 @@ dialog.lightbox button { min-height: 44px; padding: 0 18px; border-radius: 999px
 /* LinkedIn */
 .linkedin-card { display: grid; gap: 18px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; align-items: center; }
 .linkedin-card .li-head { display: flex; gap: 14px; align-items: center; }
-.linkedin-card img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+.linkedin-card .li-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .linkedin-card .li-name { font-family: var(--f-head); font-weight: 700; }
 .linkedin-card .li-role { font-size: .92rem; color: var(--stone); }
 .li-badge { display: inline-flex; width: 28px; height: 28px; border-radius: 6px; background: #0a66c2; color: #fff; align-items: center; justify-content: center; }
