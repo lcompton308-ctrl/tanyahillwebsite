@@ -241,10 +241,7 @@ def page(meta, body):
   </div>
 </footer>
 
-<div class="book-bar" role="region" aria-label="Book a call">
-  <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a>
-  <a class="icon-btn" href="tel:{PHONE_TEL}" aria-label="Call Tanya on {PHONE_DISPLAY}">{i["phone"]}</a>
-</div>
+<a class="book-fab" href="{WA}" aria-label="Book a free call on WhatsApp">{i["whatsapp"]}<span>Book a call</span></a>
 
 <dialog class="lightbox" aria-label="Drawing, full size">
   <img src="" alt="">

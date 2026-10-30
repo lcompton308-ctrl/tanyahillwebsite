@@ -137,7 +137,7 @@ strong { font-weight: 700; }
 .m-tile:hover { border-color: var(--ink); color: var(--ink); }
 .m-tile.wa { background: var(--gold); border-color: var(--gold); }
 .m-tile.wa:hover { background: var(--gold-hi); border-color: var(--gold-hi); }
-body.menu-open .book-bar { visibility: hidden; }
+
 @media (min-width: 960px) {
   .nav { display: block; }
   .header-actions, .menu-btn, .mobile-nav { display: none !important; }
@@ -149,8 +149,7 @@ body.menu-open .book-bar { visibility: hidden; }
 .book-bar .btn-gold { flex: 1; min-height: 54px; }
 .book-bar .icon-btn { flex: none; width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; color: var(--ink); background: transparent; }
 .book-bar .icon-btn svg { width: 22px; height: 22px; }
-body { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px)); }
-@media (min-width: 960px) { .book-bar { display: none; } body { padding-bottom: 0; } }
+
 
 /* Sections */
 .section { padding-block: 64px; }
@@ -398,7 +397,7 @@ dialog.lightbox button { min-height: 44px; padding: 0 18px; border-radius: 999px
 .card-overlay img { max-height: 72vh; width: auto; max-width: 100%; border-radius: 12px; -webkit-touch-callout: default; }
 .card-overlay p { color: var(--on-dark); text-align: center; }
 
-@media (max-width: 959px) { body.quiz-active .book-bar { display: none; } body.quiz-active { padding-bottom: 0; } }
+
 
 /* Colour chips as links */
 a.chip { display: block; text-decoration: none; color: var(--ink); transition: border-color .15s ease, transform .15s ease; }
@@ -448,7 +447,7 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 @media print {
   @page { margin: 14mm; }
   body { background: #fff; padding: 0 !important; font-size: 11.5pt; }
-  .site-header, .site-footer, .book-bar, .no-print, dialog, .skip, [data-generic] { display: none !important; }
+  .site-header, .site-footer, .book-fab, .no-print, dialog, .skip, [data-generic] { display: none !important; }
   .print-only { display: block !important; }
   .print-head { display: flex !important; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 2px solid #d3a13e; }
   .print-head img { width: 180px; height: auto; }
@@ -527,3 +526,11 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 /* Open panels show a minus (collapse), not a cross */
 .fold-toggle .v, .mi-toggle .v { transform-origin: 12px 12px; transition: transform .25s ease; }
 .fold[open] .fold-toggle .v, .more-info[open] .mi-toggle .v { transform: scaleY(0); }
+
+/* Floating "Book a call" pill (phones): hidden on the first screen, appears once the main Book button scrolls away */
+.book-fab { position: fixed; z-index: 45; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 18px 0 14px; border-radius: 999px; background: var(--gold); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .95rem; box-shadow: 0 6px 20px rgba(26, 24, 20, .22); opacity: 0; transform: translateY(16px); pointer-events: none; visibility: hidden; transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s; }
+.book-fab svg { width: 22px; height: 22px; }
+.book-fab:hover { background: var(--gold-hi); color: var(--ink); }
+.book-fab.show { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition: opacity .25s ease, transform .25s ease, visibility 0s; }
+body.menu-open .book-fab, body.quiz-active .book-fab { opacity: 0; pointer-events: none; visibility: hidden; }
+@media (min-width: 960px) { .book-fab { display: none; } }

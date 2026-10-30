@@ -28,6 +28,18 @@
     document.querySelectorAll("details.fold").forEach(function (d) { d.open = true; });
   }
 
+  // Floating "Book a call": show once the page's first Book button (or the top of the page) has scrolled away
+  var fab = document.querySelector(".book-fab");
+  if (fab) {
+    var anchor = document.querySelector("main .btn-gold") || document.querySelector("main > section");
+    if (anchor && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        var e = entries[0];
+        fab.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0);
+      }).observe(anchor);
+    } else { fab.classList.add("show"); }
+  }
+
   // Year in footer
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
