@@ -46,31 +46,37 @@ ICONS = {
 
 DRAWINGS = {
     "a-to-b-session": dict(
+        date="2025-06-01",  # when the drawing was made (newest shows first)
         title="What's stopping you going from A to B?", topic="planning", topic_label="Planning",
         lesson="Where you are now, where you want to be, what's in the way, and the actions for this week. This is what a first session looks like.",
         alt="Hand-drawn session map. Point A, now: £1.36m turnover, in and out of overdraft, inconsistent work, 3.4% profit, working too much. Point B, the goal: £2m turnover, a £30k buffer in the bank, 20% profit, a 3-day week, holidays. Challenges include wearing Superman pants, profit but no cash flow, and being owed money. Solutions include a cash flow forecast, understanding the numbers, marketing, an organisation chart, credit control and working on the business. Actions for this week: list direct debits, bring the aged debtors list, keep a time log.",
         w=1330, h=1246),
     "profit-72k": dict(
+        date="2025-04-01",  # when the drawing was made (newest shows first)
         title="Cut cost of sales by 6%, add £72k profit", topic="finance", topic_label="Finance",
         lesson="Same amount of work, same fixed costs. Bringing cost of sales from 78% to 72% takes profit from 9% to 15%.",
         alt="Hand-drawn figures. On £1.2m of work won for 2025, cost of sales at 78% leaves £108k profit, 9%. Reducing cost of sales by 6% to 72% gives £336k gross profit and £180k profit, 15%. A cloud reads Increase profit by £72k, beside a drawn stack of banknotes. Underneath: same amount of work and same fixed costs, just focusing on cost of sales, labour and materials.",
         w=1332, h=956),
     "cherry-on-top-finance": dict(
+        date="2024-06-01",  # when the drawing was made (newest shows first)
         title="The cherry on top: finance", topic="finance", topic_label="Finance",
         lesson="Big profit sits on solid layers: knowing your numbers, tight credit control, invoicing on time, tracking jobs, quoting correctly and attracting grade A clients.",
         alt="Hand-drawn trifle with a cherry on top. Left side, leading to low profits and living in the overdraft: judging your business on your bank balance, a long debtors list, no invoicing process, no business structure, competing on price, taking on every job. Right side, leading to huge profit and money in the bank: knowing your numbers, watertight credit control, invoicing correctly and on time, tracking and managing jobs, quoting correctly and tracking quote versus actual, attracting grade A clients.",
         w=1334, h=835),
     "verbal-vs-written": dict(
+        date="2025-05-14",  # when the drawing was made (newest shows first)
         title="A verbal agreement vs a written agreement", topic="sales", topic_label="Sales and contracts",
         lesson="A handshake feels quicker, but only a written agreement gives you a paper trail, protects both sides and can be enforced.",
         alt="Hand-drawn lips labelled A verbal agreement versus a signed document labelled A written agreement. Verbal: ego or emotional decision, short-term gain, possible long-term pain if the invoice isn't paid, no leg to stand on, hard to prove in a dispute, not legally binding. Written: logical decision, paper trail, protects both parties, easier to enforce, no misunderstandings.",
         w=1323, h=1128),
     "talk-vs-action": dict(
+        date="2024-03-01",  # when the drawing was made (newest shows first)
         title="Talk vs action", topic="people", topic_label="People",
         lesson="Don't just listen to what people say. Cover your ears and watch what they do.",
         alt="Two hand-drawn faces. The first has closed eyes and big ears, with the words Talk is ego and Don't just listen to what people say. The second wears red headphones with eyes wide open, with the words Cover your ears and watch what they do.",
         w=1331, h=736),
     "business-ducks": dict(
+        date="2023-06-01",  # when the drawing was made (newest shows first)
         title="Have you got your business ducks in a row?", topic="planning", topic_label="Planning",
         lesson="Marketing, sales, operations and finance: the four areas every business needs lined up.",
         alt="Hand-drawn yellow rubber duck with the words Have you got your business ducks in a row? Marketing, sales, operations, finance.",
@@ -276,6 +282,8 @@ def render(text):
             "{{LINKEDIN}}": LINKEDIN}
     for k, v in ICONS.items():
         reps["{{icon:" + k + "}}"] = v
+    newest = sorted(DRAWINGS, key=lambda k: DRAWINGS[k]["date"], reverse=True)
+    reps["{{library}}"] = "\n".join(drawing_card(k, lazy=i > 1) for i, k in enumerate(newest))
     for k in DRAWINGS:
         reps["{{drawing:" + k + "}}"] = drawing_card(k)
         reps["{{drawing-eager:" + k + "}}"] = drawing_card(k, lazy=False)
