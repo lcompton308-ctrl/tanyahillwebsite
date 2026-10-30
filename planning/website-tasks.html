@@ -49,6 +49,8 @@ main .wrap{padding-block:18px 120px;display:grid;gap:26px}
 .pill{font-size:.7rem;font-weight:600;letter-spacing:.04em;border-radius:99px;padding:2px 8px;border:1px solid var(--line);color:var(--muted)}
 .pill.p-high{border-color:var(--gold-lo);color:var(--gold-hi)}
 .pill.waiting{border-color:#3a4258;color:var(--wait)}
+.t-link{display:inline-flex;align-items:center;min-height:36px;margin-top:6px;padding:0 12px;border-radius:99px;background:var(--gold);color:var(--ink);font-weight:600;font-size:.82rem;text-decoration:none}
+.t-link:hover{background:var(--gold-hi)}
 .t-detail{grid-column:2/4;color:var(--muted);font-size:.9rem;margin-top:4px;white-space:pre-wrap}
 .t-detail[hidden]{display:none}
 .more{background:none;border:0;color:var(--dim);padding:2px 4px;font-size:1.1rem;line-height:1}
@@ -181,6 +183,7 @@ function card(t) {
   if (t.priority === "high") meta.insertAdjacentHTML("beforeend", '<span class="pill p-high">Priority</span>');
   if (t.waiting) meta.insertAdjacentHTML("beforeend", '<span class="pill waiting">Waiting on Tanya</span>');
   body.append(ti); if (meta.children.length) body.append(meta);
+  if (t.link && /^https:\/\//.test(t.link)) { const l = document.createElement("a"); l.className = "t-link"; l.href = t.link; l.target = "_blank"; l.rel = "noopener"; l.textContent = (t.linkLabel || "Open link") + " →"; body.append(l); }
   const more = document.createElement("button");
   more.className = "more"; more.type = "button"; more.textContent = "⋯";
   more.setAttribute("aria-label", "Details for " + t.title);

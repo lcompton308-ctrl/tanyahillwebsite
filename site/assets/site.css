@@ -477,7 +477,7 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 .mi-text span { font-size: .9rem; color: var(--stone); }
 .mi-toggle { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .25s ease; }
 .mi-toggle svg { width: 18px; height: 18px; }
-.more-info[open] .mi-toggle { transform: rotate(45deg); }
+.more-info[open] .mi-toggle { background: var(--gold); color: var(--ink); }
 .more-info form { padding: 0 16px 18px; margin-top: 0 !important; }
 
 /* Homepage: sections fold into tappable panels on phones (open by default on laptops) */
@@ -495,7 +495,7 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 .fold-title { font-family: var(--f-head); font-weight: 700; font-size: 1.2rem; line-height: 1.2; color: var(--ink); text-wrap: balance; }
 .fold-toggle { flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .25s ease, background .2s ease; }
 .fold-toggle svg { width: 18px; height: 18px; }
-.fold[open] .fold-toggle { transform: rotate(45deg); background: var(--gold); color: var(--ink); }
+.fold[open] .fold-toggle { background: var(--gold); color: var(--ink); }
 .fold-body { padding: 4px 14px 20px; }
 .fold[open] .fold-body { animation: foldIn .3s ease; }
 @keyframes foldIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
@@ -523,3 +523,7 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 .trust-link .li-dot { width: 24px; height: 24px; border-radius: 6px; background: #0a66c2; color: #fff; display: grid; place-items: center; }
 .trust-link .li-dot svg { width: 14px; height: 14px; }
 .trust li:not(.trust-link) { min-height: 44px; display: inline-flex; align-items: center; gap: .3em; }
+
+/* Open panels show a minus (collapse), not a cross */
+.fold-toggle .v, .mi-toggle .v { transform-origin: 12px 12px; transition: transform .25s ease; }
+.fold[open] .fold-toggle .v, .more-info[open] .mi-toggle .v { transform: scaleY(0); }
