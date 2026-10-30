@@ -509,3 +509,9 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
 .fold-static { background: var(--paper); }
 .fold-static .fold-summary { display: flex; align-items: center; padding: 18px 18px 6px 20px; }
 @media (min-width: 960px) { .fold-static .fold-summary { padding: 24px 28px 8px; } }
+
+/* Subtle LinkedIn link under the hero photo */
+.hero-li { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 14px; color: var(--stone); text-decoration: none; font-size: .92rem; font-weight: 500; }
+.hero-li .li-dot { width: 22px; height: 22px; border-radius: 5px; background: #0a66c2; color: #fff; display: grid; place-items: center; }
+.hero-li .li-dot svg { width: 13px; height: 13px; }
+.hero-li:hover { color: var(--ink); text-decoration: underline; }
