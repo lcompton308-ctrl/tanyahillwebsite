@@ -22,7 +22,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/dmsans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=37db7963">
+<link rel="stylesheet" href="assets/site.css?v=1476aceb">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -83,8 +83,12 @@
       <a class="btn btn-gold" href="https://wa.me/447714541600?text=Hi%20Tanya%2C%20I%27d%20like%20to%20book%20a%20free%2030-minute%20call."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Message me on WhatsApp</a>
       <p class="small muted" style="text-align:center">Opens WhatsApp with: "Hi Tanya, I'd like to book a free 30-minute call."</p>
 
-      <details style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px">
-        <summary style="cursor:pointer;font-family:var(--f-head);font-weight:600;min-height:44px;display:flex;align-items:center">Want to tell me a bit first? (optional)</summary>
+      <details class="more-info">
+        <summary>
+          <span class="mi-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+          <span class="mi-text"><b>Add a few details first</b><span>Optional · your name, business and best time to call</span></span>
+          <span class="mi-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
         <form id="book-form" class="stack" style="margin-top:12px" novalidate>
           <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Dave"></div>
           <div class="field"><label for="f-biz">Business or trade</label><input id="f-biz" name="business" type="text" autocomplete="organization" placeholder="e.g. Smith Electrical"></div>

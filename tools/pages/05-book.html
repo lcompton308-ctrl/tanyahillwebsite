@@ -13,8 +13,12 @@
       <a class="btn btn-gold" href="{{WA}}">{{icon:whatsapp}}Message me on WhatsApp</a>
       <p class="small muted" style="text-align:center">Opens WhatsApp with: "Hi Tanya, I'd like to book a free 30-minute call."</p>
 
-      <details style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px">
-        <summary style="cursor:pointer;font-family:var(--f-head);font-weight:600;min-height:44px;display:flex;align-items:center">Want to tell me a bit first? (optional)</summary>
+      <details class="more-info">
+        <summary>
+          <span class="mi-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+          <span class="mi-text"><b>Add a few details first</b><span>Optional · your name, business and best time to call</span></span>
+          <span class="mi-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
         <form id="book-form" class="stack" style="margin-top:12px" novalidate>
           <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Dave"></div>
           <div class="field"><label for="f-biz">Business or trade</label><input id="f-biz" name="business" type="text" autocomplete="organization" placeholder="e.g. Smith Electrical"></div>

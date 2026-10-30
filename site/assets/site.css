@@ -462,3 +462,19 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
   .bar-track i { transition: none !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* Book page: optional details, styled as an obvious tappable panel */
+.more-info { margin-top: 20px; border: 2px dashed var(--line); border-radius: 16px; background: var(--paper); transition: border-color .2s ease; }
+.more-info:hover, .more-info[open] { border-color: var(--gold); border-style: solid; }
+.more-info summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 16px; min-height: 72px; border-radius: 14px; }
+.more-info summary::-webkit-details-marker { display: none; }
+.more-info summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.mi-icon { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--paper-2); display: grid; place-items: center; color: var(--bronze); }
+.mi-icon svg { width: 22px; height: 22px; }
+.mi-text { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.mi-text b { font-family: var(--f-head); font-size: 1.05rem; }
+.mi-text span { font-size: .9rem; color: var(--stone); }
+.mi-toggle { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .25s ease; }
+.mi-toggle svg { width: 18px; height: 18px; }
+.more-info[open] .mi-toggle { transform: rotate(45deg); }
+.more-info form { padding: 0 16px 18px; margin-top: 0 !important; }
