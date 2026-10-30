@@ -7,7 +7,7 @@ footer and phone booking bar, so every page stays consistent.
 
 Run:  python3 tools/build_site.py
 """
-import json, pathlib, urllib.parse
+import hashlib, json, pathlib, urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ROOT / "tools" / "pages"
@@ -32,6 +32,7 @@ ICONS = {
     "tiktok": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.4 2.2 1.8 3.7 4 4v3.1a7.5 7.5 0 0 1-4-1.2v6.4A6.2 6.2 0 1 1 10.3 9v3.2a3 3 0 1 0 3 3V3h3.2Z"/></svg>',
     "facebook": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.7V11H7v4h2.5v7h4v-7H16l.5-4h-3V9c0-.6.4-1 1-1Z"/></svg>',
     "menu": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    "home": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg>',
     "chev": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',
     "arrow": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     "check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>',
@@ -106,7 +107,7 @@ def mobile_links(active):
     out = []
     for key, href, label in items:
         cur = ' aria-current="page"' if key == active else ""
-        out.append(f'<li><a href="{href}"{cur}><span>{label}</span>{ICONS["chev"]}</a></li>')
+        out.append(f'<li><a href="{href}"{cur}><span>{label}</span></a></li>')
     return "\n".join(out)
 
 
@@ -165,7 +166,10 @@ def page(meta, body):
         <li><a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a></li>
       </ul>
     </nav>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="label">Menu</span></button>
+    <div class="header-actions">
+      <a class="home-btn" href="index.html" aria-label="Home"{' aria-current="page"' if active == "home" else ""}>{i["home"]}</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="label">Menu</span></button>
+    </div>
   </div>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Main">
     <div class="mobile-nav-inner">
@@ -175,9 +179,11 @@ def page(meta, body):
         </ul>
         <div class="m-contact">
           <p class="eyebrow">Get in touch</p>
-          <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Message me on WhatsApp</a>
-          <a class="btn btn-line" href="tel:{PHONE_TEL}">{i["phone"]}Call {PHONE_DISPLAY}</a>
-          <a class="btn btn-line" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}Follow me on LinkedIn</a>
+          <div class="m-tiles">
+            <a class="m-tile wa" href="{WA}">{i["whatsapp"]}WhatsApp</a>
+            <a class="m-tile" href="tel:{PHONE_TEL}" aria-label="Call {PHONE_DISPLAY}">{i["phone"]}Call</a>
+            <a class="m-tile" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}LinkedIn</a>
+          </div>
         </div>
       </div>
     </div>
@@ -244,6 +250,16 @@ def page(meta, body):
 """
 
 
+def version(rel):
+    return hashlib.sha1((OUT / rel).read_bytes()).hexdigest()[:8]
+
+
+def bust(html):
+    for rel in ["assets/site.css", "assets/site.js", "quiz.js", "quiz-data.js"]:
+        html = html.replace(f'"{rel}"', f'"{rel}?v={version(rel)}"')
+    return html
+
+
 def render(text):
     # Simple placeholders available inside page bodies
     reps = {"{{WA}}": WA, "{{TEL}}": "tel:" + PHONE_TEL, "{{PHONE}}": PHONE_DISPLAY, "{{EMAIL}}": EMAIL,
@@ -263,7 +279,7 @@ def main():
     for f in sorted(PAGES.glob("*.html")):
         first, body = f.read_text(encoding="utf-8").split("\n", 1)
         meta = json.loads(first)
-        html = page(meta, render(body).rstrip())
+        html = bust(page(meta, render(body).rstrip()))
         (OUT / meta["path"]).write_text(html, encoding="utf-8")
         built.append(meta)
     # sitemap

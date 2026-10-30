@@ -103,6 +103,11 @@ strong { font-weight: 700; }
 .nav .btn { min-height: 44px; padding: .5em 1.1em; margin-left: 8px; font-size: .92rem; }
 .menu-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px 0 14px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); border-radius: 999px; font-family: var(--f-head); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background .25s ease, color .25s ease; }
 .menu-btn[aria-expanded="true"] { background: var(--ink); color: var(--paper); }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.home-btn { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--ink); color: var(--ink); transition: background .2s ease; }
+.home-btn svg { width: 20px; height: 20px; }
+.home-btn:hover { background: var(--paper-2); color: var(--ink); }
+.home-btn[aria-current="page"] { background: var(--paper-2); border-color: var(--line); }
 .burger { position: relative; width: 18px; height: 14px; flex: none; }
 .burger i { position: absolute; left: 0; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .3s cubic-bezier(.2, .7, .2, 1), opacity .2s ease; }
 .burger i:nth-child(1) { top: 0; }
@@ -118,19 +123,23 @@ strong { font-weight: 700; }
 .mobile-nav-inner { min-height: 0; overflow: hidden; }
 .mobile-nav .wrap { max-height: calc(100vh - 68px - env(safe-area-inset-top, 0px)); max-height: calc(100dvh - 68px - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; padding-block: 6px 24px; opacity: 0; transform: translateY(-6px); transition: opacity .2s ease, transform .3s ease; }
 .mobile-nav.is-open .wrap { opacity: 1; transform: none; transition-delay: .06s; }
-.m-links { list-style: none; }
-.m-links a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 58px; padding: 0 2px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: 1.15rem; }
-.m-links a svg { width: 20px; height: 20px; color: var(--stone); transition: transform .2s ease, color .2s ease; }
-.m-links a:hover svg, .m-links a:focus-visible svg { transform: translateX(3px); color: var(--ink); }
+.m-links { list-style: none; padding: 12px 0 8px; }
+.m-links a { display: flex; align-items: center; min-height: 60px; padding: 4px 14px; margin: 0 -14px; border-radius: 14px; color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: 1.3rem; letter-spacing: -.01em; transition: background .2s ease; }
+.m-links a:hover, .m-links a:active { background: var(--paper-2); }
 .m-links a[aria-current="page"] { color: var(--bronze); }
-.m-links a[aria-current="page"] span::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 10px; border-radius: 50%; background: var(--gold); vertical-align: middle; }
-.m-contact { display: grid; gap: 10px; padding-top: 22px; }
-.m-contact .eyebrow { margin-bottom: 2px; }
-.m-contact .btn { width: 100%; }
+.m-links a[aria-current="page"] span { background: linear-gradient(transparent 70%, rgba(211, 161, 62, .45) 70%); }
+.m-contact { padding-top: 18px; margin-top: 8px; border-top: 1px solid var(--line); }
+.m-contact .eyebrow { margin-bottom: 10px; }
+.m-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.m-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 64px; padding: 8px 4px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .82rem; }
+.m-tile svg { width: 20px; height: 20px; }
+.m-tile:hover { border-color: var(--ink); color: var(--ink); }
+.m-tile.wa { background: var(--gold); border-color: var(--gold); }
+.m-tile.wa:hover { background: var(--gold-hi); border-color: var(--gold-hi); }
 body.menu-open .book-bar { visibility: hidden; }
 @media (min-width: 960px) {
   .nav { display: block; }
-  .menu-btn, .mobile-nav { display: none !important; }
+  .header-actions, .menu-btn, .mobile-nav { display: none !important; }
   .brand img { height: 48px; }
 }
 
