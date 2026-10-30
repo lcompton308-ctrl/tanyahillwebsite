@@ -262,7 +262,7 @@ def page(meta, body):
       </div>
     </div>
     <div class="fine">
-      <span>© <span data-year>2026</span> Tanya Hill Coaching Ltd · Company no. 09757695</span>
+      <span>© <span data-year>2026</span> Tanya Hill Coaching Ltd · Registered in England and Wales, company no. 09757695 · Registered office: Suite 5, 88a High Street, Billericay CM12 9BT</span>
       <span><a href="privacy.html">Privacy policy</a></span>
     </div>
   </div>

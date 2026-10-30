@@ -45,12 +45,18 @@
     var back = "";
     if (last && /^colour-(red|yellow|green|blue)(\.html)?#/.test(last)) {
       back = '<div class="welcome-back"><p><strong>Welcome back' + (who ? ", " + esc(who.split(" ")[0]) : "") + '.</strong> Your last results are saved on this device.</p>' +
-        '<a class="btn btn-line" href="' + esc(last) + '">See my results</a></div>';
+        '<a class="btn btn-line" href="' + esc(last) + '">See my results</a>' +
+        '<p class="small" style="margin-top:12px"><button type="button" class="linklike" id="forget">Not you? Forget my details on this device</button></p></div>';
     }
     root.innerHTML = '<div class="quiz-card quiz-intro">' + back +
       '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the Colour Profile") + '</button>' +
       (chips ? chips.innerHTML : "") +
       '<p class="small muted" style="margin-top:16px">At the end, add your details to see your results. I\'ll get a copy too, so we can talk through what it means for you.</p></div>';
+    var forget = document.getElementById("forget");
+    if (forget) forget.onclick = function () {
+      ["cp_last", "cp_last_name", "cp_contact"].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+      render(); var s = document.getElementById("start"); if (s) s.focus();
+    };
     document.getElementById("start").onclick = function () {
       state.screen = "quiz"; state.q = 0; state.answers = []; state.picks = []; state.opts = shuffle(QUESTIONS[0].o); render(); focusTop();
     };
