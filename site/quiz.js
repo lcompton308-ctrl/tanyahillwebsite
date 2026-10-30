@@ -5,9 +5,10 @@
   var root = document.getElementById("quiz");
   if (!root || typeof QUESTIONS === "undefined") return;
 
-  // Where results are emailed. FormSubmit sends an "Activate" email to this address on the first result;
-  // after activation it can be swapped for the private alias FormSubmit provides.
-  var RESULTS_ENDPOINT = "https://formsubmit.co/ajax/tanyahill@actioncoach.co.uk";
+  // Where results are emailed. Empty = nothing is sent automatically: the quiz asks only for a name and the
+  // results page offers "Send my results to Tanya" on WhatsApp. Later this becomes the web-app URL of the
+  // Google Apps Script in Tanya's own Google account (see the plan), which emails her and auto-deletes after 12 months.
+  var RESULTS_ENDPOINT = "";
   var SITE = "https://tanyahill.co.uk";
   var ORDER = ["red", "yellow", "green", "blue"];
   var NAME = { red: "Red", yellow: "Yellow", green: "Green", blue: "Blue" };
@@ -51,7 +52,7 @@
     root.innerHTML = '<div class="quiz-card quiz-intro">' + back +
       '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the Colour Profile") + '</button>' +
       (chips ? chips.innerHTML : "") +
-      '<p class="small muted" style="margin-top:16px">At the end, add your details to see your results. I\'ll get a copy too, so we can talk through what it means for you.</p></div>';
+      '<p class="small muted" style="margin-top:16px">' + (RESULTS_ENDPOINT ? 'At the end, add your details to see your results. I\'ll get a copy too, so we can talk through what it means for you.' : 'At the end, you can send your results to me on WhatsApp so we can talk through what they mean for you.') + '</p></div>';
     var forget = document.getElementById("forget");
     if (forget) forget.onclick = function () {
       ["cp_last", "cp_last_name", "cp_contact"].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
@@ -98,6 +99,7 @@
   }
 
   function details() {
+    if (!RESULTS_ENDPOINT) return nameOnly();
     var saved = {};
     try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
     root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
@@ -119,6 +121,34 @@
       state.opts = shuffle(QUESTIONS[state.q].o); render(); focusTop();
     };
     document.getElementById("cp-details").addEventListener("submit", submit);
+  }
+
+  // Stop-gap while automatic sending is off: just a name, kept on this device
+  function nameOnly() {
+    var saved = {};
+    try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
+    root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
+      '<div class="q-meta"><span>All 12 answered</span><button class="q-back" type="button" id="back">← Back</button></div>' +
+      '<h2 class="q-text">Nearly there. What\'s your name?</h2>' +
+      '<p class="muted" style="margin:-6px 0 18px">It goes on your results page so it\'s personal to you. Nothing is sent to anyone unless you choose to send it to me afterwards.</p>' +
+      '<form id="cp-details" class="stack" novalidate>' +
+      field("cp-fullname", "Your name", "text", "name", saved.name) +
+      '<p class="form-error" id="cp-error" role="alert"></p>' +
+      '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
+      '<p class="small muted"><a href="privacy.html">Privacy policy</a></p>' +
+      '</form></div>';
+    document.getElementById("back").onclick = function () {
+      state.screen = "quiz"; state.q = QUESTIONS.length - 1; state.answers.length = state.picks.length = state.q;
+      state.opts = shuffle(QUESTIONS[state.q].o); render(); focusTop();
+    };
+    document.getElementById("cp-details").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = { name: val("cp-fullname") };
+      var err = document.getElementById("cp-error"), el = document.getElementById("cp-fullname");
+      el.removeAttribute("aria-invalid");
+      if (f.name.length < 2) { err.textContent = "Please enter your name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
+      err.textContent = ""; store("cp_contact", JSON.stringify(f)); finish(f, "manual");
+    });
   }
 
   function field(id, label, type, ac, val) {
@@ -173,7 +203,7 @@
   function finish(f, sent) {
     var r = result(), path = resultsPath(r, f.name);
     store("cp_last", path); store("cp_last_name", f.name);
-    try { sessionStorage.setItem("cp_status", sent ? "sent" : "failed"); } catch (e) {}
+    try { sessionStorage.setItem("cp_status", sent === "manual" ? "manual" : sent ? "sent" : "failed"); } catch (e) {}
     window.location.href = path;
   }
 

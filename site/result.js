@@ -64,17 +64,23 @@
   var note = $("[data-status]");
   if (note && status) {
     note.hidden = false;
-    if (status === "sent") {
+    var sendBtn = function (label) {
+      var b = document.createElement("a");
+      b.className = "btn btn-gold"; b.style.marginTop = "12px"; b.style.width = "100%";
+      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Colour Profile: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
+      b.textContent = label; note.appendChild(b);
+    };
+    if (status === "manual") {
+      note.classList.add("ok");
+      note.innerHTML = "<strong>Want to talk your results through" + (name ? ", " + first(name) : "") + "?</strong> Send them to me on WhatsApp and I'll be in touch. Save this page's link to come back any time.";
+      sendBtn("Send my results to Tanya");
+    } else if (status === "sent") {
       note.classList.add("ok");
       note.innerHTML = "<strong>Thanks" + (name ? ", " + first(name) : "") + ".</strong> I've received your results and I'll be in touch to talk them through. Save this page's link to come back any time.";
     } else {
       note.classList.add("warn");
       note.innerHTML = "<strong>Your results didn't reach me automatically.</strong> Tap below to send them to me on WhatsApp instead.";
-      var b = document.createElement("a");
-      b.className = "btn btn-gold"; b.style.marginTop = "12px"; b.style.width = "100%";
-      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Colour Profile: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
-      b.textContent = "Send my results on WhatsApp";
-      note.appendChild(b);
+      sendBtn("Send my results on WhatsApp");
     }
   }
 
