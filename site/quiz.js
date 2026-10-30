@@ -35,7 +35,7 @@
     var p = new URLSearchParams();
     if (name) p.set("n", name);
     p.set("s", ORDER.map(function (k) { return r.scores[k]; }).join("-"));
-    return "colour-" + r.dom + ".html#" + p.toString();
+    return "colour-" + r.dom + "#" + p.toString();
   }
 
   // ---------- Screens ----------
@@ -43,7 +43,7 @@
     var chips = document.querySelector("#quiz-chips");
     var last = load("cp_last"), who = load("cp_last_name");
     var back = "";
-    if (last && /^colour-(red|yellow|green|blue)\.html#/.test(last)) {
+    if (last && /^colour-(red|yellow|green|blue)(\.html)?#/.test(last)) {
       back = '<div class="welcome-back"><p><strong>Welcome back' + (who ? ", " + esc(who.split(" ")[0]) : "") + '.</strong> Your last results are saved on this device.</p>' +
         '<a class="btn btn-line" href="' + esc(last) + '">See my results</a></div>';
     }

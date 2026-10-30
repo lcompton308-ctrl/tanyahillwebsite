@@ -54,7 +54,7 @@
 
   // Remember on this device
   try {
-    localStorage.setItem("cp_last", "colour-" + col + ".html" + location.hash);
+    localStorage.setItem("cp_last", "colour-" + col + location.hash);
     if (name) localStorage.setItem("cp_last_name", name);
   } catch (e) {}
 

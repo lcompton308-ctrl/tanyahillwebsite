@@ -7,7 +7,7 @@ footer and phone booking bar, so every page stays consistent.
 
 Run:  python3 tools/build_site.py
 """
-import hashlib, json, pathlib, urllib.parse
+import hashlib, json, re, pathlib, urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ROOT / "tools" / "pages"
@@ -254,7 +254,17 @@ def version(rel):
     return hashlib.sha1((OUT / rel).read_bytes()).hexdigest()[:8]
 
 
+def clean_links(html):
+    # tanyahill.co.uk/ instead of /index.html, /about instead of /about.html (GitHub Pages serves both)
+    html = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/' + (m.group(1) or '') + '"', html)
+    html = re.sub(r'href="([a-z0-9-]+)\.html(#[^"]*)?"', lambda m: 'href="' + m.group(1) + (m.group(2) or '') + '"', html)
+    html = re.sub(r'(<link rel="canonical" href="https://tanyahill\.co\.uk/[a-z0-9-]+)\.html', r'\1', html)
+    html = re.sub(r'(<meta property="og:url" content="https://tanyahill\.co\.uk/[a-z0-9-]+)\.html', r'\1', html)
+    return html
+
+
 def bust(html):
+    html = clean_links(html)
     for rel in ["assets/site.css", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
         html = html.replace(f'"{rel}"', f'"{rel}?v={version(rel)}"')
     return html
@@ -284,7 +294,7 @@ def main():
         built.append(meta)
     built += build_colour_pages()
     # sitemap
-    urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path']}</loc></url>" for m in built if not m.get("noindex"))
+    urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc></url>" for m in built if not m.get("noindex"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
     print("built", ", ".join(m["path"] for m in built))
 
