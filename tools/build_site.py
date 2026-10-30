@@ -125,7 +125,32 @@ def nav_links(active, cls=""):
     return "\n".join(out)
 
 
+SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Tanya Hill Coaching",
+    "alternateName": "Built Like a Boss",
+    "description": "Business coaching for trade and construction business owners: better margins, more time and your headspace back.",
+    "url": DOMAIN + "/",
+    "image": DOMAIN + "/img/og.jpg",
+    "logo": DOMAIN + "/img/icons/icon-512.png",
+    "telephone": PHONE_TEL,
+    "email": EMAIL,
+    "address": {"@type": "PostalAddress", "addressLocality": "Billericay", "addressRegion": "Essex", "addressCountry": "GB"},
+    "areaServed": ["Billericay", "Essex", "United Kingdom"],
+    "knowsAbout": ["Business coaching", "Trade businesses", "Construction businesses", "Cash flow", "Profit margins", "Team building", "Time management"],
+    "founder": {
+        "@type": "Person", "name": "Tanya Hill", "jobTitle": "Business Coach, Coach to the Trades",
+        "affiliation": {"@type": "Organization", "name": "ActionCOACH UK"},
+        "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK, "https://business.actioncoach.co.uk/coaches/tanya-hill"],
+    },
+    "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK],
+}
+
+
 def page(meta, body):
+    if meta["path"] == "index.html":
+        meta = dict(meta, head_extra=meta.get("head_extra", "") + '\n<script type="application/ld+json">' + json.dumps(SCHEMA, ensure_ascii=False) + '</script>')
     title = meta["title"]
     full_title = title if meta.get("full_title") else f"{title} · Tanya Hill Coaching"
     desc = meta["description"]
