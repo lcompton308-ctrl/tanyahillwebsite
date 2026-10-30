@@ -188,6 +188,7 @@ def page(meta, body):
           <div class="m-tiles">
             <a class="m-tile wa" href="{WA}">{i["whatsapp"]}WhatsApp</a>
             <a class="m-tile" href="tel:{PHONE_TEL}" aria-label="Call {PHONE_DISPLAY}">{i["phone"]}Call</a>
+            <a class="m-tile" href="mailto:{EMAIL}" aria-label="Email {EMAIL}">{i["mail"]}Email</a>
             <a class="m-tile" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}LinkedIn</a>
           </div>
         </div>

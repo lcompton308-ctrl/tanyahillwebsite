@@ -131,7 +131,7 @@ strong { font-weight: 700; }
 .m-links a[aria-current="page"] span { background: linear-gradient(transparent 70%, rgba(211, 161, 62, .45) 70%); }
 .m-contact { padding-top: 18px; margin-top: 8px; border-top: 1px solid var(--line); }
 .m-contact .eyebrow { margin-bottom: 10px; }
-.m-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.m-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .m-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 64px; padding: 8px 4px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .82rem; }
 .m-tile svg { width: 20px; height: 20px; }
 .m-tile:hover { border-color: var(--ink); color: var(--ink); }
