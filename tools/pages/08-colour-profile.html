@@ -11,15 +11,17 @@
   <div class="wrap narrow">
     <div id="quiz" aria-live="polite">
       <div class="quiz-card quiz-intro">
-        <div class="colour-chips">
-          <div class="chip" style="--c:var(--red);--ct:var(--red-t)"><b>Red</b><span>Direct · Decisive · Driven</span></div>
-          <div class="chip" style="--c:var(--yellow);--ct:var(--yellow-t)"><b>Yellow</b><span>Enthusiastic · Sociable · Optimistic</span></div>
-          <div class="chip" style="--c:var(--green);--ct:var(--green-t)"><b>Green</b><span>Calm · Patient · Loyal</span></div>
-          <div class="chip" style="--c:var(--blue);--ct:var(--blue-t)"><b>Blue</b><span>Analytical · Precise · Careful</span></div>
-        </div>
+        <p class="muted">Loading the quiz…</p>
         <noscript><p class="notice" style="margin-top:16px">The quiz needs JavaScript switched on in your browser.</p></noscript>
       </div>
     </div>
-    <p class="small muted" style="margin-top:14px;text-align:center">Your answers stay on your device. Nothing is sent anywhere unless you choose to share your result.</p>
+    <template id="quiz-chips">
+      <div class="colour-chips">
+        <a class="chip" href="colour-red.html" style="--c:var(--red);--ct:var(--red-t)"><b>Red</b><span>Direct · Decisive · Driven</span></a>
+        <a class="chip" href="colour-yellow.html" style="--c:var(--yellow);--ct:var(--yellow-t)"><b>Yellow</b><span>Enthusiastic · Sociable · Optimistic</span></a>
+        <a class="chip" href="colour-green.html" style="--c:var(--green);--ct:var(--green-t)"><b>Green</b><span>Calm · Patient · Loyal</span></a>
+        <a class="chip" href="colour-blue.html" style="--c:var(--blue);--ct:var(--blue-t)"><b>Blue</b><span>Analytical · Precise · Careful</span></a>
+      </div>
+    </template>
   </div>
 </section>

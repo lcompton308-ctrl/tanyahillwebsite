@@ -255,7 +255,7 @@ def version(rel):
 
 
 def bust(html):
-    for rel in ["assets/site.css", "assets/site.js", "quiz.js", "quiz-data.js"]:
+    for rel in ["assets/site.css", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
         html = html.replace(f'"{rel}"', f'"{rel}?v={version(rel)}"')
     return html
 
@@ -282,10 +282,136 @@ def main():
         html = bust(page(meta, render(body).rstrip()))
         (OUT / meta["path"]).write_text(html, encoding="utf-8")
         built.append(meta)
+    built += build_colour_pages()
     # sitemap
     urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path']}</loc></url>" for m in built if not m.get("noindex"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
     print("built", ", ".join(m["path"] for m in built))
+
+
+
+# ---------------- Colour result pages ----------------
+import subprocess
+
+COLOURS = ["red", "yellow", "green", "blue"]
+CNAME = {"red": "Red", "yellow": "Yellow", "green": "Green", "blue": "Blue"}
+TEXT_HEX = {"red": "#b03224", "yellow": "#7d6300", "green": "#1a7340", "blue": "#1a5276"}
+LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
+
+
+def quiz_data():
+    js = "const fs=require('fs');eval(fs.readFileSync(process.argv[1],'utf8'));process.stdout.write(JSON.stringify({PROFILES,HEX,BG}))"
+    out = subprocess.run(["node", "-e", js, str(OUT / "quiz-data.js")], capture_output=True, text=True, check=True).stdout
+    return json.loads(out)
+
+
+def esc(s):
+    return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def colour_page(col, data):
+    p = data["PROFILES"][col]
+    hexc, bg = data["HEX"][col], data["BG"][col]
+    others = "".join(
+        f'<a class="chip" href="colour-{o}.html" style="--c:var(--{o});--ct:var(--{o}-t)"{" aria-current=\"page\"" if o == col else ""}><b>{CNAME[o]}</b><span>{esc(data["PROFILES"][o]["tag"])}</span></a>'
+        for o in COLOURS)
+    strengths = "".join(f"<li>{esc(s)}</li>" for s in p["strengths"][:3])
+    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the Colour Profile and I'm a {CNAME[col]} ({p['type']}). I'd like to book a free debrief.")
+    body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>Behaviour Colour Profile</p></div>
+
+<section class="result-hero" style="--c:{hexc};--ct:{TEXT_HEX[col]};--tint:{bg}">
+  <div class="wrap narrow">
+    <p class="eyebrow" data-greet>Behaviour Colour Profile</p>
+    <h1><span class="cname">{CNAME[col]}</span> {esc(p["type"])}</h1>
+    <p class="tagline">{esc(p["tag"])}</p>
+  </div>
+</section>
+
+<section class="section result-body" style="--c:{hexc};--ct:{TEXT_HEX[col]};--tint:{bg}">
+  <div class="wrap narrow stack-lg">
+    <div class="notice status-note no-print" data-status hidden></div>
+
+    <div>
+      <p class="lede" style="max-width:none">{esc(p["summary"])}</p>
+    </div>
+
+    <div class="personal" data-personal hidden>
+      <h2 class="h3">Your colour mix</h2>
+      <div class="bars" data-bars></div>
+      <p class="muted" style="margin-top:12px" data-second></p>
+    </div>
+
+    <div>
+      <h2 class="h3">At your best</h2>
+      <ul class="tick-list good" style="margin-top:10px">{strengths}</ul>
+    </div>
+
+    <div class="unlock">
+      <h2 class="h3">What we'll unpack together</h2>
+      <p class="muted" style="margin-top:6px">Your colour is just the starting point. In a free debrief, I'll take you through:</p>
+      <ul class="lock-list">
+        <li>{LOCK}<span>How you show up under pressure, and what to watch out for</span></li>
+        <li>{LOCK}<span>What really motivates you, and what quietly drains you</span></li>
+        <li>{LOCK}<span>How to work with, lead and sell to the other three colours</span></li>
+        <li>{LOCK}<span>What it means for your business and your plan from here</span></li>
+      </ul>
+    </div>
+
+    <div class="debrief no-print">
+      <p class="eyebrow">Free · 30 minutes</p>
+      <h2 class="h3" style="color:var(--on-dark)">Book your colour debrief</h2>
+      <p>Let's talk through your full profile and what it means for you and your business.</p>
+      <div class="btn-row">
+        <a class="btn btn-gold" href="{wa_generic}" data-debrief>{ICONS["whatsapp"]}Book on WhatsApp</a>
+        <a class="btn btn-line" href="tel:{PHONE_TEL}">{ICONS["phone"]}Call {PHONE_DISPLAY}</a>
+      </div>
+    </div>
+
+    <div class="save no-print" data-personal hidden>
+      <h2 class="h3">Keep your results</h2>
+      <p class="muted" style="margin-top:6px">This page is saved to your link, so you can come back any time.</p>
+      <div class="save-tiles">
+        <button type="button" class="m-tile" data-copy>{ICONS["share"]}<span>Copy my link</span></button>
+        <button type="button" class="m-tile" data-self>{ICONS["whatsapp"]}<span>Send to myself</span></button>
+        <button type="button" class="m-tile" data-pdf><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 12v6M9 15l3 3 3-3"/></svg><span>Save as PDF</span></button>
+        <button type="button" class="m-tile" data-card><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg><span>Share my card</span></button>
+      </div>
+      <p class="small muted" data-copied aria-live="polite" style="margin-top:8px"></p>
+    </div>
+
+    <div class="no-print" data-generic>
+      <h2 class="h3">What colour are you?</h2>
+      <p class="muted" style="margin-top:6px">Take the free 12-question Colour Profile to find out.</p>
+      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="colour-profile.html">Take the Colour Profile</a></div>
+    </div>
+
+    <div class="no-print">
+      <h2 class="h3">The four colours</h2>
+      <div class="colour-chips" style="margin-top:12px">{others}</div>
+      <p style="margin-top:16px" data-personal hidden><a class="text-link" href="colour-profile.html">Retake the quiz</a></p>
+    </div>
+
+    <p class="print-only small">Tanya Hill Coaching · Built Like a Boss · tanyahill.co.uk · {PHONE_DISPLAY} · {EMAIL}</p>
+  </div>
+</section>"""
+    meta = {
+        "path": f"colour-{col}.html", "nav": "colour",
+        "title": f"{CNAME[col]}: {p['type']} · Behaviour Colour Profile",
+        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Part of Tanya Hill's free Behaviour Colour Profile.",
+        "body_extra": '\n<script src="quiz-data.js" defer></script>\n<script src="result.js" defer></script>',
+    }
+    return meta, body
+
+
+def build_colour_pages():
+    data = quiz_data()
+    metas = []
+    for col in COLOURS:
+        meta, body = colour_page(col, data)
+        html = bust(page(meta, body))
+        (OUT / meta["path"]).write_text(html, encoding="utf-8")
+        metas.append(meta)
+    return metas
 
 
 if __name__ == "__main__":

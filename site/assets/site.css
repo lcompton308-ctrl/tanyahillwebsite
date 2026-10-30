@@ -398,3 +398,67 @@ dialog.lightbox button { min-height: 44px; padding: 0 18px; border-radius: 999px
 .card-overlay p { color: var(--on-dark); text-align: center; }
 
 @media (max-width: 959px) { body.quiz-active .book-bar { display: none; } body.quiz-active { padding-bottom: 0; } }
+
+/* Colour chips as links */
+a.chip { display: block; text-decoration: none; color: var(--ink); transition: border-color .15s ease, transform .15s ease; }
+a.chip:hover { border-color: var(--c); transform: translateY(-1px); }
+a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
+
+/* Quiz: welcome back, details form */
+.welcome-back { background: var(--paper-2); border-radius: 14px; padding: 16px; margin-bottom: 16px; display: grid; gap: 12px; }
+.welcome-back .btn { width: 100%; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-error { color: #9b2c1f; font-weight: 600; min-height: 0; }
+.form-error:empty { display: none; }
+.field input[aria-invalid="true"] { border-color: #9b2c1f; box-shadow: 0 0 0 3px rgba(155, 44, 31, .18); }
+.btn:disabled { opacity: .7; cursor: progress; transform: none; }
+
+/* Colour result pages */
+.result-hero { background: var(--tint); border-bottom: 1px solid var(--line); padding-block: 36px 40px; position: relative; overflow: hidden; }
+.result-hero::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: var(--c); }
+.result-hero .eyebrow { color: var(--ct); }
+.result-hero h1 { margin-top: 10px; font-size: var(--step-4); }
+.result-hero .cname { display: block; color: var(--ct); font-size: .55em; letter-spacing: .02em; margin-bottom: 4px; }
+.result-hero .tagline { margin-top: 12px; font-family: var(--f-head); font-weight: 600; color: var(--stone); }
+@media (min-width: 960px) { .result-hero { padding-block: 64px 56px; } }
+.result-body { padding-block: 40px 64px; }
+.stack-lg > * + * { margin-top: 36px; }
+.h3 { font-size: var(--step-1); line-height: 1.25; }
+.status-note.ok { background: #eef7f0; border-color: #b9dcc4; color: var(--ink); }
+.status-note.warn { background: #fdf3e6; border-color: #ecd2a8; color: var(--ink); }
+.lock-list { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.lock-list li { display: flex; gap: 12px; align-items: flex-start; background: var(--card); border: 1px dashed var(--line); border-radius: 12px; padding: 14px 16px; }
+.lock-list svg { flex: none; width: 20px; height: 20px; color: var(--bronze); margin-top: 2px; }
+.debrief { background: var(--ink); color: var(--on-dark-2); border-radius: 20px; padding: 24px; }
+.debrief .eyebrow { color: var(--gold); }
+.debrief h2 { margin-top: 6px; }
+.debrief p { margin-top: 8px; }
+.debrief .btn-row { margin-top: 18px; }
+.debrief .btn-line { border-color: var(--on-dark-2); color: var(--on-dark); }
+.debrief .btn-line:hover { background: var(--on-dark); color: var(--ink); }
+@media (max-width: 520px) { .debrief .btn { width: 100%; } }
+.save-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+@media (min-width: 640px) { .save-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.save-tiles .m-tile { cursor: pointer; font-size: .86rem; min-height: 72px; font-family: var(--f-head); }
+.save-tiles .m-tile:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.print-only { display: none; }
+
+/* Print / Save as PDF */
+@media print {
+  @page { margin: 14mm; }
+  body { background: #fff; padding: 0 !important; font-size: 11.5pt; }
+  .site-header, .site-footer, .book-bar, .no-print, dialog, .skip, [data-generic] { display: none !important; }
+  .print-only { display: block !important; }
+  .print-head { display: flex !important; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 2px solid #d3a13e; }
+  .print-head img { width: 180px; height: auto; }
+  .print-head p { font-size: 10pt; color: #5f5a50; text-align: right; }
+  .result-hero { padding: 18px 20px 20px 28px; border: 0; border-radius: 10px; }
+  .result-hero h1 { font-size: 26pt; }
+  .result-body { padding: 18px 0 0; }
+  .stack-lg > * + * { margin-top: 18px; }
+  .wrap { padding: 0 !important; max-width: none; }
+  .lede { font-size: 12pt; }
+  .lock-list li { padding: 8px 12px; break-inside: avoid; }
+  .bar-track i { transition: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
