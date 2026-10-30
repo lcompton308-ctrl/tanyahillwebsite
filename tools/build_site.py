@@ -32,6 +32,7 @@ ICONS = {
     "tiktok": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.4 2.2 1.8 3.7 4 4v3.1a7.5 7.5 0 0 1-4-1.2v6.4A6.2 6.2 0 1 1 10.3 9v3.2a3 3 0 1 0 3 3V3h3.2Z"/></svg>',
     "facebook": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.7V11H7v4h2.5v7h4v-7H16l.5-4h-3V9c0-.6.4-1 1-1Z"/></svg>',
     "menu": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    "chev": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',
     "arrow": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     "check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>',
     "share": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4M12 2v14"/></svg>',
@@ -93,11 +94,20 @@ def drawing_card(key, heading="h3", lazy=True):
 
 NAV = [
     ("home", "index.html", "Home"),
-    ("how", "how-i-work.html", "How I work"),
-    ("colour", "colour-profile.html", "Colour Profile"),
-    ("resources", "resources.html", "Drawings"),
     ("about", "about.html", "About me"),
+    ("how", "how-i-work.html", "How I work"),
+    ("resources", "resources.html", "Drawings"),
+    ("colour", "colour-profile.html", "Colour Profile"),
 ]
+
+
+def mobile_links(active):
+    items = NAV + [("book", "book.html", "Book a free call")]
+    out = []
+    for key, href, label in items:
+        cur = ' aria-current="page"' if key == active else ""
+        out.append(f'<li><a href="{href}"{cur}><span>{label}</span>{ICONS["chev"]}</a></li>')
+    return "\n".join(out)
 
 
 def nav_links(active, cls=""):
@@ -147,7 +157,7 @@ def page(meta, body):
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
-  <div class="wrap">
+  <div class="wrap bar">
     <a class="brand" href="index.html" aria-label="Tanya Hill Coaching, Built Like a Boss: home"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"></a>
     <nav class="nav" aria-label="Main">
       <ul>
@@ -155,17 +165,20 @@ def page(meta, body):
         <li><a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a></li>
       </ul>
     </nav>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav">{i["menu"]}<span class="label">Menu</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="label">Menu</span></button>
   </div>
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
-    <div class="wrap">
-      <ul>
-        {nav_links(active)}
-        <li><a href="book.html"{' aria-current="page"' if active == "book" else ""}>Book a free call</a></li>
-      </ul>
-      <div class="contact-quick">
-        <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Message me on WhatsApp</a>
-        <a class="btn btn-line" href="tel:{PHONE_TEL}">{i["phone"]}Call {PHONE_DISPLAY}</a>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Main">
+    <div class="mobile-nav-inner">
+      <div class="wrap">
+        <ul class="m-links">
+          {mobile_links(active)}
+        </ul>
+        <div class="m-contact">
+          <p class="eyebrow">Get in touch</p>
+          <a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Message me on WhatsApp</a>
+          <a class="btn btn-line" href="tel:{PHONE_TEL}">{i["phone"]}Call {PHONE_DISPLAY}</a>
+          <a class="btn btn-line" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}Follow me on LinkedIn</a>
+        </div>
       </div>
     </div>
   </nav>

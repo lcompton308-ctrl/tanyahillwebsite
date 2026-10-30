@@ -2,19 +2,25 @@
 (function () {
   var WA_NUMBER = "447714541600";
 
-  // Mobile menu
+  // Mobile menu: toggles a class so CSS can animate it open and closed
   var menuBtn = document.querySelector(".menu-btn");
   var mobileNav = document.getElementById("mobile-nav");
   if (menuBtn && mobileNav) {
-    menuBtn.addEventListener("click", function () {
-      var open = menuBtn.getAttribute("aria-expanded") === "true";
-      menuBtn.setAttribute("aria-expanded", String(!open));
-      mobileNav.hidden = open;
-      menuBtn.querySelector(".label").textContent = open ? "Menu" : "Close";
-    });
+    var label = menuBtn.querySelector(".label");
+    var setOpen = function (open) {
+      menuBtn.setAttribute("aria-expanded", String(open));
+      mobileNav.classList.toggle("is-open", open);
+      document.body.classList.toggle("menu-open", open);
+      label.textContent = open ? "Close" : "Menu";
+    };
+    menuBtn.addEventListener("click", function () { setOpen(menuBtn.getAttribute("aria-expanded") !== "true"); });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && menuBtn.getAttribute("aria-expanded") === "true") { menuBtn.click(); menuBtn.focus(); }
+      if (e.key === "Escape" && mobileNav.classList.contains("is-open")) { setOpen(false); menuBtn.focus(); }
     });
+    document.addEventListener("click", function (e) {
+      if (mobileNav.classList.contains("is-open") && !e.target.closest(".site-header")) setOpen(false);
+    });
+    mobileNav.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
   }
 
   // Year in footer
