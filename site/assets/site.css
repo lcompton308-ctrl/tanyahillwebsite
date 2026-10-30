@@ -504,3 +504,7 @@ a.chip[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--c); }
   .fold-title { font-size: var(--step-2); }
   .fold-body { padding: 8px 28px 36px; }
 }
+
+.fold-static { background: var(--paper); }
+.fold-static .fold-summary { display: flex; align-items: center; padding: 18px 18px 6px 20px; }
+@media (min-width: 960px) { .fold-static .fold-summary { padding: 24px 28px 8px; } }
