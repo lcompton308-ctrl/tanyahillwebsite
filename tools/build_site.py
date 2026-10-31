@@ -243,7 +243,8 @@ def page(meta, body):
       <div>
         <h3>Contact</h3>
         <ul>
-          <li><a href="{WA}">{i["whatsapp"]}WhatsApp {PHONE_DISPLAY}</a></li>
+          <li><span style="display:inline-flex;gap:8px;align-items:center;min-height:40px">{i["phone"]}{PHONE_DISPLAY}</span></li>
+          <li><a href="{WA}">{i["whatsapp"]}WhatsApp</a></li>
           <li><a href="mailto:{EMAIL}">{i["mail"]}{EMAIL}</a></li>
           <li><span style="display:inline-flex;gap:8px;align-items:center;min-height:40px">{i["pin"]}Billericay, Essex</span></li>
         </ul>
