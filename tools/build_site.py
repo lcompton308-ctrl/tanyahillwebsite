@@ -18,7 +18,7 @@ DOMAIN = "https://tanyahill.co.uk"
 PHONE_DISPLAY = "07714 541600"
 PHONE_TEL = "+447714541600"
 EMAIL = "tanya@tanyahill.co.uk"
-WA = "https://wa.me/447714541600?text=" + urllib.parse.quote("Hi Tanya, I'd like to book a free 30-minute call.")
+WA = "https://wa.me/447714541600?text=" + urllib.parse.quote("Hi Tanya, I'd like to book a 30-minute call.")
 LINKEDIN = "https://www.linkedin.com/in/tanya-hill-coach-to-the-trades-built-like-a-boss-05218015"
 INSTAGRAM = "https://www.instagram.com/coach_to_the_trades"
 TIKTOK = "https://www.tiktok.com/@coach_to_the_trades"
@@ -42,6 +42,7 @@ ICONS = {
     "team": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.2c2.6.3 4.5 2.6 4.5 5.3"/></svg>',
     "time": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
     "clients": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a3.6 3.6 0 0 1 4.3-.6l.4.3a2 2 0 0 0 1.5.2L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>',
+    "marketing": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
     "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>',
 }
 
@@ -104,13 +105,13 @@ NAV = [
     ("home", "index.html", "Home"),
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
-    ("resources", "resources.html", "Drawings"),
-    ("colour", "colour-profile.html", "Colour Profile"),
+    ("resources", "resources.html", "Illustrations"),
+    ("colour", "colour-profile.html", "What's Your Colour?"),
 ]
 
 
 def mobile_links(active):
-    items = NAV + [("book", "book.html", "Book a free call")]
+    items = NAV + [("book", "book.html", "Book a call")]
     out = []
     for key, href, label in items:
         cur = ' aria-current="page"' if key == active else ""
@@ -139,7 +140,7 @@ SCHEMA = {
     "email": EMAIL,
     "address": {"@type": "PostalAddress", "addressLocality": "Billericay", "addressRegion": "Essex", "addressCountry": "GB"},
     "areaServed": ["Billericay", "Essex", "United Kingdom"],
-    "knowsAbout": ["Business coaching", "Trade businesses", "Construction businesses", "Cash flow", "Profit margins", "Team building", "Time management"],
+    "knowsAbout": ["Business coaching", "Trade businesses", "Construction businesses", "Time management", "Business finance", "Profit margins", "Team building", "Marketing"],
     "founder": {
         "@type": "Person", "name": "Tanya Hill", "jobTitle": "Business Coach, Coach to the Trades",
         "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK],
@@ -174,7 +175,7 @@ def page(meta, body):
 <meta property="og:title" content="{full_title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{DOMAIN}/img/og.jpg">
+<meta property="og:image" content="{DOMAIN}/{meta.get("og_image", "img/og.jpg")}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -194,7 +195,7 @@ def page(meta, body):
     <nav class="nav" aria-label="Main">
       <ul>
         {nav_links(active)}
-        <li><a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a free call</a></li>
+        <li><a class="btn btn-gold" href="{WA}">{i["whatsapp"]}Book a call</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -212,7 +213,6 @@ def page(meta, body):
           <p class="eyebrow">Get in touch</p>
           <div class="m-tiles">
             <a class="m-tile wa" href="{WA}">{i["whatsapp"]}WhatsApp</a>
-            <a class="m-tile" href="tel:{PHONE_TEL}" aria-label="Call {PHONE_DISPLAY}">{i["phone"]}Call</a>
             <a class="m-tile" href="mailto:{EMAIL}" aria-label="Email {EMAIL}">{i["mail"]}Email</a>
             <a class="m-tile" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}LinkedIn</a>
           </div>
@@ -237,15 +237,14 @@ def page(meta, body):
         <h3>Pages</h3>
         <ul>
           {nav_links("")}
-          <li><a href="book.html">Book a free call</a></li>
+          <li><a href="book.html">Book a call</a></li>
         </ul>
       </div>
       <div>
         <h3>Contact</h3>
         <ul>
-          <li><a href="{WA}">{i["whatsapp"]}WhatsApp</a></li>
-          <li><a href="tel:{PHONE_TEL}">{i["phone"]}{PHONE_DISPLAY}</a></li>
-          <li><a href="mailto:{EMAIL}">{i["mail"]}Email me</a></li>
+          <li><a href="{WA}">{i["whatsapp"]}WhatsApp {PHONE_DISPLAY}</a></li>
+          <li><a href="mailto:{EMAIL}">{i["mail"]}{EMAIL}</a></li>
           <li><span style="display:inline-flex;gap:8px;align-items:center;min-height:40px">{i["pin"]}Billericay, Essex</span></li>
         </ul>
       </div>
@@ -266,9 +265,9 @@ def page(meta, body):
   </div>
 </footer>
 
-<a class="book-fab" href="{WA}" aria-label="Book a free call on WhatsApp">{i["whatsapp"]}<span>Book a call</span></a>
+<a class="book-fab" href="{WA}" aria-label="Book a call on WhatsApp">{i["whatsapp"]}<span>Book a call</span></a>
 
-<dialog class="lightbox" aria-label="Drawing, full size">
+<dialog class="lightbox" aria-label="Illustration, full size">
   <img src="" alt="">
   <div class="lb-bar"><span class="lb-title"></span><button type="button" class="lb-close">Close</button></div>
 </dialog>
@@ -356,12 +355,13 @@ def colour_page(col, data):
         f'<a class="chip" href="colour-{o}.html" style="--c:var(--{o});--ct:var(--{o}-t)"{" aria-current=\"page\"" if o == col else ""}><b>{CNAME[o]}</b><span>{esc(data["PROFILES"][o]["tag"])}</span></a>'
         for o in COLOURS)
     strengths = "".join(f"<li>{esc(s)}</li>" for s in p["strengths"][:3])
-    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the Colour Profile and I'm a {CNAME[col]} ({p['type']}). I'd like to book a free debrief.")
-    body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>Behaviour Colour Profile</p></div>
+    challenges = "".join(f"<li>{esc(s)}</li>" for s in p["watchouts"][:3])
+    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the What's Your Colour? quiz and I'm a {CNAME[col]} ({p['type']}). I'd like to book a debrief.")
+    body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>What's Your Colour?</p></div>
 
 <section class="result-hero" style="--c:{hexc};--ct:{TEXT_HEX[col]};--tint:{bg}">
   <div class="wrap narrow">
-    <p class="eyebrow" data-greet>Behaviour Colour Profile</p>
+    <p class="eyebrow" data-greet>What's Your Colour?</p>
     <h1><span class="cname">{CNAME[col]}</span> {esc(p["type"])}</h1>
     <p class="tagline">{esc(p["tag"])}</p>
   </div>
@@ -381,29 +381,36 @@ def colour_page(col, data):
       <p class="muted" style="margin-top:12px" data-second></p>
     </div>
 
-    <div>
-      <h2 class="h3">At your best</h2>
-      <ul class="tick-list good" style="margin-top:10px">{strengths}</ul>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <h2 class="h3">At your best</h2>
+        <ul class="tick-list good" style="margin-top:10px">{strengths}</ul>
+      </div>
+      <div class="pc pc-watch">
+        <h2 class="h3">Your challenges</h2>
+        <ul class="tick-list warn" style="margin-top:10px">{challenges}</ul>
+        <p class="small muted" style="margin-top:10px">Everyone has them. Knowing yours is where the real progress starts.</p>
+      </div>
     </div>
 
     <div class="unlock">
       <h2 class="h3">What we'll unpack together</h2>
-      <p class="muted" style="margin-top:6px">Your colour is just the starting point. In a free debrief, I'll take you through:</p>
+      <p class="muted" style="margin-top:6px">Your colour is just the starting point. In a debrief, I'll take you through:</p>
       <ul class="lock-list">
         <li>{LOCK}<span>How you show up under pressure, and what to watch out for</span></li>
         <li>{LOCK}<span>What really motivates you, and what quietly drains you</span></li>
+        <li>{LOCK}<span>How your team communicates</span></li>
         <li>{LOCK}<span>How to work with, lead and sell to the other three colours</span></li>
         <li>{LOCK}<span>What it means for your business and your plan from here</span></li>
       </ul>
     </div>
 
     <div class="debrief no-print">
-      <p class="eyebrow">Free · 30 minutes</p>
+      <p class="eyebrow">30 minutes · no obligation</p>
       <h2 class="h3" style="color:var(--on-dark)">Book your colour debrief</h2>
       <p>Let's talk through your full profile and what it means for you and your business.</p>
       <div class="btn-row">
         <a class="btn btn-gold" href="{wa_generic}" data-debrief>{ICONS["whatsapp"]}Book on WhatsApp</a>
-        <a class="btn btn-line" href="tel:{PHONE_TEL}">{ICONS["phone"]}Call {PHONE_DISPLAY}</a>
       </div>
     </div>
 
@@ -414,15 +421,15 @@ def colour_page(col, data):
         <button type="button" class="m-tile" data-copy>{ICONS["share"]}<span>Copy my link</span></button>
         <button type="button" class="m-tile" data-self>{ICONS["whatsapp"]}<span>Send to myself</span></button>
         <button type="button" class="m-tile" data-pdf><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 12v6M9 15l3 3 3-3"/></svg><span>Save as PDF</span></button>
-        <button type="button" class="m-tile" data-card><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg><span>Share my card</span></button>
+        <button type="button" class="m-tile" data-card><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg><span>Share to others</span></button>
       </div>
       <p class="small muted" data-copied aria-live="polite" style="margin-top:8px"></p>
     </div>
 
     <div class="no-print" data-generic>
       <h2 class="h3">What colour are you?</h2>
-      <p class="muted" style="margin-top:6px">Take the free 12-question Colour Profile to find out.</p>
-      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="colour-profile.html">Take the Colour Profile</a></div>
+      <p class="muted" style="margin-top:6px">Take the 12-question quiz to find out.</p>
+      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="colour-profile.html">Take the quiz</a></div>
     </div>
 
     <div class="no-print">
@@ -431,13 +438,14 @@ def colour_page(col, data):
       <p style="margin-top:16px" data-personal hidden><a class="text-link" href="colour-profile.html">Retake the quiz</a></p>
     </div>
 
-    <p class="print-only small">Tanya Hill Coaching · Built Like a Boss · tanyahill.co.uk · {PHONE_DISPLAY} · {EMAIL}</p>
+    <p class="print-only small">Tanya Hill Coaching · Built Like a Boss · tanyahill.co.uk · WhatsApp {PHONE_DISPLAY} · {EMAIL}</p>
   </div>
 </section>"""
     meta = {
         "path": f"colour-{col}.html", "nav": "colour",
-        "title": f"{CNAME[col]}: {p['type']} · Behaviour Colour Profile",
-        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Part of Tanya Hill's free Behaviour Colour Profile.",
+        "title": f"{CNAME[col]}: {p['type']} · What's Your Colour?",
+        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Find your colour with Tanya Hill's What's Your Colour? quiz.",
+        "og_image": f"img/og-{col}.jpg",
         "body_extra": '\n<script src="quiz-data.js" defer></script>\n<script src="result.js" defer></script>',
     }
     return meta, body

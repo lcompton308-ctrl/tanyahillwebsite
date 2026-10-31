@@ -131,7 +131,7 @@ strong { font-weight: 700; }
 .m-links a[aria-current="page"] span { background: linear-gradient(transparent 70%, rgba(211, 161, 62, .45) 70%); }
 .m-contact { padding-top: 18px; margin-top: 8px; border-top: 1px solid var(--line); }
 .m-contact .eyebrow { margin-bottom: 10px; }
-.m-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.m-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .m-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 64px; padding: 8px 4px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .82rem; }
 .m-tile svg { width: 20px; height: 20px; }
 .m-tile:hover { border-color: var(--ink); color: var(--ink); }
@@ -537,3 +537,38 @@ body.menu-open .book-fab, body.quiz-active .book-fab { opacity: 0; pointer-event
 /* Text-style button (e.g. "Forget my details") */
 .linklike{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:24px}
 .linklike:hover{color:var(--bronze,#7a5a10)}
+/* Book page: editable WhatsApp message */
+textarea.preview { display: block; width: 100%; font: inherit; font-size: 1rem; line-height: 1.5; resize: vertical; min-height: 140px; border: 1.5px solid var(--line); background: var(--card); }
+textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; border-color: var(--ink); }
+/* Tighter gap between a page's intro and its first section */
+.page-head + .section { padding-top: 36px; }
+@media (min-width: 960px) { .page-head + .section { padding-top: 56px; } }
+
+/* How I work: expandable areas */
+.fold-list { display: grid; gap: 10px; }
+.area-fold summary { gap: 14px; }
+.area-num { flex: none; width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); display: grid; place-items: center; font-family: var(--f-head); font-weight: 700; color: var(--ink); }
+.area-body { display: flex; gap: 16px; align-items: flex-start; }
+.area-body .icon-badge { flex: none; }
+.area-body .tick-list { margin-top: 4px; }
+
+/* Pill linking to the quiz */
+.quiz-pill-row { margin-top: 22px; }
+.quiz-pill { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 18px; border-radius: 999px; background: var(--card); border: 1.5px solid var(--line); color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .95rem; }
+.quiz-pill:hover { border-color: var(--ink); }
+.quiz-pill svg { width: 18px; height: 18px; }
+.qp-dots { display: inline-flex; gap: 3px; }
+.qp-dots i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+/* Quiz: reassurance line on the name step */
+.reassure { background: var(--paper-2); border-left: 4px solid var(--gold); border-radius: 10px; padding: 10px 14px; font-size: .95rem; color: var(--ink); margin: 0 0 16px; }
+/* Results: strengths and challenges side by side */
+.pros-cons { display: grid; gap: 14px; }
+@media (min-width: 640px) { .pros-cons { grid-template-columns: 1fr 1fr; } }
+.pc { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.pc-good { border-top: 4px solid var(--green-t); }
+.pc-watch { border-top: 4px solid var(--bronze); }
+.pc-watch .tick-list.warn li { color: var(--ink); }
+@media print { .pros-cons { grid-template-columns: 1fr 1fr; } .pc { break-inside: avoid; } }
+.card-overlay img { max-height: 60vh; }
+.card-overlay .btn-line { color: var(--on-dark); border-color: rgba(255, 255, 255, .55); }
+.card-overlay .btn-row { flex-wrap: wrap; gap: 10px; }

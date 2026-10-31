@@ -3,7 +3,7 @@ name: Publish website
 on:
   push:
     branches: [ main ]
-    paths: [ "site/**", ".github/workflows/website.yml" ]
+    paths: [ "site/**", "tools/make_og.py", ".github/workflows/website.yml" ]
   workflow_dispatch:
 
 permissions:
@@ -39,6 +39,11 @@ jobs:
           pyftsubset /tmp/f/dm.ttf  --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=site/fonts/dmsans.woff2
           pyftsubset /tmp/f/dmi.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=site/fonts/dmsans-italic.woff2
           ls -la site/fonts
+
+      - name: Colour link-preview images in the site fonts
+        run: |
+          pip install --quiet pillow
+          python3 tools/make_og.py
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

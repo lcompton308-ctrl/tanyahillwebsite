@@ -1,13 +1,12 @@
-// Behaviour Colour Profile quiz.
-// Flow: intro → 12 questions → contact details → results emailed to Tanya → personal results page (colour-<colour>.html#n=..&s=..).
+// What's Your Colour? quiz (based on the Behaviour Colour Profile).
+// Flow: intro → 12 questions → first name → personal results page (colour-<colour>.html#n=..&s=..).
 // Content lives in quiz-data.js (PROFILES, QUESTIONS, HEX, BG).
 (function () {
   var root = document.getElementById("quiz");
   if (!root || typeof QUESTIONS === "undefined") return;
 
-  // Where results are emailed. Empty = nothing is sent automatically: the quiz asks only for a name and the
-  // results page offers "Send my results to Tanya" on WhatsApp. Later this becomes the web-app URL of the
-  // Google Apps Script in Tanya's own Google account (see the plan), which emails her and auto-deletes after 12 months.
+  // Empty = nothing leaves the device. Later: the web-app URL of the Google Apps Script in Tanya's account,
+  // which logs first name + colour to her Google Sheet (no contact details) and deletes rows after 12 months.
   var RESULTS_ENDPOINT = "";
   var SITE = "https://tanyahill.co.uk";
   var ORDER = ["red", "yellow", "green", "blue"];
@@ -50,9 +49,9 @@
         '<p class="small" style="margin-top:12px"><button type="button" class="linklike" id="forget">Not you? Forget my details on this device</button></p></div>';
     }
     root.innerHTML = '<div class="quiz-card quiz-intro">' + back +
-      '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the Colour Profile") + '</button>' +
+      '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the quiz") + '</button>' +
       (chips ? chips.innerHTML : "") +
-      '<p class="small muted" style="margin-top:16px">' + (RESULTS_ENDPOINT ? 'At the end, add your details to see your results. I\'ll get a copy too, so we can talk through what it means for you.' : 'At the end, you can send your results to me on WhatsApp so we can talk through what they mean for you.') + '</p></div>';
+      '<p class="small muted" style="margin-top:16px">At the end, you can send your results to me on WhatsApp so we can talk through what they mean for you.</p></div>';
     var forget = document.getElementById("forget");
     if (forget) forget.onclick = function () {
       ["cp_last", "cp_last_name", "cp_contact"].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
@@ -98,41 +97,17 @@
     }, reduce ? 60 : 280);
   }
 
+  // Last step: just a first name. No email or phone, ever: Tanya picks the conversation up on WhatsApp.
   function details() {
-    if (!RESULTS_ENDPOINT) return nameOnly();
     var saved = {};
     try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
     root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
       '<div class="q-meta"><span>All 12 answered</span><button class="q-back" type="button" id="back">← Back</button></div>' +
-      '<h2 class="q-text">Nearly there. Where should I send your results?</h2>' +
-      '<p class="muted" style="margin:-6px 0 18px">Add your details to see your colour. I\'ll get a copy too, so we can talk through what it means for you and your business.</p>' +
+      '<h2 class="q-text">Nearly there. What\'s your first name?</h2>' +
+      '<p class="muted" style="margin:-6px 0 14px">It goes on your results so they feel like yours.</p>' +
+      '<p class="reassure">Don\'t worry, I don\'t need your email or phone number. No sales calls, no spam. Just your results.</p>' +
       '<form id="cp-details" class="stack" novalidate>' +
-      field("cp-fullname", "Full name", "text", "name", saved.name) +
-      field("cp-email", "Email", "email", "email", saved.email) +
-      field("cp-phone", "Mobile number", "tel", "tel", saved.phone) +
-      field("cp-business", "Business name (optional)", "text", "organization", saved.business) +
-      '<div class="hp" aria-hidden="true"><label for="cp-hp">Leave this empty</label><input id="cp-hp" type="text" tabindex="-1" autocomplete="off"></div>' +
-      '<p class="form-error" id="cp-error" role="alert"></p>' +
-      '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
-      '<p class="small muted">Your details and results go only to me, Tanya Hill, so I can talk you through your profile. <a href="privacy.html">Privacy policy</a></p>' +
-      '</form></div>';
-    document.getElementById("back").onclick = function () {
-      state.screen = "quiz"; state.q = QUESTIONS.length - 1; state.answers.length = state.picks.length = state.q;
-      state.opts = shuffle(QUESTIONS[state.q].o); render(); focusTop();
-    };
-    document.getElementById("cp-details").addEventListener("submit", submit);
-  }
-
-  // Stop-gap while automatic sending is off: just a name, kept on this device
-  function nameOnly() {
-    var saved = {};
-    try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
-    root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
-      '<div class="q-meta"><span>All 12 answered</span><button class="q-back" type="button" id="back">← Back</button></div>' +
-      '<h2 class="q-text">Nearly there. What\'s your name?</h2>' +
-      '<p class="muted" style="margin:-6px 0 18px">It goes on your results page so it\'s personal to you. Nothing is sent to anyone unless you choose to send it to me afterwards.</p>' +
-      '<form id="cp-details" class="stack" novalidate>' +
-      field("cp-fullname", "Your name", "text", "name", saved.name) +
+      field("cp-fullname", "Your first name", "text", "given-name", saved.name) +
       '<p class="form-error" id="cp-error" role="alert"></p>' +
       '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
       '<p class="small muted"><a href="privacy.html">Privacy policy</a></p>' +
@@ -146,57 +121,29 @@
       var f = { name: val("cp-fullname") };
       var err = document.getElementById("cp-error"), el = document.getElementById("cp-fullname");
       el.removeAttribute("aria-invalid");
-      if (f.name.length < 2) { err.textContent = "Please enter your name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
-      err.textContent = ""; store("cp_contact", JSON.stringify(f)); finish(f, "manual");
+      if (f.name.length < 2) { err.textContent = "Please enter your first name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
+      err.textContent = ""; store("cp_contact", JSON.stringify(f));
+      logCompletion(f.name);
+      finish(f, "manual");
     });
   }
 
   function field(id, label, type, ac, val) {
-    var required = id !== "cp-business";
     return '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + type + '" autocomplete="' + ac + '"' +
-      (type === "tel" ? ' inputmode="tel"' : "") + (required ? ' required aria-required="true"' : "") + ' value="' + esc(val || "") + '"></div>';
+      ' required aria-required="true" value="' + esc(val || "") + '"></div>';
   }
 
-  // ---------- Submit: email Tanya, then show the results page ----------
-  function submit(e) {
-    e.preventDefault();
-    var f = { name: val("cp-fullname"), email: val("cp-email"), phone: val("cp-phone"), business: val("cp-business") };
-    var err = document.getElementById("cp-error"), btn = document.getElementById("cp-submit");
-    var problem = null, bad = null;
-    if (f.name.split(/\s+/).filter(Boolean).length < 2) { problem = "Please enter your full name (first and last)."; bad = "cp-fullname"; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) { problem = "Please enter a valid email address."; bad = "cp-email"; }
-    else if (f.phone.replace(/\D/g, "").length < 10) { problem = "Please enter your mobile number, including the area code."; bad = "cp-phone"; }
-    root.querySelectorAll("input").forEach(function (i) { i.removeAttribute("aria-invalid"); });
-    if (problem) { err.textContent = problem; var el = document.getElementById(bad); el.setAttribute("aria-invalid", "true"); el.focus(); return; }
-    err.textContent = "";
-    store("cp_contact", JSON.stringify(f));
-    if (document.getElementById("cp-hp").value) { finish(f, true); return; } // bot: skip sending
-
-    btn.disabled = true; btn.textContent = "Sending your results…";
-    var r = result(), link = SITE + "/" + resultsPath(r, f.name);
-    var p = PROFILES[r.dom], sp = PROFILES[r.second];
-    var payload = {
-      _subject: "Colour Profile: " + f.name + " is " + NAME[r.dom] + " (" + p.type + ")",
-      _template: "table",
-      _captcha: "false",
-      "Full name": f.name,
-      email: f.email,
-      "Mobile": f.phone,
-      "Business": f.business || "Not given",
-      "Main colour": NAME[r.dom] + ", " + p.type + " (" + p.tag + ")",
-      "Secondary colour": NAME[r.second] + ", " + sp.type,
-      "Scores": r.sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "% (" + x[1] + "/12)"; }).join(" · "),
-      "Results page": link,
-      "Completed": new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" })
-    };
-    QUESTIONS.forEach(function (q, i) { payload["Q" + (i + 1) + ". " + q.t] = state.picks[i] + " [" + NAME[state.answers[i]] + "]"; });
-
-    var done = false;
-    var timer = setTimeout(function () { if (!done) { done = true; finish(f, false); } }, 10000);
-    fetch(RESULTS_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(payload) })
-      .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return res.ok && String(j.success) !== "false"; }); })
-      .catch(function () { return false; })
-      .then(function (ok) { if (done) return; done = true; clearTimeout(timer); finish(f, ok); });
+  // Once the Google Apps Script exists, RESULTS_ENDPOINT is its web-app URL and this quietly logs
+  // first name, colour and scores to Tanya's Google Sheet. Never contact details.
+  function logCompletion(name) {
+    if (!RESULTS_ENDPOINT) return;
+    var r = result();
+    var data = JSON.stringify({ name: name.split(" ")[0], colour: NAME[r.dom], second: NAME[r.second],
+      scores: ORDER.map(function (k) { return NAME[k] + " " + r.scores[k]; }).join(", "), link: SITE + "/" + resultsPath(r, name) });
+    try {
+      if (navigator.sendBeacon) navigator.sendBeacon(RESULTS_ENDPOINT, new Blob([data], { type: "text/plain" }));
+      else fetch(RESULTS_ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: data, keepalive: true });
+    } catch (e) {}
   }
   function val(id) { return (document.getElementById(id).value || "").trim().replace(/\s+/g, " "); }
 

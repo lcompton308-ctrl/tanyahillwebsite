@@ -91,7 +91,7 @@
         var match = f === "all" || it.getAttribute("data-topic").split(" ").indexOf(f) > -1;
         it.hidden = !match; if (match) shown++;
       });
-      if (count) count.textContent = shown + (shown === 1 ? " drawing" : " drawings");
+      if (count) count.textContent = shown + (shown === 1 ? " illustration" : " illustrations");
     });
     // Open a drawing straight from a shared link (#drawing-id)
     if (location.hash) {
@@ -100,27 +100,27 @@
     }
   }
 
-  // Booking helper: builds the WhatsApp message from the optional choices
+  // Booking helper: builds the WhatsApp message from the optional choices; the message box stays editable
   var form = document.getElementById("book-form");
   if (form) {
-    var preview = document.getElementById("msg-preview");
+    var box = document.getElementById("msg-preview");
     var go = document.getElementById("send-wa");
+    var edited = false;
     var build = function () {
       var name = form.elements["name"].value.trim();
       var biz = form.elements["business"].value.trim();
       var topics = Array.prototype.slice.call(form.querySelectorAll('input[name="topic"]:checked')).map(function (i) { return i.value; });
-      var times = Array.prototype.slice.call(form.querySelectorAll('input[name="time"]:checked')).map(function (i) { return i.value.toLowerCase(); });
-      var msg = "Hi Tanya, I'd like to book a free 30-minute call.";
+      var msg = "Hi Tanya, I'd like to book a 30-minute call.";
       if (name) msg += "\n\nI'm " + name + (biz ? " from " + biz : "") + ".";
       else if (biz) msg += "\n\nMy business is " + biz + ".";
       if (topics.length) msg += "\nWhat's on my mind: " + topics.join(", ").toLowerCase() + ".";
-      if (times.length) msg += "\nBest time for me: " + times.join(" or ") + ".";
-      preview.textContent = msg;
-      go.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+      return msg;
     };
-    form.addEventListener("input", build);
-    form.addEventListener("change", build);
+    var sync = function () { go.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(box.value.trim() || build()); };
+    box.addEventListener("input", function () { edited = true; sync(); });
+    form.addEventListener("change", function (e) { if (e.target !== box && !edited) box.value = build(); sync(); });
+    form.addEventListener("input", function (e) { if (e.target !== box && !edited) { box.value = build(); sync(); } });
     form.addEventListener("submit", function (e) { e.preventDefault(); window.location.href = go.href; });
-    build();
+    sync();
   }
 })();
