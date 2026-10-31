@@ -142,8 +142,7 @@ SCHEMA = {
     "knowsAbout": ["Business coaching", "Trade businesses", "Construction businesses", "Cash flow", "Profit margins", "Team building", "Time management"],
     "founder": {
         "@type": "Person", "name": "Tanya Hill", "jobTitle": "Business Coach, Coach to the Trades",
-        "affiliation": {"@type": "Organization", "name": "ActionCOACH UK"},
-        "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK, "https://business.actioncoach.co.uk/coaches/tanya-hill"],
+        "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK],
     },
     "sameAs": [LINKEDIN, INSTAGRAM, TIKTOK, FACEBOOK],
 }
@@ -233,7 +232,6 @@ def page(meta, body):
       <div>
         <img class="logo" src="img/logo-gold.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269" loading="lazy">
         <p style="margin-top:16px;max-width:30ch">Coach to the Trades. Helping trade and construction business owners get their margins, time and headspace back.</p>
-        <p style="margin-top:12px" class="small">Certified ActionCOACH business coach · <a href="https://business.actioncoach.co.uk/coaches/tanya-hill" style="min-height:0;display:inline">My ActionCOACH profile</a></p>
       </div>
       <div>
         <h3>Pages</h3>
