@@ -17,7 +17,7 @@ DOMAIN = "https://tanyahill.co.uk"
 
 PHONE_DISPLAY = "07714 541600"
 PHONE_TEL = "+447714541600"
-EMAIL = "tanyahill@actioncoach.co.uk"
+EMAIL = "tanya@tanyahill.co.uk"
 WA = "https://wa.me/447714541600?text=" + urllib.parse.quote("Hi Tanya, I'd like to book a free 30-minute call.")
 LINKEDIN = "https://www.linkedin.com/in/tanya-hill-coach-to-the-trades-built-like-a-boss-05218015"
 INSTAGRAM = "https://www.instagram.com/coach_to_the_trades"
