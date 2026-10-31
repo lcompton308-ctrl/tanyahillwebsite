@@ -572,3 +572,15 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .card-overlay img { max-height: 60vh; }
 .card-overlay .btn-line { color: var(--on-dark); border-color: rgba(255, 255, 255, .55); }
 .card-overlay .btn-row { flex-wrap: wrap; gap: 10px; }
+
+/* Black top bar (option B, chosen 31 Oct): ink bar, gold logo, cream controls */
+.site-header { background: rgba(26, 24, 20, .97); border-bottom-color: #2e2a23; }
+.home-btn { border-color: rgba(250, 247, 240, .4); color: var(--paper); background: #26221c; }
+.home-btn:hover { background: #3a352c; color: var(--paper); }
+.home-btn[aria-current="page"] { background: #26221c; border-color: var(--gold); color: var(--gold); }
+.menu-btn { border-color: var(--paper); color: var(--paper); }
+.menu-btn[aria-expanded="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.nav a:not(.btn) { color: var(--paper); }
+.nav a:not(.btn):hover { background: #2e2a23; }
+.nav a:not(.btn)[aria-current="page"] { background: #2e2a23; box-shadow: inset 0 -2px 0 var(--gold); }
+.site-header :focus-visible { outline-color: var(--gold); }

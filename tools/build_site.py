@@ -169,7 +169,7 @@ def page(meta, body):
 <title>{full_title}</title>
 <meta name="description" content="{desc}">{noindex}
 <link rel="canonical" href="{url}">
-<meta name="theme-color" content="#faf7f0">
+<meta name="theme-color" content="#1a1814">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tanya Hill Coaching">
 <meta property="og:title" content="{full_title}">
@@ -191,7 +191,7 @@ def page(meta, body):
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="index.html" aria-label="Tanya Hill Coaching, Built Like a Boss: home"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"></a>
+    <a class="brand" href="index.html" aria-label="Tanya Hill Coaching, Built Like a Boss: home"><img src="img/logo-gold.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"></a>
     <nav class="nav" aria-label="Main">
       <ul>
         {nav_links(active)}
