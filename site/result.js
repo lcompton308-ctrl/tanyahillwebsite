@@ -52,11 +52,8 @@
   var debrief = $("[data-debrief]");
   if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the Which Boss Are You? quiz and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
 
-  // Remember on this device
-  try {
-    localStorage.setItem("cp_last", "colour-" + col + location.hash);
-    if (name) localStorage.setItem("cp_last_name", name);
-  } catch (e) {}
+  // Results are only remembered on the device that took the quiz (quiz.js saves them when it
+  // finishes). Opening someone else's link, e.g. Tanya from her results sheet, mustn't overwrite hers.
 
   // Just finished? Show whether Tanya received it
   var status = null;
