@@ -1,4 +1,4 @@
-// What's Your Colour? quiz (based on the Behaviour Colour Profile).
+// Which Boss Are You? quiz (based on the Behaviour Colour Profile).
 // Flow: intro → 12 questions → first name → personal results page (colour-<colour>.html#n=..&s=..).
 // Content lives in quiz-data.js (PROFILES, QUESTIONS, HEX, BG).
 (function () {

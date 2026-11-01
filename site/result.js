@@ -35,7 +35,7 @@
   var greet = $("[data-greet]"); if (greet) greet.textContent = name ? first(name) + ", your colour is" : "Your colour is";
   document.title = (name ? first(name) + "'s" : "My") + " colour: " + NAME[col] + " · Tanya Hill Coaching";
   var pf = $("[data-print-for]");
-  if (pf) pf.textContent = "What's Your Colour?" + (name ? " · " + name : "") + " · " + new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  if (pf) pf.textContent = "Which Boss Are You?" + (name ? " · " + name : "") + " · " + new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   var bars = $("[data-bars]");
   if (bars) {
@@ -50,7 +50,7 @@
   if (sec) sec.innerHTML = 'Secondary colour: <strong style="color:' + TEXT[second] + '">' + NAME[second] + ", " + PROFILES[second].type + "</strong>";
 
   var debrief = $("[data-debrief]");
-  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the What's Your Colour? quiz and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
+  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the Which Boss Are You? quiz and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
 
   // Remember on this device
   try {
@@ -67,7 +67,7 @@
     var sendBtn = function (label) {
       var b = document.createElement("a");
       b.className = "btn btn-gold"; b.style.marginTop = "12px"; b.style.width = "100%";
-      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the What's Your Colour? quiz: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
+      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Which Boss Are You? quiz: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
       b.textContent = label; note.appendChild(b);
     };
     if (status === "manual") {
@@ -116,7 +116,7 @@
     ctx.fillStyle = "#d3a13e"; ctx.fillRect(0, 300, W, 8);
     if (logo) { var lw = 470, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, (300 - lh) / 2, lw, lh); }
     ctx.textAlign = "center";
-    spacing(ctx, 8); ctx.fillStyle = "#7a5a10"; ctx.font = "700 30px " + HEAD; ctx.fillText("WHAT'S YOUR COLOUR?", W / 2, 392);
+    spacing(ctx, 8); ctx.fillStyle = "#7a5a10"; ctx.font = "700 30px " + HEAD; ctx.fillText("WHICH BOSS ARE YOU?", W / 2, 392);
     var y = 392;
     if (who) { spacing(ctx, 0); ctx.fillStyle = "#1a1814"; fit(ctx, who, 44, "700", HEAD, W - 160); ctx.fillText(who, W / 2, 452); y = 452; }
     var by = y + 40, bh = 280;
@@ -139,14 +139,14 @@
       ctx.textAlign = "right"; ctx.fillStyle = "#5f5a50"; ctx.font = "600 30px " + BODY; ctx.fillText(v + "%", 975, yy + 12);
     });
     ctx.textAlign = "center"; ctx.fillStyle = "#1a1814"; ctx.fillRect(0, H - 150, W, 150);
-    ctx.fillStyle = "#d3a13e"; ctx.font = "700 44px " + HEAD; ctx.fillText("What's your colour?", W / 2, H - 82);
+    ctx.fillStyle = "#d3a13e"; ctx.font = "700 44px " + HEAD; ctx.fillText("Which boss are you?", W / 2, H - 82);
     ctx.fillStyle = "#c9c1b1"; ctx.font = "500 28px " + BODY; ctx.fillText("Find yours at tanyahill.co.uk", W / 2, H - 38);
     return c.toDataURL("image/png");
   }
 
   function showCard(url, waText) {
     var o = document.createElement("div"); o.className = "card-overlay"; o.setAttribute("role", "dialog"); o.setAttribute("aria-label", "Your results card");
-    o.innerHTML = '<img alt="Your What\'s Your Colour? results card" src="' + url + '"><p>Save the image, then send it on WhatsApp.</p>' +
+    o.innerHTML = '<img alt="Your Which Boss Are You? results card" src="' + url + '"><p>Save the image, then send it on WhatsApp.</p>' +
       '<div class="btn-row" style="justify-content:center"><a class="btn btn-line" download="my-colour-card.png" href="' + url + '">Save image</a>' +
       '<a class="btn btn-gold" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(waText) + '">Open WhatsApp</a>' +
       '<button class="btn btn-line" type="button">Close</button></div>';
@@ -167,8 +167,8 @@
   // Every share sends the card image, with the results link in the message
   function shareCard(mode) {
     var text = mode === "self"
-      ? "My What's Your Colour? results: " + NAME[col] + ", " + p.type + " (" + p.tag + ").\n" + location.href
-      : (name ? first(name) + " is" : "I'm") + " a " + NAME[col] + ": " + p.type + " (" + p.tag + ").\n\nWhat's your colour? Find out at https://tanyahill.co.uk/colour-profile";
+      ? "My Which Boss Are You? results: " + NAME[col] + ", " + p.type + " (" + p.tag + ").\n" + location.href
+      : (name ? first(name) + " is" : "I'm") + " a " + NAME[col] + ": " + p.type + " (" + p.tag + ").\n\nWhich boss are you? Find out at https://tanyahill.co.uk/colour-profile";
     withLogo("img/logo-gold.png", function (logo) {
       var url = drawCard(logo);
       fetch(url).then(function (x) { return x.blob(); }).then(function (blob) {
@@ -201,7 +201,7 @@
     ctx.fillStyle = "#d3a13e"; ctx.fillRect(0, 220, W, 8);
     if (logo) { var lw = 420, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, (220 - lh) / 2, lw, lh); }
     ctx.textAlign = "left";
-    spacing(ctx, 6); ctx.fillStyle = "#7a5a10"; ctx.font = "700 26px " + HEAD; ctx.fillText("WHAT'S YOUR COLOUR?", M, 300);
+    spacing(ctx, 6); ctx.fillStyle = "#7a5a10"; ctx.font = "700 26px " + HEAD; ctx.fillText("WHICH BOSS ARE YOU?", M, 300);
     spacing(ctx, 0);
     ctx.fillStyle = "#1a1814"; ctx.font = "700 46px " + HEAD; ctx.fillText(name ? first(name) + "'s results" : "My results", M, 362);
     ctx.fillStyle = "#5f5a50"; ctx.font = "500 24px " + BODY;

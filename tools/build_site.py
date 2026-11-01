@@ -106,7 +106,7 @@ NAV = [
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
     ("resources", "resources.html", "Illustrations"),
-    ("colour", "colour-profile.html", "What's Your Colour?"),
+    ("colour", "colour-profile.html", "Which Boss Are You?"),
 ]
 
 
@@ -357,12 +357,12 @@ def colour_page(col, data):
         for o in COLOURS)
     strengths = "".join(f"<li>{esc(s)}</li>" for s in p["strengths"][:3])
     challenges = "".join(f"<li>{esc(s)}</li>" for s in p["watchouts"][:3])
-    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the What's Your Colour? quiz and I'm a {CNAME[col]} ({p['type']}). I'd like to book a debrief.")
-    body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>What's Your Colour?</p></div>
+    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the Which Boss Are You? quiz and I'm a {CNAME[col]} ({p['type']}). I'd like to book a debrief.")
+    body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>Which Boss Are You?</p></div>
 
 <section class="result-hero" style="--c:{hexc};--ct:{TEXT_HEX[col]};--tint:{bg}">
   <div class="wrap narrow">
-    <p class="eyebrow" data-greet>What's Your Colour?</p>
+    <p class="eyebrow" data-greet>Which Boss Are You?</p>
     <h1><span class="cname">{CNAME[col]}</span> {esc(p["type"])}</h1>
     <p class="tagline">{esc(p["tag"])}</p>
   </div>
@@ -428,7 +428,7 @@ def colour_page(col, data):
     </div>
 
     <div class="no-print" data-generic>
-      <h2 class="h3">What colour are you?</h2>
+      <h2 class="h3">Which boss are you?</h2>
       <p class="muted" style="margin-top:6px">Take the 12-question quiz to find out.</p>
       <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="colour-profile.html">Take the quiz</a></div>
     </div>
@@ -444,8 +444,8 @@ def colour_page(col, data):
 </section>"""
     meta = {
         "path": f"colour-{col}.html", "nav": "colour",
-        "title": f"{CNAME[col]}: {p['type']} · What's Your Colour?",
-        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Find your colour with Tanya Hill's What's Your Colour? quiz.",
+        "title": f"{CNAME[col]}: {p['type']} · Which Boss Are You?",
+        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Find your colour with Tanya Hill's Which Boss Are You? quiz.",
         "og_image": f"img/og-{col}.jpg",
         "body_extra": '\n<script src="quiz-data.js" defer></script>\n<script src="result.js" defer></script>',
     }

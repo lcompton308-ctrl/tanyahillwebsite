@@ -45,7 +45,7 @@ for col in ["red", "yellow", "green", "blue"]:
     d.rounded_rectangle([70, 200, W - 70, 520], radius=28, fill=data["BG"][col])
     d.rounded_rectangle([70, 200, 92, 520], radius=11, fill=data["HEX"][col])
     d.rectangle([82, 200, 92, 520], fill=data["HEX"][col])
-    d.text((130, 238), "WHAT'S YOUR COLOUR?", font=font(HEAD, 26), fill=BRONZE)
+    d.text((130, 238), "WHICH BOSS ARE YOU?", font=font(HEAD, 26), fill=BRONZE)
     d.text((130, 282), NAME[col], font=font(HEAD, 54), fill=TEXT[col])
     t = p["type"]; size = 84
     while size > 40 and d.textlength(t, font=font(HEAD, size)) > W - 260:
