@@ -165,7 +165,7 @@
   function shareCard(mode) {
     var text = mode === "self"
       ? "My Which Boss Are You? results: " + NAME[col] + ", " + p.type + " (" + p.tag + ").\n" + location.href
-      : (name ? first(name) + " is" : "I'm") + " a " + NAME[col] + ": " + p.type + " (" + p.tag + ").\n\nWhich boss are you? Find out at https://tanyahill.co.uk/colour-profile";
+      : (name ? first(name) + " is" : "I'm") + " a " + NAME[col] + ": " + p.type + " (" + p.tag + ").\n\nWhich boss are you? Find out at https://tanyahill.co.uk/which-boss-are-you";
     withLogo("img/logo-gold.png", function (logo) {
       var url = drawCard(logo);
       fetch(url).then(function (x) { return x.blob(); }).then(function (blob) {

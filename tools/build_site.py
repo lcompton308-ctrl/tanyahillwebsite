@@ -106,7 +106,7 @@ NAV = [
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
     ("resources", "resources.html", "Illustrations"),
-    ("colour", "colour-profile.html", "Which Boss Are You?"),
+    ("colour", "which-boss-are-you.html", "Which Boss Are You?"),
 ]
 
 
@@ -316,6 +316,10 @@ def render(text):
     return text
 
 
+# Old page address -> new page address (without .html). Keeps old links and bookmarks working.
+REDIRECTS = {"colour-profile.html": "which-boss-are-you"}
+
+
 def main():
     built = []
     for f in sorted(PAGES.glob("*.html")):
@@ -325,6 +329,15 @@ def main():
         (OUT / meta["path"]).write_text(html, encoding="utf-8")
         built.append(meta)
     built += build_colour_pages()
+    # old addresses that now live somewhere else: a tiny page that forwards visitors (and Google) on
+    for old, new in REDIRECTS.items():
+        (OUT / old).write_text(f"""<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>Moved</title>
+<link rel="canonical" href="{DOMAIN}/{new}">
+<meta http-equiv="refresh" content="0; url=/{new}">
+<script>location.replace("/{new}" + location.search + location.hash)</script>
+</head><body><p>This page has moved to <a href="/{new}">{DOMAIN}/{new}</a>.</p></body></html>
+""", encoding="utf-8")
     # sitemap
     urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>" for m in built if not m.get("noindex"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
@@ -432,13 +445,13 @@ def colour_page(col, data):
     <div class="no-print" data-generic>
       <h2 class="h3">Which boss are you?</h2>
       <p class="muted" style="margin-top:6px">Take the 12-question quiz to find out.</p>
-      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="colour-profile.html">Take the quiz</a></div>
+      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="which-boss-are-you.html">Take the quiz</a></div>
     </div>
 
     <div class="no-print">
       <h2 class="h3">The four colours</h2>
       <div class="colour-chips" style="margin-top:12px">{others}</div>
-      <p style="margin-top:16px" data-personal hidden><a class="text-link" href="colour-profile.html">Retake the quiz</a></p>
+      <p style="margin-top:16px" data-personal hidden><a class="text-link" href="which-boss-are-you.html">Retake the quiz</a></p>
     </div>
 
     <p class="print-only small">Tanya Hill Coaching · Built Like a Boss · tanyahill.co.uk · WhatsApp {PHONE_DISPLAY} · {EMAIL}</p>
