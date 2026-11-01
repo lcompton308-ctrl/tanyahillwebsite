@@ -186,6 +186,8 @@ def page(meta, body):
 <link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/dmsans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">{meta.get("head_extra", "")}
+<!-- Cloudflare Web Analytics: no cookies, no personal data stored -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "047d13a47ec749fcb989fa6bfed87cb7"}}'></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
