@@ -7,7 +7,7 @@
 
   // Empty = nothing leaves the device. Later: the web-app URL of the Google Apps Script in Tanya's account,
   // which logs first name + colour to her Google Sheet (no contact details) and deletes rows after 12 months.
-  var RESULTS_ENDPOINT = "";
+  var RESULTS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2z2vguH29cBty3pp6jabEkX7O2fYCsi5TGoxCLF5XgqvzndGpxOHEVyIC58CmY_Y2/exec";
   var SITE = "https://tanyahill.co.uk";
   var ORDER = ["red", "yellow", "green", "blue"];
   var NAME = { red: "Red", yellow: "Yellow", green: "Green", blue: "Blue" };
@@ -110,7 +110,7 @@
       field("cp-fullname", "Your first name", "text", "given-name", saved.name) +
       '<p class="form-error" id="cp-error" role="alert"></p>' +
       '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
-      '<p class="small muted"><a href="privacy.html">Privacy policy</a></p>' +
+      '<p class="small muted">I\'ll see your first name and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
       '</form></div>';
     document.getElementById("back").onclick = function () {
       state.screen = "quiz"; state.q = QUESTIONS.length - 1; state.answers.length = state.picks.length = state.q;
