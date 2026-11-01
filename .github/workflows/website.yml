@@ -3,7 +3,7 @@ name: Publish website
 on:
   push:
     branches: [ main ]
-    paths: [ "site/**", "tools/make_og.py", ".github/workflows/website.yml" ]
+    paths: [ "site/**", "tools/make_og.py", "tools/indexnow.py", ".github/workflows/website.yml" ]
   workflow_dispatch:
 
 permissions:
@@ -23,6 +23,8 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Add web fonts (Poppins and DM Sans, open-source Google fonts, self-hosted)
         run: |
@@ -51,3 +53,13 @@ jobs:
           path: site
       - id: deploy
         uses: actions/deploy-pages@v4
+
+      - name: Tell Bing which pages changed (IndexNow)
+        continue-on-error: true
+        run: |
+          sleep 30
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            python3 tools/indexnow.py "${{ github.event.before }}" "${{ github.sha }}"
+          else
+            python3 tools/indexnow.py
+          fi
