@@ -373,7 +373,7 @@ def colour_page(col, data):
         for o in COLOURS)
     strengths = "".join(f"<li>{esc(s)}</li>" for s in p["strengths"][:3])
     challenges = "".join(f"<li>{esc(s)}</li>" for s in p["watchouts"][:3])
-    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the Which Boss Are You? quiz and I'm a {CNAME[col]} ({p['type']}). I'd like to book a debrief.")
+    wa_generic = "https://wa.me/447714541600?text=" + urllib.parse.quote(f"Hi Tanya, I've done the Which Boss Are You? assessment and I'm a {CNAME[col]} ({p['type']}). I'd like to book a debrief.")
     body = f"""<div class="print-only print-head"><img src="img/logo-ink.png" alt="Tanya Hill Coaching, Built Like a Boss" width="640" height="269"><p data-print-for>Which Boss Are You?</p></div>
 
 <section class="result-hero" style="--c:{hexc};--ct:{TEXT_HEX[col]};--tint:{bg}">
@@ -445,14 +445,14 @@ def colour_page(col, data):
 
     <div class="no-print" data-generic>
       <h2 class="h3">Which boss are you?</h2>
-      <p class="muted" style="margin-top:6px">Take the 12-question quiz to find out.</p>
-      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="which-boss-are-you.html">Take the quiz</a></div>
+      <p class="muted" style="margin-top:6px">Take the 12-question assessment to find out.</p>
+      <div class="btn-row" style="margin-top:14px"><a class="btn btn-ink" href="which-boss-are-you.html">Take the assessment</a></div>
     </div>
 
     <div class="no-print">
       <h2 class="h3">The four colours</h2>
       <div class="colour-chips" style="margin-top:12px">{others}</div>
-      <p style="margin-top:16px" data-personal hidden><a class="text-link" href="which-boss-are-you.html">Retake the quiz</a></p>
+      <p style="margin-top:16px" data-personal hidden><a class="text-link" href="which-boss-are-you.html">Retake the assessment</a></p>
     </div>
 
     <p class="print-only small">Tanya Hill Coaching · Built Like a Boss · tanyahill.co.uk · WhatsApp {PHONE_DISPLAY} · {EMAIL}</p>
@@ -461,7 +461,7 @@ def colour_page(col, data):
     meta = {
         "path": f"colour-{col}.html", "nav": "colour",
         "title": f"{CNAME[col]}: {p['type']} · Which Boss Are You?",
-        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Find your colour with Tanya Hill's Which Boss Are You? quiz.",
+        "description": f"{CNAME[col]}, {p['type']}: {p['tag']}. Find your colour with Tanya Hill's Which Boss Are You? assessment.",
         "og_image": f"img/og-{col}.jpg",
         "body_extra": '\n<script src="quiz-data.js" defer></script>\n<script src="result.js" defer></script>',
     }

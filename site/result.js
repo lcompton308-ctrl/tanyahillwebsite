@@ -50,7 +50,7 @@
   if (sec) sec.innerHTML = 'Secondary colour: <strong style="color:' + TEXT[second] + '">' + NAME[second] + ", " + PROFILES[second].type + "</strong>";
 
   var debrief = $("[data-debrief]");
-  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the Which Boss Are You? quiz and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
+  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the Which Boss Are You? assessment and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
 
   // Results are only remembered on the device that took the quiz (quiz.js saves them when it
   // finishes). Opening someone else's link, e.g. Tanya from her results sheet, mustn't overwrite hers.
@@ -64,7 +64,7 @@
     var sendBtn = function (label) {
       var b = document.createElement("a");
       b.className = "btn btn-gold"; b.style.marginTop = "12px"; b.style.width = "100%";
-      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Which Boss Are You? quiz: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
+      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Which Boss Are You? assessment: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
       b.textContent = label; note.appendChild(b);
     };
     if (status === "manual") {

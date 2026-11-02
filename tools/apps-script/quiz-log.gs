@@ -34,7 +34,7 @@ function doPost(e) {
     if (SEND_EMAIL) {
       MailApp.sendEmail({
         to: Session.getEffectiveUser().getEmail(),
-        subject: "New quiz result: " + name + " is " + colour,
+        subject: "New assessment result: " + name + " is " + colour,
         body: name + " just finished Which Boss Are You?\n\n" +
               "Colour: " + colour + (second ? " (second: " + second + ")" : "") + "\n" +
               "Scores: " + clean(d.scores, 80) + "\n" +

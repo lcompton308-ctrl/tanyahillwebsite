@@ -49,7 +49,7 @@
         '<p class="small" style="margin-top:12px"><button type="button" class="linklike" id="forget">Not you? Forget my details on this device</button></p></div>';
     }
     root.innerHTML = '<div class="quiz-card quiz-intro">' + back +
-      '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the quiz") + '</button>' +
+      '<button class="btn btn-ink" type="button" id="start">' + (back ? "Take it again" : "Start the assessment") + '</button>' +
       (chips ? chips.innerHTML : "") +
       '<p class="small muted" style="margin-top:16px">At the end, you can send your results to me on WhatsApp so we can talk through what they mean for you.</p></div>';
     var forget = document.getElementById("forget");
