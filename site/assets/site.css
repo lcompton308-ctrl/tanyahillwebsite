@@ -584,3 +584,41 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .nav a:not(.btn):hover { background: #2e2a23; }
 .nav a:not(.btn)[aria-current="page"] { background: #2e2a23; box-shadow: inset 0 -2px 0 var(--gold); }
 .site-header :focus-visible { outline-color: var(--gold); }
+
+/* ===== Polish pass (2 Nov): fewer outlines; boxes separated by tone, soft shadow and space ===== */
+:root { --soft: 0 1px 2px rgba(26, 24, 20, .05), 0 6px 18px rgba(26, 24, 20, .06); }
+
+/* Boxes on the plain paper background: a soft lift instead of an outline */
+.card, .steps li, .checklist li, .linkedin-card, .drawing, .other-ways a, .pc, .fold {
+  border: 0;
+  box-shadow: var(--soft);
+}
+/* Boxes on the tinted sections sit flat: the tone change does the work */
+.section.alt .card, .section.alt .steps li, .section.alt .checklist li { box-shadow: none; }
+.drawing figcaption { border-top: 0; }
+.other-ways a:hover, .m-tile:hover { box-shadow: 0 0 0 2px var(--ink); }
+.notice { border: 0; }
+.trust li { border: 0; background: var(--paper-2); }
+
+/* FAQ: an open list with a single rule between questions, no boxes */
+.faq { gap: 0; border-top: 1px solid var(--line); }
+.faq details { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+.faq summary { padding-left: 0; }
+.faq .answer { padding-left: 0; }
+
+/* How I work panels: open one gets a tint, closed ones lift slightly */
+.fold[open] { background: var(--paper); box-shadow: var(--soft); }
+.area-fold[open] { background: var(--card); box-shadow: 0 0 0 2px var(--gold), var(--soft); }
+
+/* Colour chips: a tinted fill and a dot, no side stripe */
+.chip { border: 0; border-left: 0; background: color-mix(in srgb, var(--c) 11%, var(--card)); }
+.chip b { display: flex; align-items: center; gap: 8px; }
+.chip b::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c); flex: none; }
+
+/* Results: strengths and challenges as tinted panels, no top stripes */
+.pc { box-shadow: none; }
+.pc-good { border-top: 0; background: color-mix(in srgb, var(--green-t) 9%, var(--card)); }
+.pc-watch { border-top: 0; background: color-mix(in srgb, var(--gold) 14%, var(--card)); }
+
+/* Quiz reassurance line: tinted, no side stripe */
+.reassure { border-left: 0; border-radius: 12px; background: color-mix(in srgb, var(--gold) 16%, var(--paper)); }
