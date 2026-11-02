@@ -24,7 +24,7 @@ function doPost(e) {
     var colour = COLOURS.indexOf(d.colour) > -1 ? d.colour : "";
     var second = COLOURS.indexOf(d.second) > -1 ? d.second : "";
     var link = typeof d.link === "string" && d.link.indexOf(SITE) === 0 ? clean(d.link, 300) : "";
-    if (!name || !colour) return ok();          // ignore anything that isn't a real quiz result
+    if (!name || !colour) return ok();          // ignore anything that isn't a real assessment result
 
     lock.waitLock(10000);
     var sh = sheet();
