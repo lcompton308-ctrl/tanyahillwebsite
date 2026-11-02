@@ -134,7 +134,7 @@ SCHEMA = {
     "alternateName": "Built Like a Boss",
     "description": "Business coaching for trade and construction business owners: better margins, more time and your headspace back.",
     "url": DOMAIN + "/",
-    "image": DOMAIN + "/img/og.jpg",
+    "image": DOMAIN + "/img/og-2.jpg",
     "logo": DOMAIN + "/img/icons/icon-512.png",
     "telephone": PHONE_TEL,
     "email": EMAIL,
@@ -175,7 +175,7 @@ def page(meta, body):
 <meta property="og:title" content="{full_title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{DOMAIN}/{meta.get("og_image", "img/og.jpg")}">
+<meta property="og:image" content="{DOMAIN}/{meta.get("og_image", "img/og-2.jpg")}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
