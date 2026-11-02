@@ -630,3 +630,7 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .nav a.nav-assess { box-shadow: inset 0 0 0 1.5px rgba(211, 161, 62, .55); }
 .nav a.nav-assess:hover { box-shadow: inset 0 0 0 1.5px var(--gold); }
 .nav a.nav-assess[aria-current="page"] { box-shadow: inset 0 0 0 1.5px var(--gold), inset 0 -2px 0 var(--gold); }
+
+/* Four product tiles: one column on phones, two by two from tablet up */
+.grid-2x2 { grid-template-columns: 1fr; }
+@media (min-width: 700px) { .grid-2x2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
