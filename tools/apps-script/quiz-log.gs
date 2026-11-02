@@ -2,7 +2,7 @@
  * Which Boss Are You? results log
  * Lives in Tanya's Google Sheet "Which Boss Are You? results" (Extensions > Apps Script).
  *
- * The website sends first name, colour, second colour, scores and results link when someone
+ * The website sends name, colour, second colour, scores and results link when someone
  * finishes the quiz. Never email addresses or phone numbers.
  *  - doPost      adds a row to the sheet and emails Tanya a short note
  *  - setup       run once: adds the headings, the Client tick-box column and the daily clean-up
@@ -14,7 +14,7 @@ var SEND_EMAIL = true;          // set to false to stop the "new quiz result" em
 var KEEP_DAYS = 365;            // privacy policy says 12 months
 var SITE = "https://tanyahill.co.uk/";
 var COLOURS = ["Red", "Yellow", "Green", "Blue"];
-var HEADINGS = ["Date", "First name", "Colour", "Second colour", "Scores", "Results link", "Client"];
+var HEADINGS = ["Date", "Name", "Colour", "Second colour", "Scores", "Results link", "Client"];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();

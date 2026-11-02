@@ -28,10 +28,12 @@
     document.querySelectorAll("details.fold").forEach(function (d) { d.open = true; });
   }
 
-  // Floating "Book a call": show once the page's first Book button (or the top of the page) has scrolled away
+  // Floating "Book a call" (phones): show once the top of the page has scrolled away.
+  // Uses the first Book button if it's near the top (homepage, book page), otherwise the page heading.
   var fab = document.querySelector(".book-fab");
   if (fab) {
-    var anchor = document.querySelector("main .btn-gold") || document.querySelector("main > section");
+    var gold = document.querySelector("main .btn-gold");
+    var anchor = (gold && gold.getBoundingClientRect().top + window.scrollY < 900) ? gold : document.querySelector("main > section");
     if (anchor && "IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {
         var e = entries[0];

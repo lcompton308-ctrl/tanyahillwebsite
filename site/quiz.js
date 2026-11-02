@@ -1,12 +1,12 @@
 // Which Boss Are You? quiz (based on the Behaviour Colour Profile).
-// Flow: intro → 12 questions → first name → personal results page (colour-<colour>.html#n=..&s=..).
+// Flow: intro → 12 questions → name → personal results page (colour-<colour>.html#n=..&s=..).
 // Content lives in quiz-data.js (PROFILES, QUESTIONS, HEX, BG).
 (function () {
   var root = document.getElementById("quiz");
   if (!root || typeof QUESTIONS === "undefined") return;
 
   // Empty = nothing leaves the device. Later: the web-app URL of the Google Apps Script in Tanya's account,
-  // which logs first name + colour to her Google Sheet (no contact details) and deletes rows after 12 months.
+  // which logs name + colour to her Google Sheet (no contact details) and deletes rows after 12 months.
   var RESULTS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2z2vguH29cBty3pp6jabEkX7O2fYCsi5TGoxCLF5XgqvzndGpxOHEVyIC58CmY_Y2/exec";
   var SITE = "https://tanyahill.co.uk";
   var ORDER = ["red", "yellow", "green", "blue"];
@@ -97,20 +97,20 @@
     }, reduce ? 60 : 280);
   }
 
-  // Last step: just a first name. No email or phone, ever: Tanya picks the conversation up on WhatsApp.
+  // Last step: just their name. No email or phone, ever: Tanya picks the conversation up on WhatsApp.
   function details() {
     var saved = {};
     try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
     root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
       '<div class="q-meta"><span>All 12 answered</span><button class="q-back" type="button" id="back">← Back</button></div>' +
-      '<h2 class="q-text">Nearly there. What\'s your first name?</h2>' +
+      '<h2 class="q-text">Nearly there. What\'s your name?</h2>' +
       '<p class="muted" style="margin:-6px 0 14px">It goes on your results so they feel like yours.</p>' +
       '<p class="reassure">Don\'t worry, I don\'t need your email or phone number. No sales calls, no spam. Just your results.</p>' +
       '<form id="cp-details" class="stack" novalidate>' +
-      field("cp-fullname", "Your first name", "text", "given-name", saved.name) +
+      field("cp-fullname", "Your name", "text", "name", saved.name) +
       '<p class="form-error" id="cp-error" role="alert"></p>' +
       '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
-      '<p class="small muted">I\'ll see your first name and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
+      '<p class="small muted">I\'ll see your name and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
       '</form></div>';
     document.getElementById("back").onclick = function () {
       state.screen = "quiz"; state.q = QUESTIONS.length - 1; state.answers.length = state.picks.length = state.q;
@@ -121,7 +121,7 @@
       var f = { name: val("cp-fullname") };
       var err = document.getElementById("cp-error"), el = document.getElementById("cp-fullname");
       el.removeAttribute("aria-invalid");
-      if (f.name.length < 2) { err.textContent = "Please enter your first name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
+      if (f.name.length < 2) { err.textContent = "Please enter your name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
       err.textContent = ""; store("cp_contact", JSON.stringify(f));
       logCompletion(f.name);
       finish(f, "manual");
@@ -134,11 +134,11 @@
   }
 
   // Once the Google Apps Script exists, RESULTS_ENDPOINT is its web-app URL and this quietly logs
-  // first name, colour and scores to Tanya's Google Sheet. Never contact details.
+  // name, colour and scores to Tanya's Google Sheet. Never contact details.
   function logCompletion(name) {
     if (!RESULTS_ENDPOINT) return;
     var r = result();
-    var data = JSON.stringify({ name: name.split(" ")[0], colour: NAME[r.dom], second: NAME[r.second],
+    var data = JSON.stringify({ name: name, colour: NAME[r.dom], second: NAME[r.second],
       scores: ORDER.map(function (k) { return NAME[k] + " " + r.scores[k]; }).join(", "), link: SITE + "/" + resultsPath(r, name) });
     try {
       if (navigator.sendBeacon) navigator.sendBeacon(RESULTS_ENDPOINT, new Blob([data], { type: "text/plain" }));

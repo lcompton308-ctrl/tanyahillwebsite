@@ -123,7 +123,11 @@ def nav_links(active, cls=""):
     out = []
     for key, href, label in NAV:
         cur = ' aria-current="page"' if key == active else ""
-        out.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
+        if key == "colour":
+            dots = '<span class="nav-dots" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span>'
+            out.append(f'<li><a class="nav-assess" href="{href}"{cur}>{dots}{label}</a></li>')
+        else:
+            out.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
     return "\n".join(out)
 
 
@@ -172,7 +176,7 @@ def page(meta, body):
 <meta name="theme-color" content="#1a1814">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tanya Hill Coaching">
-<meta property="og:title" content="{full_title}">
+<meta property="og:title" content="{meta.get("og_title", full_title)}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{DOMAIN}/{meta.get("og_image", "img/og-2.jpg")}">
