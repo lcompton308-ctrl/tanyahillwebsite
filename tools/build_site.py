@@ -83,6 +83,22 @@ DRAWINGS = {
         lesson="Marketing, sales, operations and finance: the four areas every business needs lined up.",
         alt="Hand-drawn yellow rubber duck with the words Have you got your business ducks in a row? Marketing, sales, operations, finance.",
         w=1344, h=1110),
+    "superman-pants": dict(
+        date="2022-01-01",  # when the drawing was made (newest shows first)
+        title="Superman pants: the uniform of the tradie business owner", topic="people", topic_label="People",
+        lesson="The pants that got you here won't get you where you want to go. What's one job you could hand over this week?",
+        alt="Hand-drawn pair of light blue briefs with a big red letter S on the front, Superman style, signed Tanya Hill 2022.",
+        story="""<p>Let's be honest. If you run a construction or trades business, you've probably got a pair on under your work trousers.</p>
+<p>Superman pants. The big red "S" on the front.</p>
+<p>Because deep down you think nobody can do it like you can. Nobody quotes it like you. Nobody sorts the site like you. Nobody chases the supplier, fixes the snag, answers the phone at 9pm, or finishes that job properly like you.</p>
+<p>And I get it. That's exactly how you built the business.</p>
+<p>But here's the thing: the pants that got you here won't get you where you want to go.</p>
+<p>When you're the only superhero in the building:</p>
+<ul><li>Everything runs through you</li><li>You can't take a proper holiday</li><li>The business stalls the moment you step away</li><li>You're working in the business, not on it</li></ul>
+<p>Building a business that runs without you means trusting your team, building systems, and letting go of the idea that it only gets done right if you do it. That's not weakness. That's leadership.</p>
+<p>So here's my challenge: what's one job you could hand over this week? Just one.</p>
+<p>Take the cape off for a minute. The business (and your family) will thank you for it.</p>""",
+        w=828, h=594),
 }
 
 
@@ -95,7 +111,7 @@ def drawing_card(key, heading="h3", lazy=True):
   </button>
   <figcaption>
     <{heading}>{d['title']}</{heading}>
-    <p>{d['lesson']}</p>
+    <p>{d['lesson']}</p>{('<details class="story"><summary>Read more</summary><div class="story-body">' + d['story'] + '</div></details>') if d.get('story') else ''}
     <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="resources.html#{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
   </figcaption>
 </figure>"""

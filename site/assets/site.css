@@ -634,3 +634,10 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 /* Four product tiles: one column on phones, two by two from tablet up */
 .grid-2x2 { grid-template-columns: 1fr; }
 @media (min-width: 700px) { .grid-2x2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Illustrations: optional longer write-up under a drawing */
+.drawing .story { margin-top: 4px; }
+.drawing .story summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; font-family: var(--f-head); font-weight: 600; font-size: .95rem; color: var(--bronze); text-decoration: underline; text-underline-offset: 3px; }
+.drawing .story[open] summary { margin-bottom: 4px; }
+.drawing .story-body { display: grid; gap: .7em; color: var(--stone); font-size: .97rem; }
+.drawing .story-body ul { margin: 0; padding-left: 1.2em; display: grid; gap: .25em; }
