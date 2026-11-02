@@ -112,7 +112,7 @@ def drawing_card(key, heading="h3", lazy=True):
   <figcaption>
     <{heading}>{d['title']}</{heading}>
     <p>{d['lesson']}</p>{('<details class="story"><summary>Read more</summary><div class="story-body">' + d['story'] + '</div></details>') if d.get('story') else ''}
-    <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="resources.html#{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
+    <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="illustrations.html#{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
   </figcaption>
 </figure>"""
 
@@ -121,7 +121,7 @@ NAV = [
     ("home", "index.html", "Home"),
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
-    ("resources", "resources.html", "Illustrations"),
+    ("resources", "illustrations.html", "Illustrations"),
     ("colour", "which-boss-are-you.html", "Which Boss Are You?"),
 ]
 
@@ -338,7 +338,7 @@ def render(text):
 
 
 # Old page address -> new page address (without .html). Keeps old links and bookmarks working.
-REDIRECTS = {"colour-profile.html": "which-boss-are-you"}
+REDIRECTS = {"colour-profile.html": "which-boss-are-you", "resources.html": "illustrations"}
 
 
 def main():
