@@ -3,14 +3,14 @@
  * Lives in Tanya's Google Sheet "Which Boss Are You? results" (Extensions > Apps Script).
  *
  * The website sends name, colour, second colour, scores and results link when someone
- * finishes the quiz. Never email addresses or phone numbers.
+ * finishes the assessment. Never email addresses or phone numbers.
  *  - doPost      adds a row to the sheet and emails Tanya a short note
  *  - setup       run once: adds the headings, the Client tick-box column and the daily clean-up
  *  - cleanUp     runs daily: deletes rows older than 12 months unless Client is ticked
  */
 
 var SHEET_NAME = "Results";
-var SEND_EMAIL = true;          // set to false to stop the "new quiz result" emails
+var SEND_EMAIL = true;          // set to false to stop the "new assessment result" emails
 var KEEP_DAYS = 365;            // privacy policy says 12 months
 var SITE = "https://tanyahill.co.uk/";
 var COLOURS = ["Red", "Yellow", "Green", "Blue"];
@@ -20,7 +20,7 @@ function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
     var d = JSON.parse((e && e.postData && e.postData.contents) || "{}");
-    var name = clean(d.name, 40);
+    var name = clean(d.name, 60);
     var colour = COLOURS.indexOf(d.colour) > -1 ? d.colour : "";
     var second = COLOURS.indexOf(d.second) > -1 ? d.second : "";
     var link = typeof d.link === "string" && d.link.indexOf(SITE) === 0 ? clean(d.link, 300) : "";
