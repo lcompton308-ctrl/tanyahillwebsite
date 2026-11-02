@@ -179,8 +179,9 @@ def page(meta, body):
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.ico" sizes="32x32">
-<link rel="icon" href="img/icons/icon-192.png" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="img/icons/favicon-96.png" sizes="96x96" type="image/png">
+<link rel="icon" href="img/icons/icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
