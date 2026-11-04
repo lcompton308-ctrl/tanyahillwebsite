@@ -116,3 +116,16 @@
 
 /* ---- 12. Every gold "Book" button is full width on phones, so it always reads as the main action ---- */
 @media (max-width: 559px) { .home main .btn-gold { width: 100%; } }
+/* ---- 13. Which Boss Are You? card in the opening screen (option B, chosen 4 Nov) ---- */
+.home .quiz-card-hero { display: block; margin-top: 24px; max-width: 34rem; background: var(--card); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ink); box-shadow: var(--soft); }
+.home .qc-bar { display: grid; grid-template-columns: repeat(4, 1fr); height: 8px; }
+.home .qc-bar i { display: block; }
+.home .qc-body { display: grid; gap: 6px; padding: 18px 20px 20px; }
+.home .qc-title { font-family: var(--f-head); font-weight: 700; font-size: 1.45rem; line-height: 1.15; }
+.home .qc-text { color: var(--stone); font-size: .98rem; }
+.home .qc-btn { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; gap: .5em; min-height: 50px; border-radius: 999px; background: var(--ink); color: var(--paper); font-family: var(--f-head); font-weight: 600; }
+.home .qc-btn svg { width: 1em; height: 1em; }
+.home .quiz-card-hero:hover .qc-btn { background: #000; }
+.home .quiz-card-hero:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.home .quiz-card-hero + .proof { margin-top: 24px; }
+@media (min-width: 560px) { .home .qc-btn { justify-self: start; padding-inline: 1.5em; } }
