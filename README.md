@@ -18,3 +18,5 @@
 2. Make web versions in `site/img/art/` (`name.webp` and `name-sm.webp`).
 3. Add an entry to `DRAWINGS` in `tools/build_site.py` and add `{{drawing:name}}` to `tools/pages/03-resources.html`.
 4. Run the build and commit.
+
+Each drawing also gets its own page at `tanyahill.co.uk/drawings/<name>`, made by the build. The Share buttons send that link, so WhatsApp shows the drawing in the preview. The preview image (`site/img/og/drawing-<name>.jpg`) is made by `python3 tools/make_og.py`, which the publish workflow also runs.

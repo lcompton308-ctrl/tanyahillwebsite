@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Makes the WhatsApp/social link-preview images for the four colour result pages (site/img/og-<colour>.jpg).
+"""Makes the WhatsApp/social link-preview images for the four colour result pages (site/img/og-<colour>.jpg)
+and for each drawing's own page (site/img/og/drawing-<name>.jpg).
 
 When someone sends their results link on WhatsApp, the preview shows a card in their colour.
 Uses Poppins and DM Sans when available (the deploy workflow downloads them to /tmp/f),
@@ -21,7 +22,7 @@ def font(candidates, size):
             continue
     return ImageFont.load_default()
 
-HEAD = ["/tmp/f/p700.ttf", "/usr/share/fonts/opentype/inter/Inter-Bold.otf"]
+HEAD = ["/tmp/f/p700.ttf", "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf", "/usr/share/fonts/opentype/inter/Inter-Bold.otf"]
 BODY = ["/tmp/f/dm.ttf", "/usr/share/fonts/opentype/inter/Inter-Medium.otf"]
 
 js = "const fs=require('fs');eval(fs.readFileSync(process.argv[1],'utf8'));process.stdout.write(JSON.stringify({PROFILES,HEX,BG}))"
@@ -59,3 +60,27 @@ for col in ["red", "yellow", "green", "blue"]:
     d.text((W // 2, 580), "Find yours at tanyahill.co.uk", font=font(HEAD, 30), fill=INK, anchor="mm")
     im.save(SITE / f"img/og-{col}.jpg", quality=86, optimize=True, progressive=True)
     print("made", f"img/og-{col}.jpg")
+
+
+# ---- One preview per drawing: the drawing itself, large, on white, with a slim branded strip ----
+import sys
+sys.path.insert(0, str(ROOT / "tools"))
+from build_site import DRAWINGS
+
+(SITE / "img/og").mkdir(exist_ok=True)
+for key in DRAWINGS:
+    src = ROOT / "originals/drawings" / f"{key}.png"
+    art = Image.open(src if src.exists() else SITE / f"img/art/{key}.webp").convert("RGB")
+    W, H, BAR = 1200, 630, 64
+    im = Image.new("RGB", (W, H), "#ffffff")
+    box_w, box_h = W - 60, H - BAR - 36
+    s = min(box_w / art.width, box_h / art.height)
+    a = art.resize((round(art.width * s), round(art.height * s)), Image.LANCZOS)
+    im.paste(a, ((W - a.width) // 2, 18 + (box_h - a.height) // 2))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, H - BAR, W, H], fill=INK)
+    d.rectangle([0, H - BAR, W, H - BAR + 4], fill=GOLD)
+    d.text((40, H - BAR // 2 + 2), "Tanya Hill · Built Like a Boss", font=font(HEAD, 26), fill=GOLD, anchor="lm")
+    d.text((W - 40, H - BAR // 2 + 2), "tanyahill.co.uk", font=font(HEAD, 26), fill=PAPER, anchor="rm")
+    im.save(SITE / f"img/og/drawing-{key}.jpg", quality=84, optimize=True, progressive=True)
+    print("made", f"img/og/drawing-{key}.jpg")

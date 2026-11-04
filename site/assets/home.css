@@ -1,0 +1,131 @@
+/* ==========================================================================
+   Homepage hierarchy pass (preview, 3 Nov 2026)
+   Loaded only by index.html and scoped to body.home, so no other page changes.
+   ========================================================================== */
+
+/* ---- 1. One type scale, four clear levels ----
+   L1 page headline  > L2 section titles (all the same) > L3 card titles > body
+   Each level is roughly 1.5x the one below, so the eye always knows the order. */
+.home {
+  --h1: clamp(2.35rem, 1.55rem + 3.6vw, 4rem);
+  --h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --h3: 1.15rem;
+  --lede: clamp(1.1rem, 1.02rem + .35vw, 1.25rem);
+  --sec: 56px;          /* space above and below a normal section on phones */
+}
+@media (min-width: 960px) { .home { --sec: 88px; } }
+
+.home h1 { font-size: var(--h1); line-height: 1.06; letter-spacing: -.02em; }
+.home main h2,
+.home .fold-title { font-size: var(--h2); line-height: 1.15; letter-spacing: -.01em; }
+.home main h3 { font-size: var(--h3); line-height: 1.3; }
+.home .lede { font-size: var(--lede); line-height: 1.55; }
+/* Eyebrows: quieter, so they label a section rather than compete with it */
+.home .eyebrow { font-size: .74rem; letter-spacing: .12em; }
+
+/* ---- 2. Hero: one headline, one button, one proof line ---- */
+.home .hero { padding-block: 32px 48px; }
+.home .hero .eyebrow { display: block; }
+.home .hero h1 { margin-top: 14px; max-width: 13ch; }
+.home .hero .lede { margin-top: 18px; max-width: 34ch; }
+.home .hero .btn-row { margin-top: 28px; align-items: center; gap: 8px 24px; }
+.home .hero .btn-gold { min-height: 56px; padding-inline: 1.6em; font-size: 1.05rem; box-shadow: 0 6px 18px rgba(211, 161, 62, .35); }
+@media (max-width: 559px) { .home .hero .btn-gold { width: 100%; } }
+/* "How I work" becomes a quiet text link, so the gold button is clearly the main action */
+.home .hero .text-link { color: var(--ink); }
+.home .hero .text-link:hover { color: var(--bronze); }
+
+/* Proof line replaces the three pills: plain text, years written out */
+.home .proof { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; list-style: none; max-width: 36rem; font-size: .95rem; color: var(--stone); }
+.home .proof b { font-weight: 700; color: var(--ink); }
+.home .proof .li-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--stone); text-decoration: none; font-weight: 600; }
+.home .proof .li-link:hover { color: var(--ink); text-decoration: underline; }
+.home .proof .li-dot { width: 22px; height: 22px; border-radius: 5px; background: #0a66c2; color: #fff; display: grid; place-items: center; }
+.home .proof .li-dot svg { width: 13px; height: 13px; }
+@media (max-width: 559px) { .home .proof li:not(:last-child) { min-height: 28px; display: flex; align-items: center; } }
+
+/* The assessment sits beside "How I work" as an equal second link */
+.home .hero .hero-links { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.home .hero .qp-dots { display: inline-flex; gap: 3px; }
+.home .hero .qp-dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+
+.home .hero-photo { margin-top: 8px; }
+@media (min-width: 960px) {
+  .home .hero { padding-block: 72px 72px; }
+  .home .hero-grid { align-items: start; }
+  .home .hero-photo { margin-top: 0; }
+}
+
+/* ---- 3. Even spacing: one rhythm for every section ---- */
+.home .section:not(.fold-sec) { padding-block: var(--sec); }
+.home .section-head { margin-bottom: 28px; }
+.home .section-head h2 { margin-top: 8px; }
+@media (min-width: 960px) { .home .section-head { margin-bottom: 40px; } }
+
+/* ---- 4. Phones: keep the tap-to-open panels, tidy their alignment ---- */
+.home .fold summary { padding: 18px 18px 18px 20px; }
+.home .fold-body { padding: 4px 20px 24px; }          /* content now lines up with the title above it */
+.home .fold-static .fold-summary { padding: 20px 20px 8px; }
+.home .fold-head { gap: 8px; }
+@media (max-width: 959px) {
+  .home .fold-title { font-size: 1.25rem; line-height: 1.2; }   /* closed panels read as a list of topics */
+  .home .fold-sec:has(+ :not(.fold-sec)) { padding-bottom: var(--sec); }
+  .home .hero + .fold-sec { padding-top: 8px; }
+}
+
+/* ---- 5. Laptops: open panels become normal full-width sections ---- */
+@media (min-width: 960px) {
+  .home .fold-sec { padding-block: var(--sec); }
+  .home .fold-sec + .fold-sec { padding-top: var(--sec); }
+  .home .fold-sec.alt { background: var(--paper-2); }
+  .home .fold, .home .fold[open] { background: transparent; box-shadow: none; border-radius: 0; }
+  .home .fold summary, .home .fold-static .fold-summary { padding: 0 0 40px; min-height: 0; }
+  .home .fold[open] summary { cursor: default; pointer-events: none; }
+  .home .fold[open] .fold-toggle { display: none; }
+  .home .fold-body { padding: 0; animation: none; }
+  .home .fold-head { max-width: 46rem; gap: 10px; }
+  /* Text sits level with the top of the picture, not floating halfway down */
+  .home .split, .home .feature-drawing { align-items: start; }
+  .home .split .stack, .home .feature-drawing .stack { max-width: 60ch; padding-top: 4px; }
+}
+
+/* Body copy inside sections: comfortable line length */
+.home .fold-body .lede { max-width: 52ch; }
+
+/* ---- 6. The £72k number: still big, but smaller than the headline ---- */
+.home .big-number { font-size: clamp(2.2rem, 1.7rem + 2vw, 3rem); color: var(--ink); }
+
+/* ---- 7. Steps: number sits beside the title on phones, so text gets the full width ---- */
+@media (max-width: 959px) {
+  .home .steps li { padding: 20px; }
+  .home .steps li::before { position: static; display: inline-grid; width: 34px; height: 34px; font-size: .95rem; margin-bottom: 12px; }
+}
+.home .steps h3 { font-size: var(--h3); }
+
+/* ---- 8. Card titles: one size everywhere ---- */
+.home .card h3, .home .drawing figcaption h3 { font-size: var(--h3); }
+
+/* ---- 9. LinkedIn card heading is a card title, not a section title ---- */
+.home .linkedin-card h2 { font-size: clamp(1.3rem, 1.15rem + .6vw, 1.6rem) !important; }
+
+/* ---- 10. Final call to action: the biggest heading after the hero ---- */
+.home .cta-band h2 { font-size: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem); max-width: 20ch; }
+
+/* ---- 11. Fix: eyebrows inside .section-head were picking up the big grey intro-paragraph style ---- */
+.home .section-head p.eyebrow { font-size: .74rem; line-height: 1.4; color: var(--bronze); margin-top: 0; }
+
+/* ---- 12. Every gold "Book" button is full width on phones, so it always reads as the main action ---- */
+@media (max-width: 559px) { .home main .btn-gold { width: 100%; } }
+/* ---- 13. Which Boss Are You? card in the opening screen (option B, chosen 4 Nov) ---- */
+.home .quiz-card-hero { display: block; margin-top: 24px; max-width: 34rem; background: var(--card); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ink); box-shadow: var(--soft); }
+.home .qc-bar { display: grid; grid-template-columns: repeat(4, 1fr); height: 8px; }
+.home .qc-bar i { display: block; }
+.home .qc-body { display: grid; gap: 6px; padding: 18px 20px 20px; }
+.home .qc-title { font-family: var(--f-head); font-weight: 700; font-size: 1.45rem; line-height: 1.15; }
+.home .qc-text { color: var(--stone); font-size: .98rem; }
+.home .qc-btn { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; gap: .5em; min-height: 50px; border-radius: 999px; background: var(--ink); color: var(--paper); font-family: var(--f-head); font-weight: 600; }
+.home .qc-btn svg { width: 1em; height: 1em; }
+.home .quiz-card-hero:hover .qc-btn { background: #000; }
+.home .quiz-card-hero:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.home .quiz-card-hero + .proof { margin-top: 24px; }
+@media (min-width: 560px) { .home .qc-btn { justify-self: start; padding-inline: 1.5em; } }
