@@ -210,7 +210,7 @@ def page(meta, body):
 <!-- Cloudflare Web Analytics: no cookies, no personal data stored -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "047d13a47ec749fcb989fa6bfed87cb7"}}'></script>
 </head>
-<body>
+<body{(' class="' + meta["body_class"] + '"') if meta.get("body_class") else ""}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap bar">
@@ -316,7 +316,7 @@ def clean_links(html):
 
 def bust(html):
     html = clean_links(html)
-    for rel in ["assets/site.css", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
+    for rel in ["assets/site.css", "assets/home.css", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
         html = html.replace(f'"{rel}"', f'"{rel}?v={version(rel)}"')
     return html
 
