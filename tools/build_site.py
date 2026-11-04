@@ -112,7 +112,7 @@ def drawing_card(key, heading="h3", lazy=True):
   <figcaption>
     <{heading}>{d['title']}</{heading}>
     <p>{d['lesson']}</p>{('<details class="story"><summary>Read more</summary><div class="story-body">' + d['story'] + '</div></details>') if d.get('story') else ''}
-    <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="illustrations.html#{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
+    <div class="meta"><span class="topic">{d['topic_label']}</span><button class="share-btn" type="button" data-share="/drawings/{key}" data-share-title="{d['title']}">{ICONS['share']}Share</button></div>
   </figcaption>
 </figure>"""
 
@@ -309,8 +309,8 @@ def clean_links(html):
     # tanyahill.co.uk/ instead of /index.html, /about instead of /about.html (GitHub Pages serves both)
     html = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/' + (m.group(1) or '') + '"', html)
     html = re.sub(r'href="([a-z0-9-]+)\.html(#[^"]*)?"', lambda m: 'href="' + m.group(1) + (m.group(2) or '') + '"', html)
-    html = re.sub(r'(<link rel="canonical" href="https://tanyahill\.co\.uk/[a-z0-9-]+)\.html', r'\1', html)
-    html = re.sub(r'(<meta property="og:url" content="https://tanyahill\.co\.uk/[a-z0-9-]+)\.html', r'\1', html)
+    html = re.sub(r'(<link rel="canonical" href="https://tanyahill\.co\.uk/[a-z0-9/-]+)\.html', r'\1', html)
+    html = re.sub(r'(<meta property="og:url" content="https://tanyahill\.co\.uk/[a-z0-9/-]+)\.html', r'\1', html)
     return html
 
 
@@ -350,6 +350,7 @@ def main():
         (OUT / meta["path"]).write_text(html, encoding="utf-8")
         built.append(meta)
     built += build_colour_pages()
+    built += build_drawing_pages()
     # old addresses that now live somewhere else: a tiny page that forwards visitors (and Google) on
     for old, new in REDIRECTS.items():
         (OUT / old).write_text(f"""<!doctype html>
@@ -495,6 +496,68 @@ def build_colour_pages():
         meta, body = colour_page(col, data)
         html = bust(page(meta, body))
         (OUT / meta["path"]).write_text(html, encoding="utf-8")
+        metas.append(meta)
+    return metas
+
+
+# ---------------- One page per drawing ----------------
+# WhatsApp, LinkedIn and Facebook ignore the #part of a link, so illustrations#superman-pants
+# always previewed as the whole Illustrations page. Each drawing now has its own address
+# (tanyahill.co.uk/drawings/<name>) with its own title, lesson and preview image
+# (img/og/drawing-<name>.jpg, made by tools/make_og.py), so a shared link shows that drawing.
+
+def drawing_page(key):
+    d = DRAWINGS[key]
+    story = f'<div class="prose drawing-story">{d["story"]}</div>' if d.get("story") else ""
+    body = f"""<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Illustration · {d['topic_label']}</p>
+    <h1>{d['title']}</h1>
+    <p class="lede">{d['lesson']}</p>
+  </div>
+</section>
+
+<section class="section" aria-label="The illustration">
+  <div class="wrap narrow stack-lg">
+    <figure class="drawing" id="{key}" data-topic="{d['topic']}">
+      <button class="zoom" type="button" data-full="img/art/{key}.webp" data-title="{d['title']}" aria-label="View full size: {d['title']}">
+        <img src="img/art/{key}.webp" width="{d['w']}" height="{d['h']}" alt="{d['alt']}" fetchpriority="high" decoding="async">
+      </button>
+    </figure>
+    {story}
+    <div class="btn-row">
+      <button class="btn btn-ink share-btn-lg" type="button" data-share="/drawings/{key}" data-share-title="{d['title']}">{ICONS['share']}Share this drawing</button>
+      <a class="btn btn-line" href="illustrations.html">See all illustrations</a>
+    </div>
+  </div>
+</section>
+
+<section class="section dark cta-band" aria-labelledby="cta">
+  <div class="wrap">
+    <p class="eyebrow">Sound familiar?</p>
+    <h2 id="cta">Let's map out your A to B</h2>
+    <p class="muted">Book a 30-minute call and we'll start getting it out of your head.</p>
+    <div class="btn-row">
+      <a class="btn btn-gold" href="{WA}">{ICONS['whatsapp']}Message me on WhatsApp</a>
+      <a class="btn btn-line" href="book.html">Other ways to book</a>
+    </div>
+  </div>
+</section>"""
+    meta = {
+        "path": f"drawings/{key}.html", "nav": "resources", "base": True,
+        "title": d["title"],
+        "description": esc(d["lesson"]),
+        "og_image": f"img/og/drawing-{key}.jpg",
+    }
+    return meta, body
+
+
+def build_drawing_pages():
+    (OUT / "drawings").mkdir(exist_ok=True)
+    metas = []
+    for key in DRAWINGS:
+        meta, body = drawing_page(key)
+        (OUT / meta["path"]).write_text(bust(page(meta, body)), encoding="utf-8")
         metas.append(meta)
     return metas
 
