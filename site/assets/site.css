@@ -327,6 +327,8 @@ dialog.lightbox button { min-height: 44px; padding: 0 18px; border-radius: 999px
 .choices input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .choices input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
 .field { display: grid; gap: 6px; }
+.name-row { display: grid; gap: 1rem; }
+@media (min-width: 520px) { .name-row { grid-template-columns: 1fr 1fr; } }
 .field label { font-family: var(--f-head); font-weight: 600; font-size: .95rem; }
 .field input { min-height: 50px; border: 1.5px solid var(--line); border-radius: 12px; padding: 0 14px; font: inherit; background: var(--paper); color: var(--ink); width: 100%; }
 .field input:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(211, 161, 62, .45); }

@@ -101,13 +101,18 @@
   function details() {
     var saved = {};
     try { saved = JSON.parse(load("cp_contact") || "{}") || {}; } catch (e) {}
+    // Older visits saved one "name" box: split it so returning people see both boxes filled.
+    if (saved.name && !saved.first) { var parts = saved.name.split(" "); saved.first = parts.shift(); saved.last = parts.join(" "); }
     root.innerHTML = '<div class="quiz-card">' + progress(QUESTIONS.length) +
       '<div class="q-meta"><span>All 12 answered</span><button class="q-back" type="button" id="back">← Back</button></div>' +
       '<h2 class="q-text">Nearly there. What\'s your name?</h2>' +
       '<p class="muted" style="margin:-6px 0 14px">It goes on your results so they feel like yours.</p>' +
       '<p class="reassure">Don\'t worry, I don\'t need your email or phone number. No sales calls, no spam. Just your results.</p>' +
       '<form id="cp-details" class="stack" novalidate>' +
-      field("cp-fullname", "Your name", "text", "name", saved.name) +
+      '<div class="name-row">' +
+      field("cp-first", "First name", "text", "given-name", saved.first) +
+      field("cp-last", "Last name", "text", "family-name", saved.last) +
+      '</div>' +
       '<p class="form-error" id="cp-error" role="alert"></p>' +
       '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
       '<p class="small muted">I\'ll see your name and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
@@ -118,10 +123,13 @@
     };
     document.getElementById("cp-details").addEventListener("submit", function (e) {
       e.preventDefault();
-      var f = { name: val("cp-fullname") };
-      var err = document.getElementById("cp-error"), el = document.getElementById("cp-fullname");
-      el.removeAttribute("aria-invalid");
-      if (f.name.length < 2) { err.textContent = "Please enter your name."; el.setAttribute("aria-invalid", "true"); el.focus(); return; }
+      var first = val("cp-first"), last = val("cp-last");
+      var f = { first: first, last: last, name: (first + " " + last).trim() };
+      var err = document.getElementById("cp-error");
+      var elFirst = document.getElementById("cp-first"), elLast = document.getElementById("cp-last");
+      elFirst.removeAttribute("aria-invalid"); elLast.removeAttribute("aria-invalid");
+      if (!first) { err.textContent = "Please enter your first name."; elFirst.setAttribute("aria-invalid", "true"); elFirst.focus(); return; }
+      if (!last) { err.textContent = "Please enter your last name."; elLast.setAttribute("aria-invalid", "true"); elLast.focus(); return; }
       err.textContent = ""; store("cp_contact", JSON.stringify(f));
       logCompletion(f.name);
       finish(f, "manual");
