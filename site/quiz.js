@@ -31,9 +31,10 @@
     return { scores: s, dom: sorted[0][0], second: sorted[1][0], sorted: sorted };
   }
 
-  function resultsPath(r, name) {
+  function resultsPath(r, name, biz) {
     var p = new URLSearchParams();
     if (name) p.set("n", name);
+    if (biz) p.set("b", biz);
     p.set("s", ORDER.map(function (k) { return r.scores[k]; }).join("-"));
     return "colour-" + r.dom + "#" + p.toString();
   }
@@ -113,9 +114,10 @@
       field("cp-first", "First name", "text", "given-name", saved.first) +
       field("cp-last", "Last name", "text", "family-name", saved.last) +
       '</div>' +
+      field("cp-biz", 'Business name <span class="muted" style="font-weight:400">(optional)</span>', "text", "organization", saved.business, true) +
       '<p class="form-error" id="cp-error" role="alert"></p>' +
       '<button class="btn btn-gold" type="submit" id="cp-submit" style="width:100%;min-height:58px">See my results</button>' +
-      '<p class="small muted">I\'ll see your name and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
+      '<p class="small muted">I\'ll see your name, business name (if you add it) and results, nothing else. <a href="privacy.html">Privacy policy</a></p>' +
       '</form></div>';
     document.getElementById("back").onclick = function () {
       state.screen = "quiz"; state.q = QUESTIONS.length - 1; state.answers.length = state.picks.length = state.q;
@@ -123,31 +125,31 @@
     };
     document.getElementById("cp-details").addEventListener("submit", function (e) {
       e.preventDefault();
-      var first = val("cp-first"), last = val("cp-last");
-      var f = { first: first, last: last, name: (first + " " + last).trim() };
+      var first = val("cp-first"), last = val("cp-last"), biz = val("cp-biz").slice(0, 80);
+      var f = { first: first, last: last, name: (first + " " + last).trim(), business: biz };
       var err = document.getElementById("cp-error");
       var elFirst = document.getElementById("cp-first"), elLast = document.getElementById("cp-last");
       elFirst.removeAttribute("aria-invalid"); elLast.removeAttribute("aria-invalid");
       if (!first) { err.textContent = "Please enter your first name."; elFirst.setAttribute("aria-invalid", "true"); elFirst.focus(); return; }
       if (!last) { err.textContent = "Please enter your last name."; elLast.setAttribute("aria-invalid", "true"); elLast.focus(); return; }
       err.textContent = ""; store("cp_contact", JSON.stringify(f));
-      logCompletion(f.name);
+      logCompletion(f.name, f.business);
       finish(f, "manual");
     });
   }
 
-  function field(id, label, type, ac, val) {
+  function field(id, label, type, ac, val, optional) {
     return '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + type + '" autocomplete="' + ac + '"' +
-      ' required aria-required="true" value="' + esc(val || "") + '"></div>';
+      (optional ? '' : ' required aria-required="true"') + ' value="' + esc(val || "") + '"></div>';
   }
 
   // Once the Google Apps Script exists, RESULTS_ENDPOINT is its web-app URL and this quietly logs
-  // name, colour and scores to Tanya's Google Sheet. Never contact details.
-  function logCompletion(name) {
+  // name, business name (optional), colour and scores to Tanya's Google Sheet. Never contact details.
+  function logCompletion(name, biz) {
     if (!RESULTS_ENDPOINT) return;
     var r = result();
-    var data = JSON.stringify({ name: name, colour: NAME[r.dom], second: NAME[r.second],
-      scores: ORDER.map(function (k) { return NAME[k] + " " + r.scores[k]; }).join(", "), link: SITE + "/" + resultsPath(r, name) });
+    var data = JSON.stringify({ name: name, business: biz || "", colour: NAME[r.dom], second: NAME[r.second],
+      scores: ORDER.map(function (k) { return NAME[k] + " " + r.scores[k]; }).join(", "), link: SITE + "/" + resultsPath(r, name, biz) });
     try {
       if (navigator.sendBeacon) navigator.sendBeacon(RESULTS_ENDPOINT, new Blob([data], { type: "text/plain" }));
       else fetch(RESULTS_ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: data, keepalive: true });
@@ -156,7 +158,7 @@
   function val(id) { return (document.getElementById(id).value || "").trim().replace(/\s+/g, " "); }
 
   function finish(f, sent) {
-    var r = result(), path = resultsPath(r, f.name);
+    var r = result(), path = resultsPath(r, f.name, f.business);
     store("cp_last", path); store("cp_last_name", f.name);
     try { sessionStorage.setItem("cp_status", sent === "manual" ? "manual" : sent ? "sent" : "failed"); } catch (e) {}
     window.location.href = path;

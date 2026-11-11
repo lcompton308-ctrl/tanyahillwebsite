@@ -2,10 +2,11 @@
  * Which Boss Are You? results log
  * Lives in Tanya's Google Sheet "Which Boss Are You? results" (Extensions > Apps Script).
  *
- * The website sends name, colour, second colour, scores and results link when someone
+ * The website sends name, business name (optional), colour, second colour, scores and results link when someone
  * finishes the assessment. Never email addresses or phone numbers.
  *  - doPost      adds a row to the sheet and emails Tanya a short note
- *  - setup       run once: adds the headings, the Client tick-box column and the daily clean-up
+ *  - setup       run once (and again after updating this script): adds the headings, the Business name
+ *                column, the Client tick-box column and the daily clean-up
  *  - cleanUp     runs daily: deletes rows older than 12 months unless Client is ticked
  */
 
@@ -13,14 +14,16 @@ var SHEET_NAME = "Results";
 var SEND_EMAIL = true;          // set to false to stop the "new assessment result" emails
 var KEEP_DAYS = 365;            // privacy policy says 12 months
 var SITE = "https://tanyahill.co.uk/";
+var CLIENT_COL = 8;            // the Client tick-box column (H)
 var COLOURS = ["Red", "Yellow", "Green", "Blue"];
-var HEADINGS = ["Date", "Name", "Colour", "Second colour", "Scores", "Results link", "Client"];
+var HEADINGS = ["Date", "Name", "Business name", "Colour", "Second colour", "Scores", "Results link", "Client"];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
     var d = JSON.parse((e && e.postData && e.postData.contents) || "{}");
     var name = clean(d.name, 60);
+    var business = clean(d.business, 80);
     var colour = COLOURS.indexOf(d.colour) > -1 ? d.colour : "";
     var second = COLOURS.indexOf(d.second) > -1 ? d.second : "";
     var link = typeof d.link === "string" && d.link.indexOf(SITE) === 0 ? clean(d.link, 300) : "";
@@ -28,14 +31,15 @@ function doPost(e) {
 
     lock.waitLock(10000);
     var sh = sheet();
-    sh.appendRow([new Date(), name, colour, second, clean(d.scores, 80), link, false]);
-    sh.getRange(sh.getLastRow(), 7).insertCheckboxes();
+    sh.appendRow([new Date(), name, business, colour, second, clean(d.scores, 80), link, false]);
+    sh.getRange(sh.getLastRow(), CLIENT_COL).insertCheckboxes();
 
     if (SEND_EMAIL) {
       MailApp.sendEmail({
         to: Session.getEffectiveUser().getEmail(),
-        subject: "New assessment result: " + name + " is " + colour,
+        subject: "New assessment result: " + name + (business ? " (" + business + ")" : "") + " is " + colour,
         body: name + " just finished Which Boss Are You?\n\n" +
+              (business ? "Business: " + business + "\n" : "") +
               "Colour: " + colour + (second ? " (second: " + second + ")" : "") + "\n" +
               "Scores: " + clean(d.scores, 80) + "\n" +
               (link ? "Their results: " + link + "\n" : "") +
@@ -57,11 +61,15 @@ function doGet() {
 
 function setup() {
   var sh = sheet();
+  // Sheets made before the Business name column existed: slot an empty column in after Name,
+  // so older rows keep their colours, links and Client ticks in the right place.
+  if (sh.getLastColumn() > 0 && sh.getRange(1, 3).getValue() !== "Business name") sh.insertColumnAfter(2);
   sh.getRange(1, 1, 1, HEADINGS.length).setValues([HEADINGS]).setFontWeight("bold");
   sh.setFrozenRows(1);
   sh.getRange("A:A").setNumberFormat("d mmm yyyy, hh:mm");
-  sh.setColumnWidth(5, 220);
-  sh.setColumnWidth(6, 260);
+  sh.setColumnWidth(3, 180);
+  sh.setColumnWidth(6, 220);
+  sh.setColumnWidth(7, 260);
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === "cleanUp") ScriptApp.deleteTrigger(t);
   });
@@ -75,7 +83,7 @@ function cleanUp() {
   var rows = sh.getRange(2, 1, last - 1, HEADINGS.length).getValues();
   var cutoff = new Date(Date.now() - KEEP_DAYS * 24 * 60 * 60 * 1000);
   for (var i = rows.length - 1; i >= 0; i--) {
-    var date = rows[i][0], client = rows[i][6] === true;
+    var date = rows[i][0], client = rows[i][CLIENT_COL - 1] === true;
     if (date instanceof Date && date < cutoff && !client) sh.deleteRow(i + 2);
   }
 }

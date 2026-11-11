@@ -1,5 +1,5 @@
 // Personal results page. A colour page (colour-<colour>.html) becomes a client's own results when its link
-// carries #n=<full name>&s=<red>-<yellow>-<green>-<blue> scores. Without that, it's a general page about the colour.
+// carries #n=<full name>&b=<business name, optional>&s=<red>-<yellow>-<green>-<blue> scores. Without that, it's a general page about the colour.
 (function () {
   if (typeof PROFILES === "undefined") return;
   var ORDER = ["red", "yellow", "green", "blue"];
@@ -11,6 +11,8 @@
 
   var params = new URLSearchParams(location.hash.slice(1));
   var name = (params.get("n") || "").trim().slice(0, 60);
+  var biz = (params.get("b") || "").trim().slice(0, 80);
+  var me = (name || "me") + (biz ? " from " + biz : "");
   var parts = (params.get("s") || "").split("-").map(Number);
   var valid = parts.length === 4 && parts.every(function (n) { return Number.isInteger(n) && n >= 0 && n <= TOTAL; }) &&
     parts.reduce(function (a, b) { return a + b; }, 0) === TOTAL;
@@ -50,7 +52,7 @@
   if (sec) sec.innerHTML = 'Secondary colour: <strong style="color:' + TEXT[second] + '">' + NAME[second] + ", " + PROFILES[second].type + "</strong>";
 
   var debrief = $("[data-debrief]");
-  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've done the Which Boss Are You? assessment and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
+  if (debrief) debrief.href = waBase + encodeURIComponent("Hi Tanya, it's " + me + ". I've done the Which Boss Are You? assessment and I'm a " + NAME[col] + " (" + p.type + "), with " + NAME[second] + " second. I'd like to book a debrief.\n\nMy results: " + location.href);
 
   // Results are only remembered on the device that took the quiz (quiz.js saves them when it
   // finishes). Opening someone else's link, e.g. Tanya from her results sheet, mustn't overwrite hers.
@@ -64,7 +66,7 @@
     var sendBtn = function (label) {
       var b = document.createElement("a");
       b.className = "btn btn-gold"; b.style.marginTop = "12px"; b.style.width = "100%";
-      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + (name || "me") + ". I've just done the Which Boss Are You? assessment: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
+      b.href = waBase + encodeURIComponent("Hi Tanya, it's " + me + ". I've just done the Which Boss Are You? assessment: " + NAME[col] + " (" + p.type + "), " + NAME[second] + " second. Scores: " + sorted.map(function (x) { return NAME[x[0]] + " " + pct(x[1]) + "%"; }).join(", ") + ".\n\nMy results: " + location.href);
       b.textContent = label; note.appendChild(b);
     };
     if (status === "manual") {
