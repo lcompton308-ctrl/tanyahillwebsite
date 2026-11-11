@@ -1,0 +1,9 @@
+title: Example video: how Tanya's videos will look
+date: 2026-11-08
+type: video
+summary: Example only, for the preview. Tanya's real video title and a short line about it go here.
+youtube: EXAMPLE
+thumb: img/art/a-to-b-session-sm.webp
+draft: yes
+---
+Example only. A few lines about the video go here, so people (and Google) know what it covers before they press play.

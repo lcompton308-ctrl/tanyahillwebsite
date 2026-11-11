@@ -79,6 +79,18 @@
     });
   });
 
+  // Boss Talk videos: nothing loads from YouTube until the visitor presses play
+  document.querySelectorAll("[data-yt]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(btn.getAttribute("data-yt")) + "?autoplay=1&rel=0&modestbranding=1";
+      f.title = btn.getAttribute("aria-label").replace(/^Play video: /, "");
+      f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      f.allowFullscreen = true;
+      btn.replaceWith(f);
+    });
+  });
+
   // Library filters
   var filterBar = document.querySelector(".filters");
   if (filterBar) {
@@ -94,6 +106,7 @@
         it.hidden = !match; if (match) shown++;
       });
       if (count) count.textContent = shown + (shown === 1 ? " illustration" : " illustrations");
+      var empty = document.querySelector("[data-none]"); if (empty) empty.hidden = shown > 0;
     });
     // Open a drawing straight from a shared link (#drawing-id)
     if (location.hash) {
