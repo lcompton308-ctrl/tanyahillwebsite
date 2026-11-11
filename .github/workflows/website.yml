@@ -3,7 +3,7 @@ name: Publish website
 on:
   push:
     branches: [ main ]
-    paths: [ "site/**", "tools/make_og.py", "tools/indexnow.py", ".github/workflows/website.yml" ]
+    paths: [ "site/**", "tools/make_og.py", "tools/indexnow.py", "tools/fetch_thumbs.py", ".github/workflows/website.yml" ]
   workflow_dispatch:
 
 permissions:
@@ -41,6 +41,9 @@ jobs:
           pyftsubset /tmp/f/dm.ttf  --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=site/fonts/dmsans.woff2
           pyftsubset /tmp/f/dmi.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=site/fonts/dmsans-italic.woff2
           ls -la site/fonts
+
+      - name: Copy Boss Talk video thumbnails onto the site
+        run: python3 tools/fetch_thumbs.py
 
       - name: Colour link-preview images in the site fonts
         run: |

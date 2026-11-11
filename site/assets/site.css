@@ -98,7 +98,7 @@ strong { font-weight: 700; }
 .brand img { height: 44px; width: auto; }
 .nav { display: none; }
 .nav ul { list-style: none; display: flex; align-items: center; gap: 4px; }
-.nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 999px; color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .92rem; }
+.nav a { white-space: nowrap; display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 999px; color: var(--ink); text-decoration: none; font-family: var(--f-head); font-weight: 600; font-size: .92rem; }
 .nav a:hover { background: var(--paper-2); }
 .nav a[aria-current="page"] { background: var(--paper-2); box-shadow: inset 0 -2px 0 var(--gold); border-radius: 10px; }
 .nav .btn { min-height: 44px; padding: .5em 1.1em; margin-left: 8px; font-size: .92rem; }
@@ -138,7 +138,8 @@ strong { font-weight: 700; }
 .m-tile.wa { background: var(--gold); border-color: var(--gold); }
 .m-tile.wa:hover { background: var(--gold-hi); border-color: var(--gold-hi); }
 
-@media (min-width: 960px) {
+/* Desktop menu from 1200px wide; narrower screens (tablets, small laptops) use the Menu button */
+@media (min-width: 1200px) {
   .nav { display: block; }
   .header-actions, .menu-btn, .mobile-nav { display: none !important; }
   .brand img { height: 48px; }
@@ -643,3 +644,28 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .drawing .story[open] summary { margin-bottom: 4px; }
 .drawing .story-body { display: grid; gap: .7em; color: var(--stone); font-size: .97rem; }
 .drawing .story-body ul { margin: 0; padding-left: 1.2em; display: grid; gap: .25em; }
+
+/* Boss Talk: posts, videos and book reviews */
+.talk-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); align-items: stretch; }
+.talk-card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--ink); min-width: 0; transition: border-color .15s ease, transform .15s ease; }
+.talk-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.talk-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.talk-pic { position: relative; display: block; aspect-ratio: 16 / 9; background: #fff; border-bottom: 1px solid var(--line); overflow: hidden; }
+.talk-pic img { width: 100%; height: 100%; object-fit: contain; }
+.talk-text { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 18px; flex: 1; }
+.talk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: .85rem; color: var(--stone); }
+.talk-flag { font-size: .72rem; font-family: var(--f-head); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: var(--paper-2); border-radius: 999px; padding: 2px 8px; }
+.talk-title { font-family: var(--f-head); font-weight: 700; font-size: 1.12rem; line-height: 1.3; }
+.talk-sum { color: var(--stone); font-size: .97rem; }
+.talk-more { margin-top: auto; padding-top: 6px; display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-head); font-weight: 600; font-size: .92rem; color: var(--bronze); }
+.talk-more svg { width: 16px; height: 16px; }
+.play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(26, 24, 20, .82); color: var(--gold); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(0, 0, 0, .25); }
+.play svg { width: 28px; height: 28px; margin-left: 3px; }
+.video { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: #1a1814; }
+.video-play { all: unset; cursor: pointer; display: block; width: 100%; height: 100%; position: relative; }
+.video-play img { width: 100%; height: 100%; object-fit: cover; }
+.video-play:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.crumb { color: inherit; }
+.talk-body h2 { font-size: var(--step-1, 1.4rem); }
+.linkedin-follow { display: flex; align-items: center; gap: 12px; margin-top: 28px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }

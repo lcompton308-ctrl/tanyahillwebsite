@@ -1,0 +1,19 @@
+title: Example book review: the book's title and author
+date: 2026-11-05
+type: book-review
+summary: Example only, for the preview. One line on who the book is for and whether Tanya recommends it.
+thumb: img/art/business-ducks-sm.webp
+draft: yes
+---
+Example only. Tanya's review goes here.
+
+## Who it's for
+A short paragraph on who should read it.
+
+## My three takeaways
+- First takeaway
+- Second takeaway
+- Third takeaway
+
+## Should you read it?
+Her verdict, in her own words.

@@ -122,6 +122,7 @@ NAV = [
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
     ("resources", "illustrations.html", "Illustrations"),
+    ("talk", "boss-talk.html", "Boss Talk"),
     ("colour", "which-boss-are-you.html", "Which Boss Are You?"),
 ]
 
@@ -351,6 +352,7 @@ def main():
         built.append(meta)
     built += build_colour_pages()
     built += build_drawing_pages()
+    built += build_boss_talk()
     # old addresses that now live somewhere else: a tiny page that forwards visitors (and Google) on
     for old, new in REDIRECTS.items():
         (OUT / old).write_text(f"""<!doctype html>
@@ -558,6 +560,248 @@ def build_drawing_pages():
     for key in DRAWINGS:
         meta, body = drawing_page(key)
         (OUT / meta["path"]).write_text(bust(page(meta, body)), encoding="utf-8")
+        metas.append(meta)
+    return metas
+
+
+# ---------------- Boss Talk: Tanya's LinkedIn posts, videos and articles ----------------
+# One text file per post in tools/boss-talk/. A few "key: value" lines at the top, a line of ---,
+# then the words. Blank line = new paragraph, "- " = bullet point, "## " = sub-heading,
+# **bold**, [link text](https://...). Posts marked "draft: yes" only appear in a preview build
+# (PREVIEW=1 python3 tools/build_site.py), never on the live site.
+#
+#   title:    the heading
+#   date:     2026-11-03 (newest shows first)
+#   type:     linkedin | video | article | book-review
+#   summary:  one or two sentences for the card and for Google
+#   linkedin: link to the original LinkedIn post (optional)
+#   youtube:  the YouTube video ID, the part after v= (videos only)
+#   thumb:    a picture for the card, e.g. img/art/superman-pants-sm.webp (optional)
+#   draft:    yes (optional)
+
+import os
+
+TALK_DIR = ROOT / "tools" / "boss-talk"
+TALK_TYPES = {"linkedin": "LinkedIn post", "video": "Video", "article": "Article", "book-review": "Book review"}
+TALK_FILTERS = {"linkedin": "LinkedIn posts", "video": "Videos", "article": "Articles", "book-review": "Book reviews"}
+PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>'
+
+
+def talk_inline(t):
+    t = esc(t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2" rel="noopener">\1</a>', t)
+    return t
+
+
+def talk_html(text):
+    out = []
+    for block in re.split(r"\n\s*\n", text.strip()):
+        lines = [l.rstrip() for l in block.strip().splitlines()]
+        if not lines:
+            continue
+        if all(l.startswith("- ") for l in lines):
+            out.append("<ul>" + "".join(f"<li>{talk_inline(l[2:])}</li>" for l in lines) + "</ul>")
+        elif lines[0].startswith("## "):
+            out.append(f"<h2>{talk_inline(lines[0][3:])}</h2>")
+            if lines[1:]:
+                out.append("<p>" + "<br>".join(talk_inline(l) for l in lines[1:]) + "</p>")
+        else:
+            out.append("<p>" + "<br>".join(talk_inline(l) for l in lines) + "</p>")
+    return "\n".join(out)
+
+
+def nice_date(d):
+    return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
+
+
+def load_talk(preview):
+    posts = []
+    if not TALK_DIR.exists():
+        return posts
+    for f in sorted(TALK_DIR.glob("*.txt")):
+        head, body = f.read_text(encoding="utf-8").split("\n---\n", 1)
+        meta = {}
+        for line in head.splitlines():
+            if ":" in line:
+                k, v = line.split(":", 1)
+                meta[k.strip().lower()] = v.strip()
+        if meta.get("draft", "").lower() in ("yes", "true") and not preview:
+            continue
+        meta["slug"] = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", f.stem)
+        meta["body"] = body
+        meta["type"] = meta.get("type", "article")
+        posts.append(meta)
+    posts.sort(key=lambda m: m["date"], reverse=True)
+    return posts
+
+
+def talk_thumb(m):
+    if m.get("thumb"):
+        return m["thumb"]
+    if m.get("youtube"):
+        # copied onto this site when it's published (tools/fetch_thumbs.py), so nothing loads from YouTube until play
+        return f"img/talk/{m['youtube']}.jpg"
+    return ""
+
+
+def talk_card(m, lazy=True):
+    loading = ' loading="lazy"' if lazy else ""
+    thumb = talk_thumb(m)
+    pic = ""
+    if thumb:
+        play = f'<span class="play">{PLAY}</span>' if m["type"] == "video" else ""
+        pic = f'<span class="talk-pic"><img src="{thumb}" alt="" width="480" height="270"{loading} decoding="async">{play}</span>'
+    flag = '<span class="talk-flag">Example</span>' if m.get("draft") else ""
+    return f"""<a class="talk-card" href="boss-talk/{m['slug']}.html" data-topic="{m['type']}">
+  {pic}<span class="talk-text">
+    <span class="talk-meta"><span class="topic">{TALK_TYPES.get(m['type'], 'Article')}</span><span>{nice_date(m['date'])}</span>{flag}</span>
+    <span class="talk-title">{esc(m['title'])}</span>
+    <span class="talk-sum">{esc(m.get('summary', ''))}</span>
+    <span class="talk-more">{'Watch' if m['type'] == 'video' else 'Read'}{ICONS['arrow']}</span>
+  </span>
+</a>"""
+
+
+def talk_video(m):
+    vid = m["youtube"]
+    return f"""<div class="video">
+  <button type="button" class="video-play" data-yt="{vid}" aria-label="Play video: {esc(m['title'])}">
+    <img src="{talk_thumb(m)}" alt="" width="480" height="270" decoding="async">
+    <span class="play">{PLAY}</span>
+  </button>
+</div>
+<p class="small muted">The video plays from YouTube once you press play. <a href="https://www.youtube.com/watch?v={vid}" rel="noopener">Watch on YouTube</a></p>"""
+
+
+def talk_post_page(m, others):
+    label = TALK_TYPES.get(m["type"], "Article")
+    video = talk_video(m) if m.get("youtube") else ""
+    linked = (f'<a class="btn btn-line" href="{m["linkedin"]}" rel="noopener">{ICONS["linkedin"]}See it on LinkedIn</a>'
+              if m.get("linkedin") else "")
+    more = "\n".join(talk_card(o) for o in others[:3])
+    more_html = f"""<section class="section" aria-labelledby="more-title" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="more-title" class="h3" style="margin-bottom:18px">More Boss Talk</h2>
+    <div class="library talk-list">{more}</div>
+  </div>
+</section>""" if more else ""
+    schema = {"@context": "https://schema.org", "@type": "VideoObject" if m.get("youtube") else "Article",
+              "headline" if not m.get("youtube") else "name": m["title"], "description": m.get("summary", ""),
+              "author": {"@type": "Person", "name": "Tanya Hill", "url": DOMAIN + "/about"},
+              "publisher": {"@type": "Organization", "name": "Tanya Hill Coaching", "logo": DOMAIN + "/img/icons/icon-512.png"},
+              ("uploadDate" if m.get("youtube") else "datePublished"): m["date"],
+              "url": f"{DOMAIN}/boss-talk/{m['slug']}"}
+    if m.get("youtube"):
+        schema["thumbnailUrl"] = f"https://i.ytimg.com/vi/{m['youtube']}/hqdefault.jpg"
+        schema["embedUrl"] = f"https://www.youtube-nocookie.com/embed/{m['youtube']}"
+    body = f"""<section class="page-head">
+  <div class="wrap narrow">
+    <p class="eyebrow"><a href="boss-talk.html" class="crumb">Boss Talk</a> · {label} · {nice_date(m['date'])}</p>
+    <h1>{esc(m['title'])}</h1>
+    {f'<p class="lede">{esc(m["summary"])}</p>' if m.get("summary") else ""}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow stack-lg">
+    {video}
+    <div class="prose talk-body">{talk_html(m['body'])}</div>
+    <div class="btn-row">
+      <button class="btn btn-ink share-btn-lg" type="button" data-share="/boss-talk/{m['slug']}" data-share-title="{esc(m['title'])}">{ICONS['share']}Share this</button>
+      {linked}
+    </div>
+  </div>
+</section>
+
+{more_html}
+
+<section class="section dark cta-band" aria-labelledby="cta">
+  <div class="wrap">
+    <p class="eyebrow">Sound familiar?</p>
+    <h2 id="cta">Let's talk about your business</h2>
+    <p class="muted">Book a 30-minute call and we'll start getting it out of your head.</p>
+    <div class="btn-row">
+      <a class="btn btn-gold" href="{WA}">{ICONS['whatsapp']}Message me on WhatsApp</a>
+      <a class="btn btn-line" href="book.html">Other ways to book</a>
+    </div>
+  </div>
+</section>"""
+    meta = {
+        "path": f"boss-talk/{m['slug']}.html", "nav": "talk", "base": True,
+        "title": esc(m["title"]), "description": esc(m.get("summary", "")),
+        "head_extra": '\n<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>',
+    }
+    if talk_thumb(m):
+        meta["og_image"] = talk_thumb(m)
+    if m.get("draft"):
+        meta["noindex"] = True
+    return meta, body
+
+
+def talk_index(posts):
+    types = [t for t in TALK_TYPES if any(p["type"] == t for p in posts)]
+    filters = ""
+    if len(types) > 1:
+        filters = ('<div class="filters" role="group" aria-label="Show">\n      <button type="button" data-filter="all" aria-pressed="true">All</button>\n'
+                   + "\n".join(f'      <button type="button" data-filter="{t}" aria-pressed="false">{TALK_FILTERS[t]}</button>' for t in types)
+                   + "\n    </div>")
+    if posts:
+        listing = f"""{filters}
+    <div class="library talk-list">
+      {chr(10).join(talk_card(p, lazy=i > 2) for i, p in enumerate(posts))}
+    </div>"""
+    else:
+        listing = '<p class="notice">My first posts are on their way. In the meantime, <a href="{{LINKEDIN}}" rel="noopener">follow me on LinkedIn</a>.</p>'
+    body = f"""<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Posts, videos and book reviews</p>
+    <h1>Boss Talk</h1>
+    <p class="lede">Straight talk for trade and construction business owners. My LinkedIn posts, videos and the books worth your time, all in one place.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="talk-title">
+  <div class="wrap">
+    <h2 id="talk-title" class="sr-only">Latest from Boss Talk</h2>
+    {listing}
+    <div class="linkedin-follow">
+      <span class="li-badge">{ICONS['linkedin']}</span>
+      <p><a href="{{{{LINKEDIN}}}}" rel="noopener">Follow me on LinkedIn</a> to see new posts first.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section dark cta-band" aria-labelledby="cta">
+  <div class="wrap">
+    <p class="eyebrow">Ready to get your time back?</p>
+    <h2 id="cta">Let's talk about your business</h2>
+    <p class="muted">Book a 30-minute call. No obligation, no hard sell.</p>
+    <div class="btn-row">
+      <a class="btn btn-gold" href="{WA}">{ICONS['whatsapp']}Message me on WhatsApp</a>
+      <a class="btn btn-line" href="book.html">Other ways to book</a>
+    </div>
+  </div>
+</section>"""
+    meta = {"path": "boss-talk.html", "nav": "talk", "title": "Boss Talk: tips for trade business owners",
+            "description": "Boss Talk from Tanya Hill: straight-talking posts, videos and book reviews for trade and construction business owners."}
+    return meta, render(body)
+
+
+def build_boss_talk():
+    preview = os.environ.get("PREVIEW") == "1"
+    posts = load_talk(preview)
+    (OUT / "boss-talk").mkdir(exist_ok=True)
+    for old in (OUT / "boss-talk").glob("*.html"):
+        old.unlink()
+    metas = []
+    meta, body = talk_index(posts)
+    (OUT / meta["path"]).write_text(bust(page(meta, body)), encoding="utf-8")
+    metas.append(meta)
+    for p in posts:
+        others = [o for o in posts if o is not p]
+        meta, body = talk_post_page(p, others)
+        (OUT / meta["path"]).write_text(bust(page(meta, render(body))), encoding="utf-8")
         metas.append(meta)
     return metas
 
