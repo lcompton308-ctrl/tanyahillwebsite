@@ -669,3 +669,6 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .crumb { color: inherit; }
 .talk-body h2 { font-size: var(--step-1, 1.4rem); }
 .linkedin-follow { display: flex; align-items: center; gap: 12px; margin-top: 28px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.talk-photo { margin: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #fff; }
+.talk-photo img { width: 100%; height: auto; display: block; }
+.talk-pic.cover img { object-fit: cover; object-position: 50% 30%; }

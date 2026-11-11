@@ -576,7 +576,8 @@ def build_drawing_pages():
 #   summary:  one or two sentences for the card and for Google
 #   linkedin: link to the original LinkedIn post (optional)
 #   youtube:  the YouTube video ID, the part after v= (videos only)
-#   thumb:    a picture for the card, e.g. img/art/superman-pants-sm.webp (optional)
+#   image:    the post's photo, e.g. img/talk/tanya-on-stage.webp (plus a smaller -sm.webp copy for the card)
+#   thumb:    a different picture for the card, e.g. img/art/superman-pants-sm.webp (optional)
 #   draft:    yes (optional)
 
 import os
@@ -639,6 +640,8 @@ def load_talk(preview):
 def talk_thumb(m):
     if m.get("thumb"):
         return m["thumb"]
+    if m.get("image"):
+        return m["image"].replace(".webp", "-sm.webp")
     if m.get("youtube"):
         # copied onto this site when it's published (tools/fetch_thumbs.py), so nothing loads from YouTube until play
         return f"img/talk/{m['youtube']}.jpg"
@@ -651,7 +654,8 @@ def talk_card(m, lazy=True):
     pic = ""
     if thumb:
         play = f'<span class="play">{PLAY}</span>' if m["type"] == "video" else ""
-        pic = f'<span class="talk-pic"><img src="{thumb}" alt="" width="480" height="270"{loading} decoding="async">{play}</span>'
+        cover = " cover" if m.get("image") or m.get("youtube") else ""
+        pic = f'<span class="talk-pic{cover}"><img src="{thumb}" alt="" width="480" height="270"{loading} decoding="async">{play}</span>'
     flag = '<span class="talk-flag">Example</span>' if m.get("draft") else ""
     return f"""<a class="talk-card" href="boss-talk/{m['slug']}.html" data-topic="{m['type']}">
   {pic}<span class="talk-text">
@@ -677,6 +681,8 @@ def talk_video(m):
 def talk_post_page(m, others):
     label = TALK_TYPES.get(m["type"], "Article")
     video = talk_video(m) if m.get("youtube") else ""
+    if not video and m.get("image"):
+        video = f'<figure class="talk-photo"><img src="{m["image"]}" alt="{esc(m.get("alt", ""))}" decoding="async" fetchpriority="high"></figure>'
     linked = (f'<a class="btn btn-line" href="{m["linkedin"]}" rel="noopener">{ICONS["linkedin"]}See it on LinkedIn</a>'
               if m.get("linkedin") else "")
     more = "\n".join(talk_card(o) for o in others[:3])
@@ -732,7 +738,9 @@ def talk_post_page(m, others):
         "title": esc(m["title"]), "description": esc(m.get("summary", "")),
         "head_extra": '\n<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>',
     }
-    if talk_thumb(m):
+    if m.get("image"):
+        meta["og_image"] = m["image"].replace(".webp", ".jpg")
+    elif talk_thumb(m):
         meta["og_image"] = talk_thumb(m)
     if m.get("draft"):
         meta["noindex"] = True
