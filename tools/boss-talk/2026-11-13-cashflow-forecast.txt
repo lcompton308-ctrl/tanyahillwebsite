@@ -3,6 +3,7 @@ date: 2026-11-13
 type: linkedin
 summary: Judging how your business is doing from your bank balance is a no-no. Every business owner needs a 3 month cashflow forecast.
 image: img/talk/cashflow-forecast.webp
+linkedin: https://lnkd.in/p/e4DvjQZa
 alt: Me: "We need to build you a 3 month Cashflow Forecast." Client: "But I never know what's coming in and when, so I can't!" If I got a pound for every time I heard that.
 ---
 Nearly every business owner says this to me … and I hate to burst their "I'm different" bubble but …. Well …. They aren't different !
