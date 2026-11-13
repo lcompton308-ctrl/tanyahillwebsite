@@ -672,3 +672,4 @@ textarea.preview:focus { outline: 3px solid var(--gold); outline-offset: 1px; bo
 .talk-photo { margin: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #fff; }
 .talk-photo img { width: 100%; height: auto; display: block; }
 .talk-pic.cover img { object-fit: cover; object-position: 50% 30%; }
+.talk-photo img { max-height: 80vh; object-fit: contain; }
