@@ -125,18 +125,27 @@ NAV = [
     ("home", "index.html", "Home"),
     ("about", "about.html", "About me"),
     ("how", "how-i-work.html", "How I work"),
-    ("resources", "illustrations.html", "Illustrations"),
     ("talk", "boss-talk.html", "Boss Talk"),
     ("colour", "which-boss-are-you.html", "Which Boss Are You?"),
 ]
 
 
+MENU_NOTES = {
+    "home": "Back to the start",
+    "about": "18 years in the trade, 11 coaching",
+    "how": "Get it out of your head and in front of you",
+    "talk": "Posts, videos and illustrations",
+    "colour": "12 questions · 3 minutes",
+    "book": "A straight 30-minute conversation",
+}
+
+
 def mobile_links(active):
     items = NAV + [("book", "book.html", "Book a call")]
     out = []
-    for key, href, label in items:
+    for n, (key, href, label) in enumerate(items, 1):
         cur = ' aria-current="page"' if key == active else ""
-        out.append(f'<li><a href="{href}"{cur}><span>{label}</span></a></li>')
+        out.append(f'<li style="--i:{n}"><a href="{href}"{cur}><em aria-hidden="true">{n:02d}</em><span>{label}</span><small>{MENU_NOTES.get(key, "")}</small></a></li>')
     return "\n".join(out)
 
 
@@ -227,6 +236,7 @@ def page(meta, body):
       </ul>
     </nav>
     <div class="header-actions">
+      <a class="btn btn-gold head-book" href="{WA}">{i["whatsapp"]}Book a call</a>
       <a class="home-btn" href="index.html" aria-label="Home"{' aria-current="page"' if active == "home" else ""}>{i["home"]}</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="label">Menu</span></button>
     </div>
@@ -237,6 +247,8 @@ def page(meta, body):
         <ul class="m-links">
           {mobile_links(active)}
         </ul>
+        <aside class="m-side">
+        <a class="m-quiz" href="which-boss-are-you.html"><span class="qc-bar" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span><span class="eyebrow">12 questions · 3 minutes</span><b>Which boss are you?</b><span>Find out how you naturally lead, decide and communicate.</span><span class="m-go">Take the assessment {i["arrow"]}</span></a>
         <div class="m-contact">
           <p class="eyebrow">Get in touch</p>
           <div class="m-tiles">
@@ -245,6 +257,7 @@ def page(meta, body):
             <a class="m-tile" href="{LINKEDIN}" rel="noopener">{i["linkedin"]}LinkedIn</a>
           </div>
         </div>
+        </aside>
       </div>
     </div>
   </nav>
@@ -347,7 +360,7 @@ def render(text):
 
 
 # Old page address -> new page address (without .html). Keeps old links and bookmarks working.
-REDIRECTS = {"colour-profile.html": "which-boss-are-you", "resources.html": "illustrations"}
+REDIRECTS = {"colour-profile.html": "which-boss-are-you", "resources.html": "boss-talk", "illustrations.html": "boss-talk"}
 
 
 def main():
@@ -537,7 +550,7 @@ def drawing_page(key):
     {story}
     <div class="btn-row">
       <button class="btn btn-ink share-btn-lg" type="button" data-share="/drawings/{key}" data-share-title="{d['title']}">{ICONS['share']}Share this drawing</button>
-      <a class="btn btn-line" href="illustrations.html">See all illustrations</a>
+      <a class="btn btn-line" href="boss-talk.html">See more on Boss Talk</a>
     </div>
   </div>
 </section>
@@ -554,7 +567,7 @@ def drawing_page(key):
   </div>
 </section>"""
     meta = {
-        "path": f"drawings/{key}.html", "nav": "resources", "base": True,
+        "path": f"drawings/{key}.html", "nav": "talk", "base": True,
         "title": d["title"],
         "description": esc(d["lesson"]),
         "og_image": f"img/og/drawing-{key}.jpg",
@@ -589,8 +602,8 @@ def build_drawing_pages():
 #   draft:    yes (optional)
 
 TALK_DIR = ROOT / "tools" / "boss-talk"
-TALK_TYPES = {"linkedin": "LinkedIn post", "video": "Video", "article": "Article", "book-review": "Book review"}
-TALK_FILTERS = {"linkedin": "LinkedIn posts", "video": "Videos", "article": "Articles", "book-review": "Book reviews"}
+TALK_TYPES = {"linkedin": "LinkedIn post", "video": "Video", "illustration": "Illustration", "article": "Article", "book-review": "Book review"}
+TALK_FILTERS = {"linkedin": "LinkedIn posts", "video": "Videos", "illustration": "Illustrations", "article": "Articles", "book-review": "Book reviews"}
 PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>'
 
 
@@ -639,6 +652,10 @@ def load_talk(preview):
         meta["body"] = body
         meta["type"] = meta.get("type", "article")
         posts.append(meta)
+    # Tanya's illustrations live on Boss Talk too (each keeps its own page under drawings/)
+    for k, d in DRAWINGS.items():
+        posts.append({"type": "illustration", "slug": k, "title": d["title"], "date": d["date"],
+                      "summary": d["lesson"], "thumb": f"img/art/{k}-sm.webp", "href": f"drawings/{k}.html", "body": ""})
     posts.sort(key=lambda m: m["date"], reverse=True)
     return posts
 
@@ -663,12 +680,13 @@ def talk_card(m, lazy=True):
         cover = " cover" if m.get("image") or m.get("youtube") else ""
         pic = f'<span class="talk-pic{cover}"><img src="{thumb}" alt="" width="480" height="270"{loading} decoding="async">{play}</span>'
     flag = '<span class="talk-flag">Example</span>' if m.get("draft") else ""
-    return f"""<a class="talk-card" href="boss-talk/{m['slug']}.html" data-topic="{m['type']}">
+    href = m.get("href") or f"boss-talk/{m['slug']}.html"
+    return f"""<a class="talk-card" href="{href}" data-topic="{m['type']}">
   {pic}<span class="talk-text">
     <span class="talk-meta"><span class="topic">{TALK_TYPES.get(m['type'], 'Article')}</span><span>{nice_date(m['date'])}</span>{flag}</span>
     <span class="talk-title">{esc(m['title'])}</span>
     <span class="talk-sum">{esc(m.get('summary', ''))}</span>
-    <span class="talk-more">{'Watch' if m['type'] == 'video' else 'Read'}{ICONS['arrow']}</span>
+    <span class="talk-more">{'Watch' if m['type'] == 'video' else 'See it' if m['type'] == 'illustration' else 'Read'}{ICONS['arrow']}</span>
   </span>
 </a>"""
 
@@ -769,9 +787,9 @@ def talk_index(posts):
         listing = '<p class="notice">My first posts are on their way. In the meantime, <a href="{{LINKEDIN}}" rel="noopener">follow me on LinkedIn</a>.</p>'
     body = f"""<section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Posts, videos and book reviews</p>
+    <p class="eyebrow">Posts, videos, illustrations and book reviews</p>
     <h1>Boss Talk</h1>
-    <p class="lede">Straight talk for trade and construction business owners. My LinkedIn posts, videos and the books worth your time, all in one place.</p>
+    <p class="lede">Straight talk for trade and construction business owners. My LinkedIn posts, videos, the illustrations I use with clients and the books worth your time, all in one place.</p>
   </div>
 </section>
 
@@ -798,7 +816,7 @@ def talk_index(posts):
   </div>
 </section>"""
     meta = {"path": "boss-talk.html", "nav": "talk", "title": "Boss Talk: tips for trade business owners",
-            "description": "Boss Talk from Tanya Hill: straight-talking posts, videos and book reviews for trade and construction business owners."}
+            "description": "Boss Talk from Tanya Hill: straight-talking posts, videos, illustrated business lessons and book reviews for trade and construction business owners."}
     return meta, render(body)
 
 
@@ -812,7 +830,7 @@ def build_boss_talk():
     meta, body = talk_index(posts)
     (OUT / meta["path"]).write_text(bust(page(meta, body)), encoding="utf-8")
     metas.append(meta)
-    for p in posts:
+    for p in [x for x in posts if not x.get("href")]:
         others = [o for o in posts if o is not p]
         meta, body = talk_post_page(p, others)
         (OUT / meta["path"]).write_text(bust(page(meta, render(body))), encoding="utf-8")

@@ -310,3 +310,60 @@
   .home .hero-quiz { justify-content: center; }
   .home .boss-tile { min-height: 0; }
 }
+
+/* ==========================================================================
+   Round 3 (15 Nov 2026): hero load, compact "Sound familiar?" accordion
+   ========================================================================== */
+
+/* ---- Hero: a soft, staged entrance ---- */
+@keyframes photo-in { from { opacity: 0; clip-path: inset(12% 8% 12% 8% round 28px); transform: scale(1.04); } to { opacity: 1; clip-path: inset(0 0 0 0 round 22px); transform: none; } }
+@keyframes tag-in { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+@keyframes glow { from { opacity: 0; } to { opacity: 1; } }
+.motion .home .hero-photo { animation: none; }
+.motion .home .hero-photo img { animation: photo-in 1.1s .15s both cubic-bezier(.2,.7,.2,1); }
+.motion .home .hero-photo .tag { animation: tag-in .7s .9s both cubic-bezier(.2,.7,.2,1); }
+.home .hero { position: relative; overflow: hidden; }
+.home .hero::before { content: ""; position: absolute; right: -10%; top: -30%; width: 60vmax; height: 60vmax; border-radius: 50%; background: radial-gradient(closest-side, rgba(211,161,62,.14), transparent 70%); pointer-events: none; }
+.motion .home .hero::before { animation: glow 1.6s .2s both ease; }
+.home .hero .wrap { position: relative; }
+.motion .home .stats .reveal { transition-duration: .8s; }
+
+/* ---- "Sound familiar?": a small morphing accordion ---- */
+.home .familiar { padding-block: 56px; }
+.home .fam-grid { display: grid; gap: 28px; }
+.home .fam-copy h2 { margin-top: 8px; }
+.home .fam-copy .muted { margin-top: 14px; max-width: 40ch; }
+.home .fam-copy .text-link { margin-top: 14px; display: inline-flex; }
+@media (min-width: 960px) {
+  .home .familiar { padding-block: 80px; }
+  .home .fam-grid { grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: start; }
+  .home .fam-copy { position: sticky; top: 110px; }
+}
+.home .acc { list-style: none; display: grid; }
+.home .acc-item { transition: margin .45s cubic-bezier(.2,.7,.2,1); }
+.home .acc-item + .acc-item { margin-top: 6px; }
+.home .acc-item.open { margin-block: 14px; }
+.home .acc-item.open:first-child { margin-top: 0; }
+.home .acc h3 { margin: 0; font: inherit; }
+.home .acc-q { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 30px 1fr 22px; align-items: center; gap: 10px; min-height: 56px; padding: 12px 16px; background: var(--card); border-radius: 12px; box-shadow: 0 1px 2px rgba(26,24,20,.05); color: var(--ink); line-height: 1.4; font-size: .98rem; transition: background .25s ease, box-shadow .25s ease; }
+.home .acc-q:hover { box-shadow: 0 1px 2px rgba(26,24,20,.05), 0 6px 16px rgba(26,24,20,.07); }
+.home .acc-q:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.home .acc-q em { font-style: normal; font-family: var(--f-head); font-weight: 600; font-size: .75rem; color: var(--stone); letter-spacing: .04em; }
+.home .acc-q strong { font-weight: 700; }
+.home .acc-item.open .acc-q { background: #fff; box-shadow: 0 1px 2px rgba(26,24,20,.05), 0 8px 22px rgba(26,24,20,.08); }
+.home .acc-item.open .acc-q em { color: var(--bronze); }
+.home .acc-ic { position: relative; width: 14px; height: 14px; justify-self: end; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.home .acc-ic::before, .home .acc-ic::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 2px; background: var(--ink); }
+.home .acc-ic::after { transform: rotate(90deg); }
+.home .acc-item.open .acc-ic { transform: rotate(135deg); }
+/* the answer is its own card that grows out underneath */
+.home .acc-a { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .45s cubic-bezier(.2,.7,.2,1), opacity .3s ease, margin .45s cubic-bezier(.2,.7,.2,1); }
+.home .acc-a > div { min-height: 0; overflow: hidden; }
+.home .acc-a p { margin: 0; padding: 14px 16px 16px 56px; background: rgba(255,253,248,.6); border: 1px solid var(--line); border-radius: 12px; color: var(--stone); font-size: .95rem; line-height: 1.55; }
+.home .acc-a p b { display: block; color: var(--ink); font-family: var(--f-head); font-weight: 600; margin-bottom: 2px; }
+.home .acc-a a { color: var(--bronze); font-weight: 600; }
+.home .acc-item.open .acc-a { grid-template-rows: 1fr; opacity: 1; margin-top: 6px; }
+/* without JavaScript every answer simply shows */
+html:not(.js-acc) .home .acc-a { grid-template-rows: 1fr; opacity: 1; margin-top: 6px; }
+html:not(.js-acc) .home .acc-ic { display: none; }
+@media (max-width: 559px) { .home .acc-a p { padding-left: 16px; } }

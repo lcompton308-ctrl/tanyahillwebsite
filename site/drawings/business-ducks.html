@@ -24,7 +24,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/dmsans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=5e553c87">
+<link rel="stylesheet" href="assets/site.css?v=c1a173c4">
 <!-- Cloudflare Web Analytics: no cookies, no personal data stored -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "047d13a47ec749fcb989fa6bfed87cb7"}'></script>
 </head>
@@ -38,13 +38,13 @@
         <li><a href="/">Home</a></li>
 <li><a href="about">About me</a></li>
 <li><a href="how-i-work">How I work</a></li>
-<li><a href="illustrations" aria-current="page">Illustrations</a></li>
-<li><a href="boss-talk">Boss Talk</a></li>
+<li><a href="boss-talk" aria-current="page">Boss Talk</a></li>
 <li><a class="nav-assess" href="which-boss-are-you"><span class="nav-dots" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span>Which Boss Are You?</a></li>
         <li><a class="btn btn-gold" href="https://wa.me/447714541600?text=Hi%20Tanya%2C%20I%27d%20like%20to%20book%20a%2030-minute%20call."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Book a call</a></li>
       </ul>
     </nav>
     <div class="header-actions">
+      <a class="btn btn-gold head-book" href="https://wa.me/447714541600?text=Hi%20Tanya%2C%20I%27d%20like%20to%20book%20a%2030-minute%20call."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Book a call</a>
       <a class="home-btn" href="/" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg></a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="label">Menu</span></button>
     </div>
@@ -53,14 +53,15 @@
     <div class="mobile-nav-inner">
       <div class="wrap">
         <ul class="m-links">
-          <li><a href="/"><span>Home</span></a></li>
-<li><a href="about"><span>About me</span></a></li>
-<li><a href="how-i-work"><span>How I work</span></a></li>
-<li><a href="illustrations" aria-current="page"><span>Illustrations</span></a></li>
-<li><a href="boss-talk"><span>Boss Talk</span></a></li>
-<li><a href="which-boss-are-you"><span>Which Boss Are You?</span></a></li>
-<li><a href="book"><span>Book a call</span></a></li>
+          <li style="--i:1"><a href="/"><em aria-hidden="true">01</em><span>Home</span><small>Back to the start</small></a></li>
+<li style="--i:2"><a href="about"><em aria-hidden="true">02</em><span>About me</span><small>18 years in the trade, 11 coaching</small></a></li>
+<li style="--i:3"><a href="how-i-work"><em aria-hidden="true">03</em><span>How I work</span><small>Get it out of your head and in front of you</small></a></li>
+<li style="--i:4"><a href="boss-talk" aria-current="page"><em aria-hidden="true">04</em><span>Boss Talk</span><small>Posts, videos and illustrations</small></a></li>
+<li style="--i:5"><a href="which-boss-are-you"><em aria-hidden="true">05</em><span>Which Boss Are You?</span><small>12 questions · 3 minutes</small></a></li>
+<li style="--i:6"><a href="book"><em aria-hidden="true">06</em><span>Book a call</span><small>A straight 30-minute conversation</small></a></li>
         </ul>
+        <aside class="m-side">
+        <a class="m-quiz" href="which-boss-are-you"><span class="qc-bar" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span><span class="eyebrow">12 questions · 3 minutes</span><b>Which boss are you?</b><span>Find out how you naturally lead, decide and communicate.</span><span class="m-go">Take the assessment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
         <div class="m-contact">
           <p class="eyebrow">Get in touch</p>
           <div class="m-tiles">
@@ -69,6 +70,7 @@
             <a class="m-tile" href="https://www.linkedin.com/in/tanya-hill-coach-to-the-trades-built-like-a-boss-05218015" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.5-2.2 2.9V21h-4V9Z"/></svg>LinkedIn</a>
           </div>
         </div>
+        </aside>
       </div>
     </div>
   </nav>
@@ -93,7 +95,7 @@
     
     <div class="btn-row">
       <button class="btn btn-ink share-btn-lg" type="button" data-share="/drawings/business-ducks" data-share-title="Have you got your business ducks in a row?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4M12 2v14"/></svg>Share this drawing</button>
-      <a class="btn btn-line" href="illustrations">See all illustrations</a>
+      <a class="btn btn-line" href="boss-talk">See more on Boss Talk</a>
     </div>
   </div>
 </section>
@@ -124,7 +126,6 @@
           <li><a href="/">Home</a></li>
 <li><a href="about">About me</a></li>
 <li><a href="how-i-work">How I work</a></li>
-<li><a href="illustrations">Illustrations</a></li>
 <li><a href="boss-talk">Boss Talk</a></li>
 <li><a class="nav-assess" href="which-boss-are-you"><span class="nav-dots" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span>Which Boss Are You?</a></li>
           <li><a href="book">Book a call</a></li>

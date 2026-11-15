@@ -1,3 +1,23 @@
+/* Accordion works whether or not motion is reduced */
+(function () {
+  document.documentElement.classList.add("js-acc");
+  document.querySelectorAll("[data-acc]").forEach(function (list) {
+    var items = list.querySelectorAll(".acc-item");
+    items.forEach(function (item) {
+      var btn = item.querySelector(".acc-q");
+      btn.addEventListener("click", function () {
+        var willOpen = !item.classList.contains("open");
+        items.forEach(function (o) { o.classList.remove("open"); o.querySelector(".acc-q").setAttribute("aria-expanded", "false"); });
+        if (willOpen) { item.classList.add("open"); btn.setAttribute("aria-expanded", "true"); }
+      });
+    });
+  });
+  // "See a real example" opens that panel on phones
+  document.querySelectorAll('a[href="#example"]').forEach(function (a) {
+    a.addEventListener("click", function () { var d = document.getElementById("example"); d = d && d.closest("details"); if (d) d.open = true; });
+  });
+})();
+
 /* Homepage motion: gentle reveals as sections scroll in, and numbers that count up once.
    Everything is visible without JavaScript, and nothing moves for people who ask for reduced motion. */
 (function () {
