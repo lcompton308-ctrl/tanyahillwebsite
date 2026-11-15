@@ -52,20 +52,32 @@
 
   document.querySelectorAll(".reveal, .home .big-number").forEach(function (el) { io.observe(el); });
 
-  // Testimonial cards: drift slowly from side to side; pause while someone is touching or hovering
+  // Testimonial cards: drift slowly side to side, but people can still swipe or scroll them.
+  // Any touch, wheel or drag pauses the drift for a few seconds, then it carries on from there.
   document.querySelectorAll("[data-marquee]").forEach(function (box) {
-    var track = box.querySelector(".marquee-track");
-    function setup() {
-      var extra = track.scrollWidth - box.clientWidth;
-      var dist = extra > 8 ? extra : 28;                      // cards that fit still sway a little
-      track.style.setProperty("--sway", -dist + "px");
-      track.style.setProperty("--sway-time", Math.max(8, dist / 18) + "s");
-      box.classList.add("drift");
+    var dir = 1, speed = 0.35, paused = false, timer, last = null;
+    function fits() { return box.scrollWidth - box.clientWidth < 8; }
+    function pause() {
+      paused = true; box.classList.add("held"); clearTimeout(timer);
+      timer = setTimeout(function () { paused = false; box.classList.remove("held"); last = null; }, 4000);
     }
-    setup();
-    window.addEventListener("resize", setup);
-    var t;
-    box.addEventListener("touchstart", function () { box.classList.add("paused"); clearTimeout(t); }, { passive: true });
-    box.addEventListener("touchend", function () { t = setTimeout(function () { box.classList.remove("paused"); }, 3000); });
+    ["touchstart", "wheel", "pointerdown", "keydown"].forEach(function (ev) { box.addEventListener(ev, pause, { passive: true }); });
+    box.addEventListener("mouseenter", function () { paused = true; });
+    box.addEventListener("mouseleave", function () { if (!box.classList.contains("held")) { paused = false; last = null; } });
+    var pos = box.scrollLeft;
+    function step(t) {
+      if (fits()) { box.classList.add("fits"); } else { box.classList.remove("fits"); }
+      if (!paused && !fits()) {
+        var dt = last ? Math.min(t - last, 50) : 16; last = t;
+        if (Math.abs(pos - box.scrollLeft) > 2) pos = box.scrollLeft;   // the visitor moved it
+        var max = box.scrollWidth - box.clientWidth;
+        pos += dir * speed * dt / 16;
+        if (pos >= max) { pos = max; dir = -1; } else if (pos <= 0) { pos = 0; dir = 1; }
+        box.scrollLeft = pos;
+      } else { last = null; }
+      requestAnimationFrame(step);
+    }
+    box.classList.add("drift");
+    requestAnimationFrame(step);
   });
 })();
