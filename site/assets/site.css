@@ -690,9 +690,9 @@ body.menu-open::after { opacity: 1; pointer-events: auto; }
 /* links slide in one after another */
 .m-links li { opacity: 0; transform: translateY(-10px); transition: opacity .35s ease, transform .45s cubic-bezier(.2, .7, .2, 1); }
 .mobile-nav.is-open .m-links li { opacity: 1; transform: none; transition-delay: calc(.12s + var(--i) * .045s); }
-.m-links a { display: grid; grid-template-columns: 36px 1fr; align-items: center; column-gap: 6px; min-height: 56px; }
+.m-links a { display: grid; grid-template-columns: 1fr; align-items: center; min-height: 56px; }
 .m-links em { font-style: normal; font-family: var(--f-head); font-weight: 600; font-size: .75rem; color: var(--stone); letter-spacing: .04em; }
-.m-links small { display: none; grid-column: 2; font-family: var(--f-body); font-weight: 400; font-size: .9rem; color: var(--stone); letter-spacing: 0; }
+.m-links small { display: none; font-family: var(--f-body); font-weight: 400; font-size: .9rem; color: var(--stone); letter-spacing: 0; }
 .m-links a[aria-current="page"] em { color: var(--bronze); }
 .m-side { display: grid; gap: 16px; }
 .m-quiz { display: none; }

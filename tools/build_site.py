@@ -145,7 +145,7 @@ def mobile_links(active):
     out = []
     for n, (key, href, label) in enumerate(items, 1):
         cur = ' aria-current="page"' if key == active else ""
-        out.append(f'<li style="--i:{n}"><a href="{href}"{cur}><em aria-hidden="true">{n:02d}</em><span>{label}</span><small>{MENU_NOTES.get(key, "")}</small></a></li>')
+        out.append(f'<li style="--i:{n}"><a href="{href}"{cur}><span>{label}</span><small>{MENU_NOTES.get(key, "")}</small></a></li>')
     return "\n".join(out)
 
 

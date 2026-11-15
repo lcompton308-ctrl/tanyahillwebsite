@@ -367,3 +367,30 @@
 html:not(.js-acc) .home .acc-a { grid-template-rows: 1fr; opacity: 1; margin-top: 6px; }
 html:not(.js-acc) .home .acc-ic { display: none; }
 @media (max-width: 559px) { .home .acc-a p { padding-left: 16px; } }
+
+/* ---- Round 4: one accordion holds Sound familiar? / How I work / A real example ---- */
+.home .narrow-acc { max-width: 920px; }
+.home .familiar .acc h2 { margin: 0; font: inherit; }
+.home .familiar .acc-q { grid-template-columns: 34px 1fr 22px; min-height: 76px; padding: 16px 20px; border-radius: 16px; }
+.home .familiar .acc-q > span { display: grid; gap: 4px; font-family: var(--f-head); font-weight: 700; font-size: clamp(1.05rem, .95rem + .6vw, 1.35rem); line-height: 1.25; letter-spacing: -.01em; }
+.home .familiar .acc-q small { font-family: var(--f-head); font-weight: 600; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--bronze); }
+.home .familiar .acc-item + .acc-item { margin-top: 8px; }
+.home .familiar .acc-item.open { margin-block: 16px; }
+.home .familiar .acc-item.open:first-child { margin-top: 0; }
+.home .acc-body { padding: 20px; background: var(--card); border-radius: 16px; border: 1px solid var(--line); color: var(--stone); }
+@media (min-width: 760px) { .home .acc-body { padding: 26px 28px 26px 64px; } }
+.home .acc-body p + p { margin-top: 10px; }
+.home .acc-checks { list-style: none; display: grid; gap: 10px; }
+@media (min-width: 760px) { .home .acc-checks { grid-template-columns: 1fr 1fr; gap: 12px 24px; } }
+.home .acc-checks li { display: flex; gap: 10px; align-items: flex-start; color: var(--ink); line-height: 1.45; font-size: .97rem; }
+.home .acc-checks svg { width: 18px; height: 18px; flex: none; color: var(--gold); margin-top: 2px; }
+.home .acc-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.home .acc-split { display: grid; gap: 20px; align-items: center; }
+@media (min-width: 760px) { .home .acc-split { grid-template-columns: 240px 1fr; gap: 28px; } }
+.home .acc-pic { display: block; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: var(--soft); transition: transform .25s ease; }
+.home .acc-pic:hover { transform: rotate(-1deg) scale(1.02); }
+.home .acc-pic img { width: 100%; height: auto; display: block; }
+.home .acc-body .big-number { margin: 0 0 6px; line-height: 1; }
+.home .acc-body .result-note { color: var(--ink); }
+.home .acc-a p { padding: 0; background: none; border: 0; border-radius: 0; }
+.home .acc-a p.big-number { font-family: var(--f-head); font-weight: 700; font-size: clamp(2.4rem, 1.8rem + 2vw, 3.2rem); color: var(--ink); letter-spacing: -.02em; }
