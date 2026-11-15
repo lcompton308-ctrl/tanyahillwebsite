@@ -295,11 +295,13 @@
 .home .tcard figcaption img { width: 48px; height: 48px; border-radius: 50%; flex: none; }
 .home .tcard figcaption span { display: grid; font-size: .88rem; color: var(--stone); line-height: 1.35; }
 .home .tcard figcaption b { font-family: var(--f-head); font-weight: 600; color: var(--ink); font-size: .98rem; }
-/* With JavaScript and motion allowed, the row drifts gently back and forth */
-.motion .home .marquee.drift { overflow: hidden; scroll-snap-type: none; }
-.motion .home .marquee.drift .marquee-track { animation: sway var(--sway-time, 14s) ease-in-out infinite alternate; }
-.motion .home .marquee.drift:hover .marquee-track, .motion .home .marquee.drift.paused .marquee-track { animation-play-state: paused; }
-@keyframes sway { from { transform: translateX(0); } to { transform: translateX(var(--sway, -120px)); } }
+/* The row drifts by itself (home.js) and stays swipeable; snapping only while someone is in control */
+.motion .home .marquee.drift { scroll-snap-type: none; }
+.motion .home .marquee.drift.held { scroll-snap-type: x proximity; }
+/* when every card already fits on screen, a small sway instead */
+.motion .home .marquee.drift.fits .marquee-track { animation: sway 9s ease-in-out infinite alternate; }
+.motion .home .marquee.drift.fits:hover .marquee-track { animation-play-state: paused; }
+@keyframes sway { from { transform: translateX(0); } to { transform: translateX(-24px); } }
 .home .quotes-foot { color: var(--stone); margin-top: 8px; }
 .home .quotes-foot a { color: var(--ink); }
 .home .quotes-foot svg { color: #0a66c2; }
