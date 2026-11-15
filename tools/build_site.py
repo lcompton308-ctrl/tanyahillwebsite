@@ -9,6 +9,7 @@ footer and phone booking bar, so every page stays consistent.
 Run:  python3 tools/build_site.py
 """
 import hashlib, json, re, pathlib, urllib.parse
+import os
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ROOT / "tools" / "pages"
@@ -321,7 +322,7 @@ def clean_links(html):
 
 def bust(html):
     html = clean_links(html)
-    for rel in ["assets/site.css", "assets/home.css", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
+    for rel in ["assets/site.css", "assets/home.css", "assets/home.js", "assets/site.js", "quiz.js", "quiz-data.js", "result.js"]:
         html = html.replace(f'"{rel}"', f'"{rel}?v={version(rel)}"')
     return html
 
@@ -337,6 +338,9 @@ def render(text):
     for k in DRAWINGS:
         reps["{{drawing:" + k + "}}"] = drawing_card(k)
         reps["{{drawing-eager:" + k + "}}"] = drawing_card(k, lazy=False)
+    if "{{talk_latest}}" in text:
+        latest = load_talk(os.environ.get("PREVIEW") == "1")[:3]
+        reps["{{talk_latest}}"] = "\n".join(talk_card(m) for m in latest)
     for k, v in reps.items():
         text = text.replace(k, v)
     return text
@@ -583,8 +587,6 @@ def build_drawing_pages():
 #   image:    the post's photo, e.g. img/talk/tanya-on-stage.webp (plus a smaller -sm.webp copy for the card)
 #   thumb:    a different picture for the card, e.g. img/art/superman-pants-sm.webp (optional)
 #   draft:    yes (optional)
-
-import os
 
 TALK_DIR = ROOT / "tools" / "boss-talk"
 TALK_TYPES = {"linkedin": "LinkedIn post", "video": "Video", "article": "Article", "book-review": "Book review"}
