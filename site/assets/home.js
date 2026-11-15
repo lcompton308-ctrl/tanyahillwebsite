@@ -31,4 +31,21 @@
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
 
   document.querySelectorAll(".reveal, .home .big-number").forEach(function (el) { io.observe(el); });
+
+  // Testimonial cards: drift slowly from side to side; pause while someone is touching or hovering
+  document.querySelectorAll("[data-marquee]").forEach(function (box) {
+    var track = box.querySelector(".marquee-track");
+    function setup() {
+      var extra = track.scrollWidth - box.clientWidth;
+      var dist = extra > 8 ? extra : 28;                      // cards that fit still sway a little
+      track.style.setProperty("--sway", -dist + "px");
+      track.style.setProperty("--sway-time", Math.max(8, dist / 18) + "s");
+      box.classList.add("drift");
+    }
+    setup();
+    window.addEventListener("resize", setup);
+    var t;
+    box.addEventListener("touchstart", function () { box.classList.add("paused"); clearTimeout(t); }, { passive: true });
+    box.addEventListener("touchend", function () { t = setTimeout(function () { box.classList.remove("paused"); }, 3000); });
+  });
 })();
