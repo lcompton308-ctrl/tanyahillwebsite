@@ -394,3 +394,11 @@ html:not(.js-acc) .home .acc-ic { display: none; }
 .home .acc-body .result-note { color: var(--ink); }
 .home .acc-a p { padding: 0; background: none; border: 0; border-radius: 0; }
 .home .acc-a p.big-number { font-family: var(--f-head); font-weight: 700; font-size: clamp(2.4rem, 1.8rem + 2vw, 3.2rem); color: var(--ink); letter-spacing: -.02em; }
+/* What we work on, inside the accordion */
+.home .acc-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+@media (min-width: 760px) { .home .acc-areas { grid-template-columns: repeat(4, 1fr); } }
+.home .acc-areas .card { padding: 14px; box-shadow: none; background: var(--paper); border-radius: 12px; }
+.home .acc-areas .icon-badge { width: 36px; height: 36px; }
+.home .acc-areas h3 { margin-top: 10px; font-size: 1rem; }
+.home .acc-areas ul { margin-top: 6px; font-size: .88rem; }
+.home .acc .acc-areas h3 { font-family: var(--f-head); font-weight: 700; font-size: 1rem; line-height: 1.3; color: var(--ink); margin-top: 10px; }
