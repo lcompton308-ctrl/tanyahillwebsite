@@ -146,7 +146,6 @@
 .motion .home .hero .lede { animation: rise .7s .26s both cubic-bezier(.2,.7,.2,1); }
 .motion .home .hero .btn-row { animation: rise .7s .38s both cubic-bezier(.2,.7,.2,1); }
 .motion .home .hero .quiz-card-hero { animation: rise .7s .5s both cubic-bezier(.2,.7,.2,1); }
-.motion .home .hero-photo { animation: rise .9s .2s both cubic-bezier(.2,.7,.2,1); }
 /* the gold highlighter draws across "harder than it should" */
 .home .hero h1 .hl { background: linear-gradient(rgba(211,161,62,.55), rgba(211,161,62,.55)) no-repeat 0 88% / 100% 34%; }
 .motion .home .hero h1 .hl { animation: mark .9s .75s both cubic-bezier(.6,0,.2,1); background-size: 0 34%; }
@@ -262,7 +261,7 @@
 .home .boss .btn-gold svg { width: 1em; height: 1em; }
 .home .boss-note { margin-top: 14px; color: var(--on-dark-2); font-size: .9rem; }
 
-.home .boss-card { background: #fffdf8; color: var(--ink); border-radius: 22px; padding: 22px; box-shadow: 0 30px 60px rgba(0,0,0,.35); transform: rotate(-1.2deg); }
+.home .boss-card { background: #fffdf8; color: var(--ink); border-radius: 22px; padding: 22px; box-shadow: 0 30px 60px rgba(0,0,0,.35); }
 @media (min-width: 960px) { .home .boss-card { padding: 28px; } }
 .home .boss-card-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--f-head); font-weight: 700; font-size: 1.05rem; }
 .home .boss-tag { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; background: var(--paper-2); color: var(--stone); padding: 4px 10px; border-radius: 999px; }
@@ -322,8 +321,6 @@
 @keyframes tag-in { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
 @keyframes glow { from { opacity: 0; } to { opacity: 1; } }
 .motion .home .hero-photo { animation: none; }
-.motion .home .hero-photo img { animation: photo-in 1.1s .15s both cubic-bezier(.2,.7,.2,1); }
-.motion .home .hero-photo .tag { animation: tag-in .7s .9s both cubic-bezier(.2,.7,.2,1); }
 .home .hero { position: relative; overflow: hidden; }
 .home .hero::before { content: ""; position: absolute; right: -10%; top: -30%; width: 60vmax; height: 60vmax; border-radius: 50%; background: radial-gradient(closest-side, rgba(211,161,62,.14), transparent 70%); pointer-events: none; }
 .motion .home .hero::before { animation: glow 1.6s .2s both ease; }
