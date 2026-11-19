@@ -345,7 +345,7 @@ def bust(html):
 def render(text):
     # Simple placeholders available inside page bodies
     reps = {"{{WA}}": WA, "{{TEL}}": "tel:" + PHONE_TEL, "{{PHONE}}": PHONE_DISPLAY, "{{EMAIL}}": EMAIL,
-            "{{LINKEDIN}}": LINKEDIN}
+            "{{LINKEDIN}}": LINKEDIN, "{{GOOGLE_REVIEW}}": GOOGLE_REVIEW}
     for k, v in ICONS.items():
         reps["{{icon:" + k + "}}"] = v
     newest = sorted(DRAWINGS, key=lambda k: DRAWINGS[k]["date"], reverse=True)
