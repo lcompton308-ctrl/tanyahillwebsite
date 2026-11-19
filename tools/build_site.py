@@ -385,6 +385,15 @@ def main():
 <script>location.replace("/{new}" + location.search + location.hash)</script>
 </head><body><p>This page has moved to <a href="/{new}">{DOMAIN}/{new}</a>.</p></body></html>
 """, encoding="utf-8")
+    # Short links that send people straight to another website
+    for old, url in {"review.html": GOOGLE_REVIEW}.items():
+        (OUT / old).write_text(f"""<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>Leave Tanya a Google review</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={url}">
+<script>location.replace("{url}")</script>
+</head><body><p><a href="{url}">Leave Tanya a Google review</a></p></body></html>
+""", encoding="utf-8")
     # sitemap
     urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>" for m in built if not m.get("noindex"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")

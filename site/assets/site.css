@@ -725,31 +725,3 @@ body.menu-open::after { opacity: 1; pointer-events: auto; }
 @media (prefers-reduced-motion: reduce) { .mobile-nav, .m-links li, .m-side { clip-path: none !important; } }
 .m-links a span, .m-links a small { justify-self: start; }
 
-/* ===== Review page (tanyahill.co.uk/review) ===== */
-.review-page { padding-block: 32px 72px; background:
-  radial-gradient(60vmax 60vmax at 110% -10%, rgba(211, 161, 62, .16), transparent 60%), var(--paper); }
-.review-card { max-width: 560px; margin-inline: auto; background: var(--card); border-radius: 24px; padding: 26px 22px 24px; box-shadow: 0 2px 4px rgba(26,24,20,.04), 0 24px 60px rgba(26,24,20,.10); text-align: center; }
-@media (min-width: 600px) { .review-card { padding: 40px 44px 36px; } .review-page { padding-block: 64px 96px; } }
-.review-who { display: inline-flex; align-items: center; gap: 12px; text-align: left; padding: 6px 16px 6px 6px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); }
-.review-who img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 45% 20%; }
-.review-who span { display: grid; font-size: .85rem; color: var(--stone); line-height: 1.25; }
-.review-who b { font-family: var(--f-head); color: var(--ink); font-size: .95rem; }
-.review-stars { display: flex; justify-content: center; gap: 6px; margin: 22px 0 14px; }
-.review-stars svg { width: 30px; height: 30px; fill: var(--gold); }
-.review-card h1 { font-size: clamp(1.7rem, 1.3rem + 1.8vw, 2.3rem); line-height: 1.1; letter-spacing: -.02em; }
-.review-lede { margin: 12px auto 0; max-width: 40ch; color: var(--stone); font-size: 1.05rem; line-height: 1.55; }
-.review-btn { margin-top: 22px; width: 100%; justify-content: center; min-height: 56px; font-size: 1.05rem; }
-.review-btn svg { width: 1em; height: 1em; }
-.review-small { margin-top: 10px; font-size: .82rem; color: var(--stone); }
-.review-prompts { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); text-align: left; }
-.review-prompts .eyebrow { text-align: center; }
-.review-prompts ol { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
-.review-prompts li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--paper); border-radius: 12px; color: var(--ink); line-height: 1.4; font-size: .96rem; }
-.review-prompts li span { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: var(--gold); font-family: var(--f-head); font-weight: 700; font-size: .8rem; display: grid; place-items: center; }
-/* the stars pop in one by one */
-@keyframes star-pop { from { opacity: 0; transform: scale(.4) rotate(-20deg); } 70% { transform: scale(1.15); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: no-preference) {
-  .review-stars svg { animation: star-pop .5s both cubic-bezier(.2,.7,.2,1); }
-  .review-stars svg:nth-child(2) { animation-delay: .1s; } .review-stars svg:nth-child(3) { animation-delay: .2s; }
-  .review-stars svg:nth-child(4) { animation-delay: .3s; } .review-stars svg:nth-child(5) { animation-delay: .4s; }
-}
