@@ -345,7 +345,7 @@ def bust(html):
 def render(text):
     # Simple placeholders available inside page bodies
     reps = {"{{WA}}": WA, "{{TEL}}": "tel:" + PHONE_TEL, "{{PHONE}}": PHONE_DISPLAY, "{{EMAIL}}": EMAIL,
-            "{{LINKEDIN}}": LINKEDIN}
+            "{{LINKEDIN}}": LINKEDIN, "{{GOOGLE_REVIEW}}": GOOGLE_REVIEW}
     for k, v in ICONS.items():
         reps["{{icon:" + k + "}}"] = v
     newest = sorted(DRAWINGS, key=lambda k: DRAWINGS[k]["date"], reverse=True)
@@ -384,6 +384,15 @@ def main():
 <meta http-equiv="refresh" content="0; url=/{new}">
 <script>location.replace("/{new}" + location.search + location.hash)</script>
 </head><body><p>This page has moved to <a href="/{new}">{DOMAIN}/{new}</a>.</p></body></html>
+""", encoding="utf-8")
+    # Short links that send people straight to another website
+    for old, url in {"review.html": GOOGLE_REVIEW}.items():
+        (OUT / old).write_text(f"""<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>Leave Tanya a Google review</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={url}">
+<script>location.replace("{url}")</script>
+</head><body><p><a href="{url}">Leave Tanya a Google review</a></p></body></html>
 """, encoding="utf-8")
     # sitemap
     urls = "\n".join(f"  <url><loc>{DOMAIN}/{'' if m['path'] == 'index.html' else m['path'][:-5]}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>" for m in built if not m.get("noindex"))

@@ -724,3 +724,4 @@ body.menu-open::after { opacity: 1; pointer-events: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .mobile-nav, .m-links li, .m-side { clip-path: none !important; } }
 .m-links a span, .m-links a small { justify-self: start; }
+
